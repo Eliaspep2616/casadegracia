@@ -1,0 +1,394 @@
+/* =========================================
+   1. RESET Y BASES GLOBALES
+   ========================================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f4f7f6;
+  color: #333;
+  line-height: 1.5;
+}
+
+/* =========================================
+   2. NAVBAR Y NAVEGACIÓN
+   ========================================= */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 8%;
+  background: white;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo-text {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #1a1a1a;
+  text-transform: uppercase;
+}
+
+.nav-links {
+  display: flex;
+  gap: 25px;
+  list-style: none;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #666;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: 0.3s;
+}
+
+.nav-links a.active, .nav-links a:hover {
+  color: #004a99;
+}
+
+/* =========================================
+   3. BANNER DE ÉXITO (EL VERDE)
+   ========================================= */
+.banner-exito {
+  background-color: #2ecc71;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 12px;
+  margin: 20px auto;
+  max-width: 1100px;
+  animation: slideDown 0.4s ease-out;
+  box-shadow: 0 4px 12px rgba(46, 204, 113, 0.2);
+}
+
+.banner-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-ver-carrito {
+  background: white;
+  color: #2ecc71;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* =========================================
+   4. MODAL Y FORMULARIO DE REGISTRO (LOGICA DE CASA DE FE)
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-container {
+  width: 90%;
+  max-width: 550px;
+  background: white;
+  border-radius: 24px;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* Estilo de la Card del Ticket */
+.card.ticket-animado {
+  padding: 40px;
+  background: #ffffff;
+}
+
+.card.ticket-animado h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 20px;
+}
+
+/* Inputs y Formulario */
+.card.ticket-animado label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.card.ticket-animado input {
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.card.ticket-animado input:focus {
+  outline: none;
+  border-color: #004a99;
+  box-shadow: 0 0 0 4px rgba(0, 74, 153, 0.1);
+}
+
+.flex-row {
+  display: flex;
+  gap: 15px;
+}
+
+/* Botones */
+.btn-active {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  color: white;
+  background: #004a99;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-active:hover {
+  background: #003366;
+  transform: translateY(-2px);
+}
+
+.btn-disabled {
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  background: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   5. PANTALLA DE TRANSFERENCIA (PASO 2)
+   ========================================= */
+.pago-container {
+  text-align: center;
+}
+
+.datos-banco {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 16px;
+  text-align: left;
+  margin: 20px 0;
+  border: 1px solid #e2e8f0;
+}
+
+.datos-banco p {
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.btn-whatsapp {
+  background: #25d366;
+  color: white;
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+/* =========================================
+   6. ANIMACIONES
+   ========================================= */
+@keyframes slideDown {
+  from { transform: translateY(-30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+/* =========================================
+   ESTILOS PARA RETIRO DE PROVISIÓN
+   ========================================= */
+
+.retiro-wrapper {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+/* Tarjeta principal con sombra y bordes redondeados */
+.retiro-card {
+  background: white;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 15px 45px rgba(0,0,0,0.07);
+  display: flex; /* Cambiamos a flex para asegurar las dos columnas */
+  min-height: 550px;
+}
+
+/* Lado de la Imagen (Aquí va tu arte de Photoshop) */
+.retiro-visual {
+  flex: 1.2; /* Más espacio para la imagen */
+  background: #111; /* Fondo negro para que resalte tu diseño */
+  background-image: url('tu-diseno-photoshop.jpg'); /* Reemplaza con tu ruta */
+  background-size: cover;
+  background-position: center;
+}
+
+/* Lado de la Información */
+.retiro-info {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.categoria-tag {
+  color: #004a99;
+  font-weight: 800;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+}
+
+.titulo-principal {
+  font-size: 3.5rem;
+  font-weight: 900;
+  line-height: 0.95;
+  color: #1a1a1a;
+  margin-bottom: 25px;
+}
+
+.descripcion {
+  color: #64748b;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+/* Meta Data (Fecha y Lugar) */
+.meta-data p {
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.precio-tag {
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: #1e293b;
+  margin: 25px 0;
+}
+
+/* Footer de Compra */
+.compra-footer {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.selector-cantidad {
+  display: flex;
+  align-items: center;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.selector-cantidad button {
+  background: #f8fafc;
+  border: none;
+  padding: 12px 18px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.selector-cantidad button:hover {
+  background: #e2e8f0;
+}
+
+.selector-cantidad input {
+  width: 50px;
+  text-align: center;
+  border: none;
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.btn-add-cart {
+  flex: 1;
+  background: #004a99;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.btn-add-cart:hover {
+  background: #003366;
+  transform: translateY(-2px);
+}
+
+.total-display {
+  font-size: 0.9rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.total-display span {
+  color: #004a99;
+  font-weight: 800;
+}
+/* Contenedor de la imagen */
+.retiro-visual {
+  flex: 1.2;
+  overflow: hidden; /* Corta lo que sobre del borde redondeado */
+  display: flex;
+}
+
+/* La imagen propiamente */
+.img-retiro-principal {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 👈 ESTO ES CLAVE: Mantiene la proporción y llena el espacio */
+  object-position: center; /* Centra el arte si se recorta un poco */
+  transition: transform 0.5s ease;
+}
+
+/* Efecto opcional de Diseñador: Zoom suave al pasar el mouse */
+.retiro-card:hover .img-retiro-principal {
+  transform: scale(1.05);
+}
