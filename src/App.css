@@ -372,6 +372,7 @@ body {
   color: #004a99;
   font-weight: 800;
 }
+
 /* Contenedor de la imagen */
 .retiro-visual {
   flex: 1.2;
@@ -391,4 +392,838 @@ body {
 /* Efecto opcional de Diseñador: Zoom suave al pasar el mouse */
 .retiro-card:hover .img-retiro-principal {
   transform: scale(1.05);
+}
+
+/* --- LAYOUT DE PÁGINA COMPLETA --- */
+.carrito-page-bg {
+  background-color: #f4f7f6;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+.carrito-hero {
+  background: #1a1a1a;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+/* EL MOTOR DEL DISEÑO: EL GRID */
+.carrito-container-grid {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr; /* 👈 Esto crea las dos columnas */
+  gap: 30px;
+  max-width: 1200px;
+  margin: -40px auto 0; /* Sube las tarjetas sobre el fondo oscuro */
+  padding: 0 20px;
+}
+
+/* TARJETAS ESTILO CASA DE FE */
+.carrito-card {
+  background: white;
+  border-radius: 20px;
+  padding: 35px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.divider-line {
+  height: 1px;
+  background: #eee;
+  margin-bottom: 25px;
+}
+
+/* FILAS DE PRODUCTOS */
+.item-fila {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 15px 0;
+  border-bottom: 1px solid #f9f9f9;
+}
+
+.item-thumb img {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.item-detalles h3 {
+  font-size: 1rem;
+  color: #004a99;
+  margin-bottom: 5px;
+}
+
+.item-meta {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* BOTÓN DE PAGO AZUL */
+.btn-pago-final {
+  width: 100%;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: 0.3s;
+}
+
+.btn-pago-final:hover {
+  background: #357abd;
+}
+
+.resumen-fila {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: #666;
+}
+
+.total-row {
+  margin-top: 20px;
+  font-size: 1.3rem;
+  color: #000;
+}
+
+/* --- ESTILOS DE BOTONES Y EFECTOS --- */
+
+/* Botón: Seguir comprando (Enlace) */
+.btn-seguir {
+  text-decoration: none;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: color 0.2s;
+  padding: 10px 0;
+}
+
+.btn-seguir:hover {
+  color: #004a99; /* Tu azul de referencia */
+  text-decoration: underline;
+}
+
+/* Botón: Actualizar Carrito (Ghost Button) */
+.btn-actualizar-outline {
+  background: transparent;
+  color: #004a99;
+  border: 2px solid #004a99;
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 15px;
+}
+
+.btn-actualizar-outline:hover {
+  background: #004a99;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 74, 153, 0.2);
+}
+
+/* Botón: Realizar Pago (Primario) */
+.btn-pago-final {
+  width: 100%;
+  background: #4a90e2; /* El azul brillante de tu imagen */
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+}
+
+.btn-pago-final:hover {
+  background: #357abd;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+}
+
+.btn-pago-final:active {
+  transform: translateY(0);
+}
+
+.btn-pago-final:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Botón: Eliminar Item (Icono papelera) */
+.btn-eliminar-simple {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #94a3b8;
+  transition: color 0.2s, transform 0.2s;
+  padding: 5px;
+}
+
+.btn-eliminar-simple:hover {
+  color: #ef4444; /* Rojo al eliminar */
+  transform: scale(1.1);
+}
+
+/* --- MEJORAS DE DISEÑO EN FILAS --- */
+
+.item-fila {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.2s;
+}
+
+.item-fila:hover {
+  background: #fcfcfc; /* Efecto sutil al pasar sobre el producto */
+}
+
+.item-detalles h3 {
+  font-size: 1rem;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.precio-unitario {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 1rem;
+}
+
+.qty-input-mini {
+  width: 45px;
+  padding: 5px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+}
+/* --- CONTENEDOR DEL MODAL (EL FONDO OSCURO) --- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Oscurece el fondo */
+  backdrop-filter: blur(5px);    /* Desenfoque tipo iPhone */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* --- LA CAJA BLANCA (MODAL) --- */
+.modal-container {
+  background: white;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 25px;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  padding: 40px; /* Esto evita que el texto toque los bordes */
+  animation: modalPop 0.3s ease-out;
+}
+
+/* Botón de cerrar (X) */
+.btn-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #f1f5f9;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #64748b;
+  transition: 0.2s;
+}
+
+.btn-close:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+/* --- CONTENIDO DEL REGISTRO --- */
+.card.ticket-animado h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-bottom: 5px;
+}
+
+.card.ticket-animado label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #64748b;
+  margin: 15px 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Estilo de los Inputs */
+.card.ticket-animado input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  transition: all 0.2s;
+}
+
+.card.ticket-animado input:focus {
+  outline: none;
+  border-color: #004a99; /* El azul de tu iglesia */
+  box-shadow: 0 0 0 4px rgba(0, 74, 153, 0.1);
+}
+
+/* Fila de Cédula y WhatsApp */
+.flex-row {
+  display: flex;
+  gap: 15px;
+}
+
+.flex-row input {
+  flex: 1; /* Hace que ambos midan lo mismo */
+}
+
+/* Botón de Registro */
+.btn-active {
+  background: #004a99;
+  color: white;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 15px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.btn-active:hover {
+  background: #003366;
+  transform: translateY(-2px);
+}
+
+.btn-disabled {
+  background: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Animación del Modal */
+@keyframes modalPop {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+/* --- CONTENEDOR PRINCIPAL (LA TARJETA) --- */
+.registro-card-v2 {
+  background: white;
+  padding: 40px;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  font-family: 'Inter', sans-serif;
+  color: #1e293b;
+}
+
+/* --- CABECERA --- */
+.registro-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.registro-titulo {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.badge-stock {
+  font-size: 0.8rem;
+  font-weight: 700;
+  background: #dcfce7;
+  color: #16a34a;
+  padding: 5px 12px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.badge-stock.agotado {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+/* --- FORMULARIO Y LAYOUT --- */
+.registro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.seccion-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: -10px;
+}
+
+/* EL MOTOR DEL DISEÑO: EL GRID */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 👈 Dos columnas */
+  gap: 15px;
+}
+
+/* INPUTS ESTILIZADOS */
+.form-group input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background: #f8fafc;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #004a99; /* El azul de tu marca */
+  background: white;
+  box-shadow: 0 0 0 4px rgba(0, 74, 153, 0.1);
+}
+
+.full-width {
+  grid-column: span 2; /* Ocupa las dos columnas */
+}
+
+/* --- CAPTCHA Y BOTÓN --- */
+.captcha-container {
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-finalizar-registro {
+  width: 100%;
+  background: #004a99;
+  color: white;
+  border: none;
+  padding: 18px;
+  border-radius: 15px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.btn-finalizar-registro:hover {
+  background: #003366;
+  transform: translateY(-2px);
+}
+
+.btn-finalizar-registro.disabled {
+  background: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- PASO 2: TRANSFERENCIA --- */
+.pago-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.datos-banco {
+  background: #f1f5f9;
+  padding: 25px;
+  border-radius: 18px;
+  text-align: left;
+  margin: 25px 0;
+  border: 1px solid #e2e8f0;
+}
+
+.total-pago-box {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid white;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+}
+
+.btn-whatsapp {
+  background: #25d366;
+  color: white;
+  width: 100%;
+  padding: 16px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+/* --- ESTILO PARA EL LOGIN DEL ADMIN --- */
+.login-admin-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8fafc; /* Fondo neutro profesional */
+}
+
+.login-admin-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-admin-card h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 25px;
+}
+
+.login-admin-card input {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+/* --- ESTILO PARA EL PANEL DE TABLAS --- */
+.staff-dashboard {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.staff-table {
+  width: 100%;
+  border-spacing: 0;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.staff-table th {
+  background: #f1f5f9;
+  padding: 15px;
+  text-align: left;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.staff-table td {
+  padding: 15px;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.95rem;
+}
+
+.btn-validar {
+  background: #004a99;
+  color: white;
+  border: none;
+  padding: 6px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+/* --- LOGIN ADMIN ESTILO TARJETA --- */
+.login-admin-page {
+  position: fixed; /* Cubre toda la pantalla */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f5f9; /* Gris azulado suave */
+  z-index: 10000;
+}
+
+.login-admin-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.login-admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login-admin-form input {
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.btn-login-active {
+  background-color: #004a99;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 10px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-login-active:hover {
+  background-color: #003366;
+  transform: translateY(-2px);
+}
+/* --- ESTILO LOGIN ADMINISTRATIVO --- */
+.login-admin-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f5f9; /* Gris azulado suave */
+}
+
+.login-admin-card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* --- DASHBOARD DEL STAFF --- */
+.staff-dashboard {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.staff-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.staff-table th {
+  background: #f8fafc;
+  color: #64748b;
+  text-align: left;
+  padding: 12px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+.staff-table td {
+  padding: 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+/* --- CONTENEDOR PRINCIPAL DEL DASHBOARD --- */
+.staff-dashboard {
+  background-color: #f8fafc;
+  min-height: 100vh;
+  padding: 40px 20px;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.dashboard-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+/* Cabecera */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.dashboard-header h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+/* Botón Excel Profesional */
+.btn-excel {
+  background: #22c55e !important; /* Verde esmeralda */
+  color: white !important;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+/* --- TABS MODERNOS --- */
+.tabs-admin {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 30px;
+  background: #f1f5f9;
+  padding: 5px;
+  border-radius: 12px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+  background: transparent;
+  color: #64748b;
+}
+
+.tab-btn.active {
+  background: white;
+  color: #004a99;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* --- FORMULARIO DE REGISTRO RÁPIDO --- */
+.registro-rapido {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 15px;
+}
+
+.registro-rapido input {
+  flex: 1;
+  padding: 12px 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+}
+
+/* --- TABLA INTERACTIVA --- */
+.tabla-asistentes {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla-asistentes th {
+  text-align: left;
+  padding: 15px;
+  color: #64748b;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.tabla-asistentes td {
+  padding: 15px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+/* Badges de Estado */
+.badge-pago {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.pago-pagado { background: #dcfce7; color: #16a34a; }
+.pago-pendiente { background: #fef3c7; color: #d97706; }
+.scanner-view-container {
+  max-width: 500px; /* Centra y limita el tamaño de la cámara */
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Estilo para que el lector QR se vea profesional */
+#reader {
+  border: none !important;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#reader__scan_region {
+  background: #000;
+  border-radius: 15px;
+}
+
+/* Botones internos del componente html5-qrcode */
+#reader button {
+  padding: 10px 20px;
+  background-color: #004a99;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
 }

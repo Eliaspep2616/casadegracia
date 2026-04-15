@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import * as XLSX from 'xlsx';
-
+import ScannerStaff from './ScannerStaff';
 const PanelStaff = () => {
   const [autorizado, setAutorizado] = useState(false);
   const [esAdmin, setEsAdmin] = useState(false);
@@ -49,21 +49,39 @@ const PanelStaff = () => {
   };
 
   // --- ACCIONES DE ASISTENTES ---
-  const registrarAsistenteManual = async (e) => {
-    e.preventDefault();
-    const { error } = await supabase.from('registrados').insert([{
-      nombre: nuevoAsistente.nombre,
-      cedula: nuevoAsistente.cedula,
-      telefono: nuevoAsistente.telefono,
-      pagado: true, // Se asume que si compra en persona, paga al instante
-      evento_id: '42362cfe-8d10-414f-adb1-7310cec5f7f9'
-    }]);
-    if (!error) {
-      alert("Asistente registrado");
-      setNuevoAsistente({ nombre: '', cedula: '', telefono: '' });
-      fetchAsistentes();
-    }
+ const registrarAsistenteManual = async (e) => {
+  e.preventDefault();
+  setCargando(true); // Evita doble clic
+
+  const parametros = {
+    _evento_id: '42362cfe-8d10-414f-adb1-7310cec5f7f9',
+    _nombre: nuevoAsistente.nombre,
+    _cedula: nuevoAsistente.cedula,
+    _correo: 'registro.manual@iglesia.com', // Correo genérico para staff
+    _telefono: nuevoAsistente.telefono || 'S/N'
   };
+
+  try {
+    // Usamos el RPC para que el stock baje automáticamente
+    const { data, error } = await supabase.rpc('comprar_ticket_seguro', parametros);
+
+    if (error) throw error;
+
+    if (data.status === 'success') {
+      alert("✅ Entrada agregada y stock actualizado");
+      setNuevoAsistente({ nombre: '', cedula: '', telefono: '' });
+      fetchAsistentes(); // Recargamos la tabla
+      consultarStock();  // Actualizamos el número de "disponibles"
+    } else {
+      alert("⚠️ Error: " + data.mensaje);
+    }
+  } catch (err) {
+    console.error("Error al registrar:", err.message);
+    alert("No se pudo registrar la entrada");
+  } finally {
+    setCargando(false);
+  }
+};
 
   const actualizarDato = async (id, campo, valor) => {
     await supabase.from('registrados').update({ [campo]: valor }).eq('id', id);
@@ -103,47 +121,63 @@ const PanelStaff = () => {
     XLSX.writeFile(wb, "Reporte_Iglesia.xlsx");
   };
 
-  if (!autorizado) {
-    return (
-      <div className="card">
-        <h3>Panel de Control ⛪</h3>
-        <form onSubmit={intentarAcceso}>
-          <input type="text" name="usuario" placeholder="Usuario" onChange={handleLoginChange} required />
-          <input type="password" name="password" placeholder="Contraseña" onChange={handleLoginChange} required />
-          <button type="submit" className="btn-active">{cargando ? "Cargando..." : "Entrar"}</button>
+if (!autorizado) {
+  return (
+    <div className="login-admin-page">
+      <div className="login-admin-card">
+        <h3 style={{marginBottom: '20px'}}>Panel de Control ⛪</h3>
+        <form onSubmit={intentarAcceso} style={{display: 'flex', flexDirection: 'column', gap: '15px'}}>
+          <input type="text" name="usuario" placeholder="Usuario" onChange={handleLoginChange} className="admin-input" required />
+          <input type="password" name="password" placeholder="Contraseña" onChange={handleLoginChange} className="admin-input" required />
+          <button type="submit" className="btn-login-active">{cargando ? "Cargando..." : "Entrar"}</button>
         </form>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
-  return (
-    <div className="card" style={{ maxWidth: '1100px', width: '95%' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+return (
+  <div className="staff-dashboard">
+    <div className="dashboard-container">
+      
+      <div className="dashboard-header">
         <h2>{esAdmin ? "Panel Administrador 👑" : "Panel Staff ⛪"}</h2>
-        <button onClick={descargarExcel} style={{ background: '#4ade80', color: 'black', fontSize: '0.8rem' }}>Descargar Excel</button>
+        <button onClick={descargarExcel} className="btn-excel">Descargar Excel</button>
       </div>
 
       {/* TABS */}
-      <div style={{ display: 'flex', gap: '10px', margin: '20px 0' }}>
-        <button onClick={() => setTabActual('asistentes')} style={{ flex: 1, background: tabActual === 'asistentes' ? '#e63946' : '#333' }}>Asistentes</button>
-        {esAdmin && <button onClick={() => setTabActual('gestion')} style={{ flex: 1, background: tabActual === 'gestion' ? '#e63946' : '#333' }}>Gestionar Equipo</button>}
+      <div className="tabs-admin">
+        <button 
+          onClick={() => setTabActual('asistentes')} 
+          className={`tab-btn ${tabActual === 'asistentes' ? 'active' : ''}`}
+        >
+          Asistentes
+        </button>
+        {esAdmin && (
+          <button 
+            onClick={() => setTabActual('gestion')} 
+            className={`tab-btn ${tabActual === 'gestion' ? 'active' : ''}`}
+          >
+            Gestionar Equipo
+          </button>
+        )}
       </div>
 
       {tabActual === 'asistentes' ? (
         <>
           {/* Registro Manual */}
-          <form onSubmit={registrarAsistenteManual} style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
-            <input style={{ flex: 1 }} placeholder="Nombre" value={nuevoAsistente.nombre} onChange={e => setNuevoAsistente({...nuevoAsistente, nombre: e.target.value})} required />
-            <input style={{ flex: 1 }} placeholder="Cédula" value={nuevoAsistente.cedula} onChange={e => setNuevoAsistente({...nuevoAsistente, cedula: e.target.value})} required />
-            <button type="submit" style={{ background: '#e63946' }}>+ Agregar</button>
+          <form onSubmit={registrarAsistenteManual} className="registro-rapido">
+            <input placeholder="Nombre" value={nuevoAsistente.nombre} onChange={e => setNuevoAsistente({...nuevoAsistente, nombre: e.target.value})} required />
+            <input placeholder="Cédula" value={nuevoAsistente.cedula} onChange={e => setNuevoAsistente({...nuevoAsistente, cedula: e.target.value})} required />
+            <button type="submit" className="btn-active">+ Agregar</button>
           </form>
 
-          {/* Tabla Interactiva */}
+          {/* Tabla */}
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+            <table className="tabla-asistentes">
               <thead>
-                <tr style={{ borderBottom: '2px solid #444', textAlign: 'left' }}>
-                  <th>Nombre (Editar)</th>
+                <tr>
+                  <th>Nombre</th>
                   <th>Pago</th>
                   <th>Ingreso</th>
                   <th>Acciones</th>
@@ -151,18 +185,22 @@ const PanelStaff = () => {
               </thead>
               <tbody>
                 {asistentes.map(a => (
-                  <tr key={a.id} style={{ borderBottom: '1px solid #222' }}>
+                  <tr key={a.id}>
                     <td>
                       <input 
                         defaultValue={a.nombre} 
                         onBlur={(e) => actualizarDato(a.id, 'nombre', e.target.value)}
-                        style={{ background: 'transparent', border: 'none', color: 'white', width: '100%' }}
+                        style={{ background: 'transparent', border: 'none', color: '#334155', fontWeight: '600' }}
                       />
                     </td>
-                    <td style={{ color: a.pagado ? '#4ade80' : '#fbbf24' }}>{a.pagado ? "PAGADO" : "PENDIENTE"}</td>
+                    <td>
+                      <span className={`badge-pago ${a.pagado ? 'pago-pagado' : 'pago-pendiente'}`}>
+                        {a.pagado ? "PAGADO" : "PENDIENTE"}
+                      </span>
+                    </td>
                     <td>{a.usado ? "🚩 ADENTRO" : "🟢 AFUERA"}</td>
                     <td>
-                      {!a.pagado && <button onClick={() => confirmarPago(a.id)} style={{ padding: '4px 8px' }}>Validar</button>}
+                      {!a.pagado && <button onClick={() => confirmarPago(a.id)} className="btn-validar-mini">Validar</button>}
                     </td>
                   </tr>
                 ))}
@@ -171,32 +209,70 @@ const PanelStaff = () => {
           </div>
         </>
       ) : (
-        /* GESTIÓN DE EQUIPO (Solo Admin) */
-        <div>
-          <h3>Nuevo Miembro del Staff</h3>
-          <form onSubmit={crearStaff} style={{ display: 'flex', gap: '10px', marginBottom: '30px' }}>
-            <input placeholder="Usuario" onChange={e => setNuevoStaff({...nuevoStaff, usuario: e.target.value})} required />
-            <input type="password" placeholder="Pass" onChange={e => setNuevoStaff({...nuevoStaff, password: e.target.value})} required />
-            <select onChange={e => setNuevoStaff({...nuevoStaff, rol: e.target.value})} style={{ background: '#000', color: 'white' }}>
-              <option value="staff">Staff</option>
-              <option value="admin">Admin</option>
-            </select>
-            <button type="submit">Guardar</button>
-          </form>
-          
-          <table style={{ width: '100%' }}>
-            {listaStaff.map(s => (
-              <tr key={s.id}>
-                <td>{s.usuario}</td>
-                <td>{s.rol}</td>
-                <td><button onClick={() => eliminarStaff(s.id)} style={{ background: 'none', color: '#e63946' }}>Eliminar</button></td>
-              </tr>
-            ))}
-          </table>
+        <div className="gestion-equipo">
+          {/* Aquí va tu código de gestión de equipo con clases similares */}
         </div>
       )}
     </div>
+  </div>
+);
+return (
+    <div className="staff-dashboard">
+      <div className="dashboard-container">
+        <div className="dashboard-header">
+          <h2>{esAdmin ? "Panel Administrador 👑" : "Panel Staff ⛪"}</h2>
+          <button onClick={descargarExcel} className="btn-excel">Descargar Excel</button>
+        </div>
+
+        {/* NAVEGACIÓN POR TABS */}
+        <div className="tabs-admin">
+          <button 
+            onClick={() => setTabActual('asistentes')} 
+            className={`tab-btn ${tabActual === 'asistentes' ? 'active' : ''}`}
+          >
+            📋 Lista Asistentes
+          </button>
+          
+          <button 
+            onClick={() => setTabActual('scanner')} 
+            className={`tab-btn ${tabActual === 'scanner' ? 'active' : ''}`}
+          >
+            📷 Escanear QR
+          </button>
+
+          {esAdmin && (
+            <button 
+              onClick={() => setTabActual('gestion')} 
+              className={`tab-btn ${tabActual === 'gestion' ? 'active' : ''}`}
+            >
+              ⚙️ Gestionar Equipo
+            </button>
+          )}
+        </div>
+
+        {/* CONTENIDO CONDICIONAL */}
+        {tabActual === 'asistentes' && (
+           <div className="asistentes-view">
+             {/* Tu formulario de agregar y la tabla que ya tienes */}
+           </div>
+        )}
+
+        {tabActual === 'scanner' && (
+           <div className="scanner-view-container">
+             {/* LLAMAMOS A TU COMPONENTE AQUÍ */}
+             <ScannerStaff /> 
+           </div>
+        )}
+
+        {tabActual === 'gestion' && esAdmin && (
+           <div className="gestion-view">
+             {/* Tu lógica de gestión de staff */}
+           </div>
+        )}
+      </div>
+    </div>
   );
+
 };
 
 export default PanelStaff;
