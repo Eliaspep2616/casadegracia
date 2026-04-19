@@ -8,7 +8,7 @@ import FormularioRegistro from './components/FormularioRegistro';
 import PanelStaff from './components/PanelStaff';
 import './App.css';
 import './components/Formulario.css';
-
+import Liderazgo from './pages/Liderazgo';
 function AppContent() {
   const [carrito, setCarrito] = useState([]);
   const [modal, setModal] = useState({ abierto: false, qty: 0, total: 0 });
@@ -40,6 +40,7 @@ function AppContent() {
               />
             } 
           />
+          <Route path="/liderazgo" element={<Liderazgo />} />
         </Routes>
       </div>
 
