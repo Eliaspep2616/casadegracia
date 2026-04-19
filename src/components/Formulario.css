@@ -1,0 +1,162 @@
+/* Formulario.css */
+.registro-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  padding: 40px 20px;
+  background: #f4f7f6;
+}
+
+.registro-form, .paso-pago {
+  background: white;
+  width: 100%;
+  max-width: 500px;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.registro-form h2 {
+  margin-top: 0;
+  color: #0f172a;
+}
+
+.registro-form p {
+  color: #64748b;
+  margin-bottom: 25px;
+}
+
+.registro-form input {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: 0.2s;
+}
+
+.registro-form input:focus {
+  border-color: #004a99;
+  outline: none;
+}
+
+.error-badge {
+  background: #fee2e2;
+  color: #ef4444;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.btn-final {
+  width: 100%;
+  padding: 16px;
+  background: #004a99;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-top: 10px;
+}
+
+.btn-final:disabled {
+  background: #cbd5e1;
+}
+
+.pago-box {
+  background: #f8fafc;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 20px;
+}
+
+.pago-box p {
+  margin: 8px 0;
+  color: #334155;
+}
+
+/* 📱 MÓVIL */
+@media (max-width: 850px) {
+  .registro-container { padding: 15px; }
+  .registro-form, .paso-pago { padding: 25px 15px; }
+  
+  /* Evita el zoom automático en iPhone */
+  .registro-form input { font-size: 16px; padding: 14px; }
+  
+  /* Ajusta el reCAPTCHA para que no rompa la pantalla */
+  .captcha-wrapper {
+    transform: scale(0.85); 
+    transform-origin: center;
+  }
+}
+/* =========================================
+   CONTENEDOR DEL FORMULARIO (MODAL SOBREPUESTO)
+   ========================================= */
+.registro-container {
+  position: fixed; /* 👈 Esto es la magia: lo despega de la página y lo hace flotar */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(15, 23, 42, 0.85); /* Fondo oscuro semi-transparente */
+  backdrop-filter: blur(6px); /* Efecto de desenfoque moderno */
+  z-index: 99999; /* 👈 Asegura que esté por encima del Navbar y el Carrito */
+  padding: 20px;
+  box-sizing: border-box;
+  animation: aparecerModal 0.3s ease-out; /* Animación suave al abrir */
+}
+
+/* Evita que el formulario sea más alto que la pantalla en celulares */
+.registro-form, .paso-pago {
+  background: white;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh; /* 👈 Altura máxima del 90% de la pantalla */
+  overflow-y: auto; /* 👈 Permite hacer scroll interno si el formulario es muy largo */
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+
+@keyframes aparecerModal {
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+/* =========================================
+   EL BOTÓN 'X' FLOTANTE
+   ========================================= */
+.registro-form, .paso-pago {
+  position: relative; /* CRÍTICO: Mantiene la X dentro del recuadro blanco */
+}
+
+.btn-cerrar-flotante {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #ef4444; /* Fondo ROJO para que resalte y lo veas sí o sí */
+  color: white; /* Letra blanca */
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999; /* Por encima de todo en la caja */
+}

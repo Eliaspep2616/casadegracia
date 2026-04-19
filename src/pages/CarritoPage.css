@@ -1,0 +1,163 @@
+/* =========================================
+   PÁGINA COMPLETA DEL CARRITO
+   ========================================= */
+.carrito-page-bg {
+  background-color: #f4f7f6; /* Fondo gris claro */
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+/* LA CABECERA OSCURA DE TU FOTO */
+.carrito-hero {
+  background-color: #1a1a1a; /* Gris muy oscuro casi negro */
+  padding: 60px 20px 100px 20px; /* Mucho padding abajo para que las tarjetas se superpongan un poco */
+  text-align: center;
+}
+
+.hero-logo-central .logo-temp {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+/* EL CONTENEDOR PRINCIPAL */
+.carrito-container-grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  max-width: 1200px;
+  margin: -50px auto 0 auto; /* El -50px hace que las tarjetas suban y pisen la cabecera negra */
+  padding: 0 5%;
+}
+
+/* LAS TARJETAS BLANCAS */
+.carrito-card {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.main-cart {
+  flex: 2; /* Ocupa el doble de espacio que el resumen */
+}
+
+.summary-card {
+  flex: 1; /* Ocupa una parte */
+  position: sticky;
+  top: 100px; /* Se queda pegado al hacer scroll */
+}
+
+.card-title {
+  color: #0f172a;
+  margin-top: 0;
+  font-size: 1.4rem;
+}
+
+.divider-line {
+  height: 1px;
+  background-color: #e2e8f0;
+  margin: 15px 0 25px 0;
+}
+
+/* ESTADOS VACÍOS Y ACCIONES */
+.vacio-msg {
+  color: #64748b;
+  margin-bottom: 20px;
+}
+
+.carrito-acciones {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  align-items: center;
+}
+
+.btn-seguir {
+  color: #64748b;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.btn-actualizar-outline {
+  background: transparent;
+  color: #004a99;
+  border: 2px solid #004a99;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-actualizar-outline:hover {
+  background: #f0f7ff;
+}
+
+/* RESUMEN DE PAGO */
+.resumen-fila {
+  display: flex;
+  justify-content: space-between;
+  color: #64748b;
+  margin-bottom: 15px;
+}
+
+.total-row {
+  color: #0f172a;
+  font-size: 1.3rem;
+  margin-top: 20px;
+  border-top: 2px dashed #e2e8f0;
+  padding-top: 20px;
+}
+
+.btn-pago-final {
+  width: 100%;
+  background: #cbd5e1; /* Color apagado por defecto (deshabilitado) */
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-top: 20px;
+  cursor: not-allowed;
+  transition: 0.3s;
+}
+
+/* Si el botón NO está deshabilitado, se pone azul */
+.btn-pago-final:not(:disabled) {
+  background: #004a99;
+  cursor: pointer;
+}
+
+.btn-pago-final:not(:disabled):hover {
+  background: #003366;
+}
+
+/* =========================================
+   📱 LA MAGIA RESPONSIVE (LA SOLUCIÓN)
+   ========================================= */
+@media (max-width: 850px) {
+  .carrito-container-grid {
+    flex-direction: column; /* 👈 ESTO PONE EL RESUMEN DEBAJO DE LOS PRODUCTOS */
+    margin-top: -30px;
+  }
+
+  .main-cart, .summary-card {
+    width: 100%; /* Obliga a las tarjetas a usar el 100% de la pantalla */
+    box-sizing: border-box;
+  }
+
+  .carrito-acciones {
+    flex-direction: column; /* Apila los botones de "Seguir comprando" y "Actualizar" */
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .btn-actualizar-outline {
+    width: 100%;
+  }
+}

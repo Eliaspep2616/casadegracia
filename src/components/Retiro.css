@@ -1,0 +1,164 @@
+
+/* Retiro.css */
+.retiro-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  background-color: #f8fafc;
+  min-height: 80vh;
+}
+
+.banner-exito {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 100%;
+  background: #10b981;
+  color: white;
+  padding: 15px;
+  z-index: 100;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.banner-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.btn-ver-carrito {
+  background: white;
+  color: #10b981;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.retiro-card {
+  background: white;
+  display: flex;
+  max-width: 1000px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+.retiro-visual {
+  flex: 1;
+  background: #e2e8f0;
+}
+
+.img-retiro-principal {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.retiro-info {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.categoria-tag {
+  color: #004a99;
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.titulo-principal {
+  font-size: 2.5rem;
+  color: #0f172a;
+  margin: 10px 0;
+}
+
+.descripcion {
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.meta-data {
+  margin: 20px 0;
+  font-weight: 600;
+  color: #334155;
+}
+
+.precio-tag {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #16a34a;
+  margin-bottom: 20px;
+}
+
+.compra-footer {
+  display: flex;
+  gap: 15px;
+  margin-top: auto;
+}
+
+.selector-cantidad {
+  display: flex;
+  align-items: center;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.selector-cantidad button {
+  background: #f8fafc;
+  border: none;
+  padding: 15px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.selector-cantidad input {
+  width: 50px;
+  text-align: center;
+  border: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.btn-add-cart {
+  flex: 1;
+  background: #004a99;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-add-cart:disabled { background: #cbd5e1; cursor: not-allowed; }
+.btn-add-cart:hover:not(:disabled) { background: #003366; }
+
+.total-display {
+  margin-top: 15px;
+  text-align: right;
+  color: #64748b;
+}
+
+.total-display span {
+  font-weight: bold;
+  color: #0f172a;
+  font-size: 1.2rem;
+}
+
+/* 📱 MÓVIL */
+@media (max-width: 850px) {
+  .retiro-card { flex-direction: column; }
+  .retiro-visual { min-height: 250px; }
+  .retiro-info { padding: 25px 20px; }
+  .compra-footer { flex-direction: column; }
+  .selector-cantidad { justify-content: space-between; }
+  .btn-add-cart { padding: 15px; }
+  .banner-content { flex-direction: column; }
+}

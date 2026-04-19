@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import './Carritoa.css'; 
 const CarritoAsistente = ({ items, alContinuar, alCerrar }) => {
   // Calculamos el subtotal basado en los items del carrito
   const subtotal = items.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);

@@ -1,0 +1,229 @@
+/* --- RESET Y FUENTES --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+.home-container {
+  font-family: 'Montserrat', sans-serif;
+  color: #111;
+  background-color: #fff;
+  overflow-x: hidden;
+}
+
+/* --- HERO SECTION --- */
+.hero-section {
+  height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #f4f4f4; /* Puedes poner una imagen de fondo aquí si lo deseas */
+  padding: 0 20px;
+}
+
+.main-title {
+  font-size: 5rem; /* Letras gigantes */
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  letter-spacing: -2px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 16px 32px;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #000;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #333;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #000;
+  border: 2px solid #000;
+}
+
+.btn-secondary:hover {
+  background-color: #000;
+  color: #fff;
+}
+
+/* --- CINTA MARQUEE EN MOVIMIENTO --- */
+.marquee-container {
+  background-color: #000;
+  color: #fff;
+  padding: 20px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  display: flex;
+}
+
+.marquee-content {
+  display: flex;
+  animation: scroll-marquee 20s linear infinite;
+  font-weight: 900;
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+}
+
+@keyframes scroll-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* --- ABOUT SECTION --- */
+.about-section {
+  padding: 100px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-title {
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+.about-text {
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 30px;
+}
+
+.link-arrow {
+  color: #000;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 1rem;
+  border-bottom: 2px solid #000;
+  padding-bottom: 5px;
+}
+
+/* --- REUNIONES POR EDADES (GRID) --- */
+.ministries-section {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 40px;
+}
+
+.ministries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.ministry-card {
+  padding: 60px 30px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-radius: 8px;
+  min-height: 300px;
+  /* Puedes reemplazar estos colores por imágenes de fondo con linear-gradient */
+}
+
+.bg-kids { background-color: #FF5A5F; }
+.bg-getup { background-color: #087E8B; }
+.bg-central { background-color: #3C3C3C; }
+.bg-punto { background-color: #C81D25; }
+
+.ministry-card h3 {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+
+.ministry-card p {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* --- GRUPOS PEQUEÑOS --- */
+.groups-section {
+  background-color: #f4f4f4;
+  padding: 100px 20px;
+  margin-top: 60px;
+}
+
+.groups-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.groups-content h2 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+
+.groups-content p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: #444;
+}
+
+.dark-btn {
+  background-color: #000;
+  color: #fff;
+}
+/* =========================================
+   AJUSTES RESPONSIVE (MÓVILES) PARA EL HOME
+   ========================================= */
+@media (max-width: 768px) {
+  /* 1. Ajuste del texto gigante */
+  .main-title {
+    font-size: 3.2rem; /* Reducimos el tamaño de 5rem a 3.2rem */
+    line-height: 1.1;
+    margin-bottom: 30px;
+    /* Esto asegura que si una palabra es muy larga, se ajuste y no rompa la pantalla */
+    word-wrap: break-word; 
+    hyphens: auto; 
+  }
+
+  /* 2. Ajuste del contenedor de los botones */
+  .hero-buttons {
+    flex-direction: column; /* Apila los botones verticalmente */
+    width: 100%;
+    gap: 15px; /* Espacio entre los botones */
+  }
+
+  /* 3. Botones a ancho completo */
+  .btn-primary, 
+  .btn-secondary {
+    width: 100%; 
+    text-align: center;
+    padding: 18px 20px; /* Un poco más altos para que sea fácil tocarlos */
+    font-size: 1rem;
+  }
+}

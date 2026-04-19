@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-
+import './CarritoPage.css';
 const CarritoPage = ({ items, alPagar }) => {
   const subtotal = items.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
 

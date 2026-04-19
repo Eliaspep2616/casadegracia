@@ -1,0 +1,156 @@
+/* --- RESET BÁSICO --- */
+.liderazgo-container {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #fff;
+  color: #111;
+  overflow-x: hidden;
+}
+
+/* --- HERO SECTION --- */
+.liderazgo-hero {
+  padding: 80px 20px 40px;
+  text-align: center;
+  background-color: #f4f4f4;
+}
+
+.liderazgo-title {
+  /* clamp asegura que el texto se achique en celulares y crezca en PC automáticamente */
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  margin: 0;
+  word-wrap: break-word;
+}
+
+/* --- PASTORES PRINCIPALES (Estilo Revista) --- */
+.pastores-principales-section {
+  padding: 80px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pastores-layout {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
+.pastores-imagen-wrapper {
+  flex: 1;
+}
+
+.img-pastores {
+  width: 100%;
+  height: auto;
+  border-radius: 4px; /* Opcional: quita el border-radius si quieres un look más crudo */
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.pastores-info {
+  flex: 1;
+  text-align: left; /* Alineado a la izquierda para mejor legibilidad */
+}
+
+.pastores-nombres {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+
+.pastores-rol {
+  display: block;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  margin-bottom: 30px;
+  color: #555;
+  border-bottom: 2px solid #000;
+  padding-bottom: 10px;
+  width: fit-content;
+}
+
+.pastores-bio {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* --- EQUIPO PASTORAL (Grid) --- */
+.equipo-section {
+  padding: 80px 20px;
+  background-color: #000;
+  color: #fff;
+}
+
+.equipo-titulo {
+  text-align: center;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  margin-bottom: 60px;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+
+.equipo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.lider-card {
+  text-align: left; /* Mantenemos la alineación a la izquierda */
+}
+
+/* Este es el cuadro gris de relleno. Aquí luego pondrás imágenes (background-image) */
+.lider-foto {
+  width: 100%;
+  aspect-ratio: 3/4; /* Proporción de retrato fotográfico */
+  background-color: #222;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.lider-nombre {
+  font-size: 1.5rem;
+  font-weight: 900;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.lider-area {
+  font-size: 1rem;
+  color: #aaa;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* =========================================
+   MEDIA QUERIES (MÓVILES)
+   ========================================= */
+@media (max-width: 768px) {
+  .pastores-layout {
+    flex-direction: column; /* Apila imagen arriba, texto abajo */
+    gap: 40px;
+  }
+  
+  .pastores-info {
+    text-align: left; /* Forzamos alineación a la izquierda en móviles por UX */
+  }
+
+  .liderazgo-hero {
+    padding: 60px 20px 30px;
+  }
+  
+  .equipo-section {
+    padding: 60px 20px;
+  }
+}
