@@ -1,4 +1,3 @@
-/* --- RESET Y FUENTES --- */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
 
 .home-container {
@@ -8,222 +7,341 @@
   overflow-x: hidden;
 }
 
-/* --- HERO SECTION --- */
-.hero-section {
-  height: 85vh;
+/* =========================================
+   1. NUEVO HERO AUDAZ (ESTILO ELÍAS)
+   ========================================= */
+.hero-audaz {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Ocupa toda la pantalla al inicio */
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-color: #f4f4f4; /* Puedes poner una imagen de fondo aquí si lo deseas */
-  padding: 0 20px;
-}
-
-.main-title {
-  font-size: 5rem; /* Letras gigantes */
-  font-weight: 900;
-  line-height: 1;
-  text-transform: uppercase;
-  margin-bottom: 40px;
-  letter-spacing: -2px;
-}
-
-.hero-buttons {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.btn-primary, .btn-secondary {
-  padding: 16px 32px;
-  font-weight: 700;
-  text-transform: uppercase;
-  text-decoration: none;
-  font-size: 0.9rem;
-  letter-spacing: 1px;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-}
-
-.btn-primary {
-  background-color: #000;
-  color: #fff;
-}
-
-.btn-primary:hover {
-  background-color: #333;
-}
-
-.btn-secondary {
-  background-color: transparent;
-  color: #000;
-  border: 2px solid #000;
-}
-
-.btn-secondary:hover {
-  background-color: #000;
-  color: #fff;
-}
-
-/* --- CINTA MARQUEE EN MOVIMIENTO --- */
-.marquee-container {
-  background-color: #000;
-  color: #fff;
-  padding: 20px 0;
+  justify-content: flex-start;
   overflow: hidden;
-  white-space: nowrap;
-  display: flex;
+  margin-top: -1px; /* Para alinear con navbar si hay espacio */
 }
 
-.marquee-content {
-  display: flex;
-  animation: scroll-marquee 20s linear infinite;
-  font-weight: 900;
-  font-size: 1.5rem;
-  letter-spacing: 3px;
+.hero-foton-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 
-@keyframes scroll-marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+.hero-foton-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-/* --- ABOUT SECTION --- */
-.about-section {
-  padding: 100px 20px;
-  max-width: 900px;
-  margin: 0 auto;
-  text-align: center;
+.hero-foton-overlay {
+  position: absolute;
+  inset: 0;
+  /* Degradado para que el texto resalte, más oscuro a la izquierda */
+  background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 60%, rgba(0,0,0,0) 100%);
 }
 
-.about-title {
-  font-size: 3rem;
-  font-weight: 900;
-  line-height: 1.1;
-  margin-bottom: 20px;
-  letter-spacing: -1px;
-}
-
-.about-text {
-  font-size: 1.2rem;
-  color: #555;
-  margin-bottom: 30px;
-}
-
-.link-arrow {
-  color: #000;
-  font-weight: 700;
-  text-transform: uppercase;
-  text-decoration: none;
-  font-size: 1rem;
-  border-bottom: 2px solid #000;
-  padding-bottom: 5px;
-}
-
-/* --- REUNIONES POR EDADES (GRID) --- */
-.ministries-section {
-  padding: 60px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.section-title {
-  font-size: 2.5rem;
-  font-weight: 900;
-  margin-bottom: 40px;
-}
-
-.ministries-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.ministry-card {
-  padding: 60px 30px;
+.hero-audaz-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 10%;
   color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  border-radius: 8px;
-  min-height: 300px;
-  /* Puedes reemplazar estos colores por imágenes de fondo con linear-gradient */
+  width: 100%;
 }
 
+/* Reutilizamos el Welcome elegante */
+.f-welcome-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  padding: 8px 20px;
+  border-radius: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: max-content;
+  margin-bottom: 20px;
+}
+
+.f-welcome-text {
+  color: white;
+  font-weight: 400;
+  font-size: 0.8rem;
+  letter-spacing: 5px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.f-welcome-line {
+  width: 30px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* TÍTULO GIGANTE Y SANGRADO (AUDAZ) */
+.audaz-title {
+  font-size: clamp(3.5rem, 12vw, 9rem); /* Letra gigante y adaptable */
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -3px;
+  margin: 0 0 40px 0;
+  text-transform: uppercase;
+}
+
+.audaz-title .indent-1 {
+  display: inline-block;
+  margin-left: 0.5ch; /* Sangría media para "EN" */
+}
+
+.audaz-title .indent-2 {
+  display: inline-block;
+  margin-left: 1ch; /* Sangría grande para "GUAYAQUIL" */
+}
+
+.audaz-subtitle {
+  font-size: 1.2rem;
+  color: rgba(255,255,255,0.8);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+/* =========================================
+   CINTA MARQUEE Y SECCIÓN ABOUT
+   ========================================= */
+.marquee-container { background-color: #000; color: #fff; padding: 20px 0; overflow: hidden; white-space: nowrap; display: flex; }
+.marquee-content { display: flex; animation: scroll-marquee 20s linear infinite; font-weight: 900; font-size: 1.5rem; letter-spacing: 3px; }
+@keyframes scroll-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+.about-section { padding: 100px 20px; max-width: 900px; margin: 0 auto; text-align: center; }
+.about-title { font-size: 3rem; font-weight: 900; margin-bottom: 20px; letter-spacing: -1px; line-height: 1.1; }
+.about-text { font-size: 1.2rem; color: #555; margin-bottom: 30px; }
+.link-arrow { color: #000; font-weight: 700; text-transform: uppercase; text-decoration: none; border-bottom: 2px solid #000; padding-bottom: 5px; }
+
+/* =========================================
+   2. EL SLIDER FUTURISTA (Ahora redondeado)
+   ========================================= */
+.pastores-slider-wrapper {
+  padding: 20px 5% 100px 5%; /* Padding lateral para que no toque los bordes */
+  background: #fff;
+}
+
+.futurist-slider {
+  position: relative;
+  width: 100%;
+  height: 60vh; /* Altura más baja para esta sección */
+  overflow: hidden;
+  background: #000;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+}
+
+/* ESTILO REDONDEADO */
+.futurist-slider.rounded-slider {
+  border-radius: 20px; /* Bordes redondeados súper elegantes */
+}
+
+.f-slide { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0; transform: scale(1.1); transition: opacity 1.2s ease, transform 1.8s cubic-bezier(0.25, 1, 0.5, 1); }
+.f-slide.active { opacity: 1; transform: scale(1); }
+.f-overlay { position: absolute; inset: 0; background: radial-gradient(circle at 30% 50%, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.7) 100%); display: flex; align-items: center; padding: 0 10%; }
+
+.f-glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; max-width: 500px; border-radius: 8px; transform: translateX(-50px); opacity: 0; transition: all 0.8s ease 0.4s; }
+.f-slide.active .f-glass-card { transform: translateX(0); opacity: 1; }
+
+.f-tag { color: #004a99; font-weight: 900; font-size: 0.8rem; letter-spacing: 4px; display: block; margin-bottom: 10px; }
+.f-title { font-size: clamp(2rem, 4vw, 3rem); color: white; font-weight: 900; line-height: 1; margin-bottom: 15px; text-transform: uppercase; }
+.f-description { color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 30px; line-height: 1.5; }
+
+.f-btn { display: inline-flex; align-items: center; gap: 15px; background: white; color: black; padding: 12px 28px; font-weight: 800; font-size: 0.85rem; text-decoration: none; border-radius: 4px; }
+
+.f-controls { position: absolute; bottom: 30px; right: 5%; display: flex; align-items: center; gap: 20px; background: rgba(0,0,0,0.4); padding: 10px 20px; border-radius: 50px; backdrop-filter: blur(10px); }
+.f-nav-btn { background: none; border: none; color: white; cursor: pointer; }
+.f-pagination { display: flex; gap: 8px; }
+.f-dot { width: 20px; height: 2px; background: rgba(255,255,255,0.2); cursor: pointer; transition: 0.4s; }
+.f-dot.active { background: #004a99; width: 40px; }
+
+/* =========================================
+   RESTO DEL CONTENIDO (REUNIONES, GRUPOS)
+   ========================================= */
+.ministries-section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
+.section-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 40px; }
+.ministries-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+.ministry-card { padding: 60px 30px; color: white; border-radius: 8px; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; text-transform: uppercase; }
 .bg-kids { background-color: #FF5A5F; }
 .bg-getup { background-color: #087E8B; }
 .bg-central { background-color: #3C3C3C; }
 .bg-punto { background-color: #C81D25; }
 
-.ministry-card h3 {
-  font-size: 2.5rem;
-  font-weight: 900;
-  margin-bottom: 5px;
-}
+.groups-section { background-color: #f4f4f4; padding: 100px 20px; text-align: center; }
+.groups-content h2 { font-size: 3.5rem; font-weight: 900; margin-bottom: 20px; letter-spacing: -2px; line-height: 1.1; }
+.btn-primary.dark-btn { background: #000; color: #fff; padding: 16px 32px; font-weight: 700; text-decoration: none; border-radius: 4px; }
 
-.ministry-card p {
-  font-size: 1rem;
-  font-weight: 700;
-  text-transform: uppercase;
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 768px) {
+  .hero-audaz-content { padding: 0 5%; }
+  .audaz-subtitle { font-size: 1rem; }
+  .about-title { font-size: 2rem; }
+  .futurist-slider { height: 70vh; }
+  .f-glass-card { padding: 25px; transform: translateX(0); }
+  .f-controls { bottom: 15px; transform: scale(0.8); }
 }
+/* Home.css (Añade/actualiza esto en la sección del Hero) */
 
-/* --- GRUPOS PEQUEÑOS --- */
-.groups-section {
-  background-color: #f4f4f4;
-  padding: 100px 20px;
-  margin-top: 60px;
-}
-
-.groups-content {
-  max-width: 800px;
-  margin: 0 auto;
+.hero-section {
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
+  background-color: #f1f1f1; /* Ajusta el color de fondo si tienes imagen */
+  color: #1a1a1a;
+  padding: 0 20px;
 }
 
-.groups-content h2 {
-  font-size: 3.5rem;
+.hero-content {
+  max-width: 900px;
+}
+
+/* El estilo para el "BIENVENIDO A CASA" arriba */
+.welcome-above-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 5px; /* Espaciado entre letras elegante */
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.main-title {
+  font-size: 5rem;
   font-weight: 900;
+  line-height: 1;
   margin-bottom: 20px;
 }
 
-.groups-content p {
+.description-below-title {
   font-size: 1.2rem;
+  color: #555;
   margin-bottom: 40px;
-  color: #444;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.dark-btn {
-  background-color: #000;
-  color: #fff;
+/* Para centrar el botón único */
+.hero-buttons {
+  display: flex;
+  justify-content: center;
 }
-/* =========================================
-   AJUSTES RESPONSIVE (MÓVILES) PARA EL HOME
-   ========================================= */
+
+.btn-primary {
+  display: inline-block;
+  background-color: #1a1a1a;
+  color: white;
+  padding: 18px 40px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 1px;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #333;
+}
+/* ... (mantén tus fuentes e imports arriba) ... */
+
+/* --- NUEVA CABECERA ESTILO REFERENCIA --- */
+.hero-reference-section {
+  padding: 40px 5%;
+  background-color: #f9f7f2; /* Color crema suave como la imagen */
+}
+
+.hero-header-text {
+  font-size: 5.5rem;
+  font-weight: 900;
+  line-height: 0.85;
+  margin-bottom: 30px;
+  letter-spacing: -3px;
+  color: #1a1a1a;
+  text-transform: lowercase; /* Estilo de la imagen */
+}
+
+.hero-main-rounded-container {
+  width: 100%;
+  height: 60vh;
+  border-radius: 40px; /* Puntas muy redondeadas como la imagen */
+  background-image: url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=1600'); 
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 40px;
+}
+
+.hero-inner-title {
+  color: white;
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.hero-inner-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.btn-glass-white {
+  background: white;
+  color: #1a1a1a;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-glass-dark {
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+/* --- SLIDER FUTURISTA CON PUNTAS REDONDEADAS --- */
+.slider-rounded-wrapper {
+  padding: 0 5% 80px 5%; /* Separación de los bordes de la pantalla */
+}
+
+.futurist-slider {
+  border-radius: 30px; /* Redondeamos el contenedor del slider */
+  overflow: hidden; /* Importante para que las imágenes no se salgan del borde */
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  background: #000;
+}
+
+/* ... (el resto de estilos .f-slide, .f-overlay, .f-glass-card, etc. se mantienen) ... */
+
 @media (max-width: 768px) {
-  /* 1. Ajuste del texto gigante */
-  .main-title {
-    font-size: 3.2rem; /* Reducimos el tamaño de 5rem a 3.2rem */
-    line-height: 1.1;
-    margin-bottom: 30px;
-    /* Esto asegura que si una palabra es muy larga, se ajuste y no rompa la pantalla */
-    word-wrap: break-word; 
-    hyphens: auto; 
-  }
-
-  /* 2. Ajuste del contenedor de los botones */
-  .hero-buttons {
-    flex-direction: column; /* Apila los botones verticalmente */
-    width: 100%;
-    gap: 15px; /* Espacio entre los botones */
-  }
-
-  /* 3. Botones a ancho completo */
-  .btn-primary, 
-  .btn-secondary {
-    width: 100%; 
-    text-align: center;
-    padding: 18px 20px; /* Un poco más altos para que sea fácil tocarlos */
-    font-size: 1rem;
-  }
+  .hero-header-text { font-size: 3.5rem; }
+  .hero-main-rounded-container { height: 40vh; border-radius: 20px; }
+  .hero-content-overlay { flex-direction: column; align-items: flex-start; gap: 20px; padding: 20px; }
+  .slider-rounded-wrapper { padding: 0 2% 40px 2%; }
 }

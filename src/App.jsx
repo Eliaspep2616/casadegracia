@@ -6,15 +6,17 @@ import RetiroDeProvision from './components/RetiroDeProvision';
 import CarritoPage from './pages/CarritoPage';
 import FormularioRegistro from './components/FormularioRegistro';
 import PanelStaff from './components/PanelStaff';
-import './App.css';
-import './components/Formulario.css';
+import RetiroLanding from './pages/RetiroLanding';
 import Liderazgo from './pages/Liderazgo';
+import './App.css';
+
 function AppContent() {
   const [carrito, setCarrito] = useState([]);
   const [modal, setModal] = useState({ abierto: false, qty: 0, total: 0 });
+  const [precioEvento, setPrecioEvento] = useState(25); 
+  
   const location = useLocation();
 
-  const esAdmin = location.pathname.startsWith('/admin');
   const totalItemsCount = carrito.reduce((acc, item) => acc + item.cantidad, 0);
   const totalMontoCalculado = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
 
@@ -22,20 +24,32 @@ function AppContent() {
     setCarrito((prev) => [...prev, nuevoProducto]);
   };
 
+  // 🔥 ESTA FUNCIÓN ELIMINA EL ITEM POR SU ÍNDICE
+  const eliminarDelCarrito = (indiceAEliminar) => {
+    setCarrito((prevCarrito) => 
+      prevCarrito.filter((_, index) => index !== indiceAEliminar)
+    );
+  };
+
   return (
     <>
-      {!esAdmin && <Navbar cantidadCarrito={totalItemsCount} />}
+      {!location.pathname.startsWith('/admin') && <Navbar cantidadCarrito={carrito.length} />}
 
-      <div className={esAdmin ? "" : "main-wrapper"}>
+      <div className="main-wrapper">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<PanelStaff />} />
-          <Route path="/retiro" element={<RetiroDeProvision onComprar={añadirAlCarrito} />} />
+          <Route path="/retiro" element={<RetiroLanding />} />
+          <Route 
+            path="/inscripcion" 
+            element={<RetiroDeProvision onComprar={añadirAlCarrito} />} 
+          />
           <Route 
             path="/carrito" 
             element={
               <CarritoPage 
                 items={carrito} 
+                alEliminar={eliminarDelCarrito} // 👈 Conectado aquí
                 alPagar={() => setModal({ abierto: true, qty: totalItemsCount, total: totalMontoCalculado })} 
               />
             } 
@@ -44,19 +58,14 @@ function AppContent() {
         </Routes>
       </div>
 
-      {/* AQUÍ ESTÁ LA MAGIA CORREGIDA */}
       {modal.abierto && (
         <FormularioRegistro 
           cantidadSeleccionada={modal.qty} 
           totalPagar={modal.total} 
-          
-          /* 👈 Esta es la función correcta para CERRAR la X */
           onCerrar={() => setModal({ ...modal, abierto: false })}
-          
-          /* Esto pasa cuando el pago termina exitosamente */
           onExito={() => {
-            setCarrito([]); // Vaciamos el carrito
-            setModal({ ...modal, abierto: false }); // Cerramos el formulario
+            setCarrito([]); 
+            setModal({ ...modal, abierto: false });
           }}
         />
       )}
@@ -64,12 +73,5 @@ function AppContent() {
   );
 }
 
-function App() {
-  return (
-    <Router>
-      <AppContent />
-    </Router>
-  );
-}
-
+function App() { return <Router><AppContent /></Router>; }
 export default App;

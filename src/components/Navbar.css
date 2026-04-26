@@ -75,10 +75,27 @@
   z-index: 1001; /* Siempre por encima del menú desplegado */
   cursor: pointer;
 }
+.logo-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
 
 @media (max-width: 968px) {
   .menu-icon {
-    display: block;
+    display: flex;
   }
 
   .nav-right {
@@ -111,5 +128,17 @@
 
   .nav-links a {
     font-size: 1.1rem;
+  }
+}
+@media (max-width: 968px) {
+  .logo-img {
+    height: 35px;
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .logo-img {
+    height: 30px;
   }
 }

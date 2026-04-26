@@ -7,6 +7,31 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+// NUEVO: Función para firmar criptográficamente el ID usando la API nativa de Deno
+async function generarQRSeguro(ticket_id: string, secret: string) {
+  const encoder = new TextEncoder();
+  const keyData = encoder.encode(secret);
+  
+  // Importamos la llave para HMAC-SHA256
+  const key = await crypto.subtle.importKey(
+    "raw",
+    keyData,
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  
+  // Firmamos el UUID
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(ticket_id));
+  
+  // Convertimos el ArrayBuffer a formato Hexadecimal
+  const hexSignature = Array.from(new Uint8Array(signature))
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+    
+  return `${ticket_id}|${hexSignature}`;
+}
+
 serve(async (req) => {
   // 1. EL SALUDO DEL NAVEGADOR (PREFLIGHT): Siempre decir que SÍ
   if (req.method === 'OPTIONS') {
@@ -26,10 +51,19 @@ serve(async (req) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) throw new Error("Sesión inválida o expirada");
 
-    const { email, nombre, qr_data } = await req.json();
-    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+    // 🔴 CAMBIO AQUÍ: Ahora pedimos ticket_id en vez de qr_data
+    const { email, nombre, ticket_id } = await req.json();
+    
+    if (!ticket_id) throw new Error("Falta el ID del ticket para generar el QR");
 
+    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
     if (!RESEND_API_KEY) throw new Error("No se encontró la llave de Resend en el servidor");
+
+    // 🔴 CAMBIO AQUÍ: Generamos el QR de forma segura
+    // Usamos Deno.env.get para buscar una llave si quieres guardarla en las variables de entorno, 
+    // si no, usamos la llave quemada aquí mismo que el usuario jamás podrá ver.
+    const SECRET_KEY = Deno.env.get('QR_SECRET_KEY') || 'IglesiCDG@';
+    const qr_data = await generarQRSeguro(ticket_id, SECRET_KEY);
 
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",

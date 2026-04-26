@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { supabase } from '../supabaseClient';
-import CryptoJS from 'crypto-js';
+
 import './StaffStyles.css';
 
 const ScannerStaff = () => {
@@ -9,7 +9,7 @@ const ScannerStaff = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const scannerRef = useRef(null);
   const ultimoEscaneoValido = useRef(0);
-  const SECRET_KEY = "IglesiCDG@";
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -32,32 +32,35 @@ const ScannerStaff = () => {
     };
   }, []);
 
-  const manejarLectura = async (lectura) => {
+const manejarLectura = async (lectura) => {
     const ahora = Date.now();
     if (isProcessing || asistente) return;
     setIsProcessing(true);
-if (ahora - ultimoEscaneoValido.current < 3000 || asistente) {
-    return;
-  }
+
+    if (ahora - ultimoEscaneoValido.current < 3000 || asistente) {
+      return;
+    }
+
     try {
-      const partes = lectura.split('|');
-      if (partes.length !== 2) throw new Error("FRAUDE");
+      // Mandamos el texto puro a la función segura de Supabase
+      const { data, error } = await supabase.rpc('validar_ticket_qr', {
+        qr_texto: lectura
+      });
 
-      const id = partes[0];
-      const firmaEscaneada = partes[1];
-      const firmaCalculada = CryptoJS.HmacSHA256(id, SECRET_KEY).toString();
+      if (error) throw error;
 
-      if (firmaEscaneada !== firmaCalculada) throw new Error("FRAUDE_FIRMA");
+      if (data.status === 'error') {
+        throw new Error(data.mensaje);
+      }
 
-      const { data, error } = await supabase.from('registrados').select('*').eq('id', id).single();
-      if (error || !data) throw new Error("NO_ENCONTRADO");
-
-      setAsistente(data);
+      // Si todo salió bien, guardamos al asistente en el estado
+      setAsistente(data.asistente);
       ultimoEscaneoValido.current = ahora;
+
     } catch (err) {
-      alert("⚠️ Ticket inválido o error de conexión.");
+      console.error(err);
+      alert(`⚠️ Ticket inválido: ${err.message || "Error de conexión"}`);
       setIsProcessing(false);
-      
     }
   };
 

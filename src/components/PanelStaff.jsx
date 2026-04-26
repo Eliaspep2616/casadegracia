@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
 import { QRCodeCanvas } from 'qrcode.react';
-import CryptoJS from 'crypto-js';
+
 import * as XLSX from 'xlsx';
 import ScannerStaff from './ScannerStaff';
 import FormularioTaquilla from './FormularioTaquilla';
@@ -67,7 +67,7 @@ const PanelStaff = () => {
   const [busqueda, setBusqueda] = useState('');
 
   const EVENTO_ID = '42362cfe-8d10-414f-adb1-7310cec5f7f9';
-  const SECRET_KEY = "IglesiCDG@";
+
 
   useEffect(() => {
     const inicializar = async () => {
@@ -96,8 +96,10 @@ const PanelStaff = () => {
     if (data) setAsistentes(data);
   };
 
-  const validarConMetodo = async (id, cantidad, email, nombre) => {
+const validarConMetodo = async (id, cantidad, email, nombre) => {
     if (window.confirm(`¿Validar $${(cantidad * precioEvento).toFixed(2)} y enviar correo a ${nombre}?`)) {
+      
+      // 1. Actualizamos la base de datos marcándolo como pagado
       const { error: updateError } = await supabase.from('registrados').update({ 
         pagado: true, 
         metodo_pago: metodoPagoValidar,
@@ -105,33 +107,41 @@ const PanelStaff = () => {
       }).eq('id', id);
 
       if (!updateError) {
-        const qrFirmado = `${id}|${CryptoJS.HmacSHA256(id, SECRET_KEY).toString()}`;
+        // Obtenemos la sesión para poder llamar a la Edge Function
         const { data: { session } } = await supabase.auth.getSession();
 
         try {
+          // 2. Llamamos a Resend mandando SOLO EL ID (la Edge Function hará la firma segura)
           const respuesta = await fetch('https://lzvolnnndwpyxyoyldea.supabase.co/functions/v1/enviar-ticket', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${session?.access_token}` 
             },
-            body: JSON.stringify({ email, nombre, qr_data: qrFirmado })
+            body: JSON.stringify({ 
+              email: email, 
+              nombre: nombre, 
+              ticket_id: id // 🔴 CAMBIO CLAVE: Mandamos el ID limpio
+            })
           });
 
           const datosRespuesta = await respuesta.json();
 
           if (!respuesta.ok) {
             console.error("Error exacto del servidor:", datosRespuesta);
-            alert(`🚨 Deno rechazó la petición por esto:\n\n${datosRespuesta.error}`);
+            alert(`✅ Pago registrado, pero hubo un error con el correo:\n\n${datosRespuesta.error}`);
           } else {
-            alert("¡Validado y Correo Enviado!");
+            alert("✅ ¡Validado y Correo Enviado!");
           }
         } catch (err) {
           console.error("Fallo de red:", err);
-          alert("Error de red al intentar conectar con la Edge Function.");
+          alert("✅ Pago registrado. (Error de red al intentar enviar el correo).");
         }
         
+        // Refrescamos la tabla
         fetchAsistentes();
+      } else {
+        alert("❌ Error al actualizar el pago en la base de datos.");
       }
     }
   };
@@ -269,16 +279,17 @@ const PanelStaff = () => {
                       </span>
                     </td>
                     <td className="action-cell">
-                      <button onClick={() => {
-                        const canvas = document.getElementById(`qr-${a.id}`);
-                        const link = document.createElement('a');
-                        link.download = `QR_${a.nombre}.png`;
-                        link.href = canvas.toDataURL();
-                        link.click();
-                      }} className="btn-icon qr">QR</button>
-                      {!a.pagado && <button onClick={() => validarConMetodo(a.id, a.cantidad, a.correo, a.nombre)} className="btn-icon check">✓</button>}
-                      <div style={{display:'none'}}><QRCodeCanvas id={`qr-${a.id}`} value={`${a.id}|${CryptoJS.HmacSHA256(a.id, SECRET_KEY).toString()}`} /></div>
-                    </td>
+  {!a.pagado && (
+    <button 
+      onClick={() => validarConMetodo(a.id, a.cantidad, a.correo, a.nombre)} 
+      className="btn-icon check" 
+      title="Marcar como Pagado"
+    >
+      ✓
+    </button>
+  )}
+  {/* El botón de descarga manual de QR ha sido removido por seguridad. */}
+</td>
                   </tr>
                 ))}
               </tbody>

@@ -1,163 +1,252 @@
-/* =========================================
-   PÁGINA COMPLETA DEL CARRITO
-   ========================================= */
+/* CarritoPage.css */
+
 .carrito-page-bg {
-  background-color: #f4f7f6; /* Fondo gris claro */
+  background-color: #f8fafc; /* Fondo suave para que resalten las tarjetas */
   min-height: 100vh;
-  padding-bottom: 50px;
+  padding-bottom: 80px;
 }
 
-/* LA CABECERA OSCURA DE TU FOTO */
-.carrito-hero {
-  background-color: #1a1a1a; /* Gris muy oscuro casi negro */
-  padding: 60px 20px 100px 20px; /* Mucho padding abajo para que las tarjetas se superpongan un poco */
-  text-align: center;
+/* Cabecera negra superior */
+.carrito-hero-black {
+  background-color: #0f172a; /* Azul muy oscuro/negro */
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
 }
 
 .hero-logo-central .logo-temp {
   color: white;
   font-size: 2.5rem;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 5px;
   margin: 0;
 }
 
-/* EL CONTENEDOR PRINCIPAL */
+/* Contenedor Grid Principal */
 .carrito-container-grid {
   display: flex;
-  align-items: flex-start;
   gap: 30px;
   max-width: 1200px;
-  margin: -50px auto 0 auto; /* El -50px hace que las tarjetas suban y pisen la cabecera negra */
-  padding: 0 5%;
+  margin: -100px auto 0 auto; /* Superpone las tarjetas blancas sobre el fondo negro */
+  padding: 0 20px;
+  align-items: flex-start;
 }
 
-/* LAS TARJETAS BLANCAS */
+/* Estilo Base de las Tarjetas */
 .carrito-card {
   background: white;
-  border-radius: 20px;
-  padding: 30px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.05);
 }
 
 .main-cart {
-  flex: 2; /* Ocupa el doble de espacio que el resumen */
+  flex: 2; /* La lista de productos es más ancha */
 }
 
 .summary-card {
-  flex: 1; /* Ocupa una parte */
+  flex: 1; /* El resumen es más angosto */
   position: sticky;
-  top: 100px; /* Se queda pegado al hacer scroll */
+  top: 100px; /* Se queda fijo al hacer scroll */
 }
 
 .card-title {
+  font-size: 1.5rem;
+  font-weight: 900;
   color: #0f172a;
-  margin-top: 0;
-  font-size: 1.4rem;
+  margin: 0;
 }
 
 .divider-line {
   height: 1px;
-  background-color: #e2e8f0;
-  margin: 15px 0 25px 0;
+  background-color: #f1f5f9;
+  margin: 20px 0;
 }
 
-/* ESTADOS VACÍOS Y ACCIONES */
-.vacio-msg {
-  color: #64748b;
-  margin-bottom: 20px;
-}
-
-.carrito-acciones {
+/* Lista de Productos */
+.item-fila-pro {
   display: flex;
-  gap: 15px;
-  margin-top: 30px;
+  gap: 20px;
+  padding: 25px 0;
+  border-bottom: 1px solid #f1f5f9;
   align-items: center;
 }
 
-.btn-seguir {
+.item-thumb-pro img {
+  width: 120px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.item-detalles-pro {
+  flex: 1;
+}
+
+.item-detalles-pro h3 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin: 0 0 5px 0;
+  color: #1e293b;
+}
+
+.item-detalles-pro p {
+  font-size: 0.85rem;
+  color: #64748b;
+  margin: 2px 0;
+  font-weight: 600;
+}
+
+.precio-unit-pro {
+  display: block;
+  margin-top: 8px;
+  font-weight: 900;
+  color: #0f172a;
+  font-size: 1.1rem;
+}
+
+/* Botón de Borrar (Basurero) */
+.btn-borrar-pro {
+  background: #fff1f2;
+  color: #e11d48;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-borrar-pro:hover {
+  background: #ffe4e6;
+  transform: scale(1.1);
+}
+
+/* Footer de la tarjeta (Seguir comprando) */
+.carrito-footer-acciones {
+  margin-top: 30px;
+}
+
+.btn-seguir-comprando-link {
   color: #64748b;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 0.9rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s;
 }
 
-.btn-actualizar-outline {
-  background: transparent;
+.btn-seguir-comprando-link:hover {
   color: #004a99;
-  border: 2px solid #004a99;
-  padding: 10px 20px;
-  border-radius: 25px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.2s;
 }
 
-.btn-actualizar-outline:hover {
-  background: #f0f7ff;
+/* Mensaje Carrito Vacío */
+.vacio-msg-container {
+  text-align: center;
+  padding: 40px 0;
 }
 
-/* RESUMEN DE PAGO */
+.vacio-msg {
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.btn-regresar {
+  display: inline-block;
+  background: #0f172a;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* Sección de Resumen (Derecha) */
 .resumen-fila {
   display: flex;
   justify-content: space-between;
-  color: #64748b;
   margin-bottom: 15px;
+  color: #64748b;
+  font-weight: 600;
 }
 
-.total-row {
-  color: #0f172a;
-  font-size: 1.3rem;
+.total-row-pro {
   margin-top: 20px;
-  border-top: 2px dashed #e2e8f0;
   padding-top: 20px;
+  border-top: 2px dashed #e2e8f0;
+  font-size: 1.4rem;
+  color: #0f172a;
 }
 
-.btn-pago-final {
+.btn-pago-final-pro {
   width: 100%;
-  background: #cbd5e1; /* Color apagado por defecto (deshabilitado) */
+  padding: 18px;
+  background: #004a99;
   color: white;
   border: none;
-  padding: 16px;
-  border-radius: 12px;
-  font-weight: bold;
+  border-radius: 14px;
+  font-weight: 900;
   font-size: 1.1rem;
-  margin-top: 20px;
-  cursor: not-allowed;
-  transition: 0.3s;
-}
-
-/* Si el botón NO está deshabilitado, se pone azul */
-.btn-pago-final:not(:disabled) {
-  background: #004a99;
   cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s ease;
 }
 
-.btn-pago-final:not(:disabled):hover {
+.btn-pago-final-pro:hover:not(:disabled) {
   background: #003366;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 74, 153, 0.2);
+}
+
+.btn-pago-final-pro:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
 }
 
 /* =========================================
-   📱 LA MAGIA RESPONSIVE (LA SOLUCIÓN)
+   📱 RESPONSIVE (MÓVIL)
    ========================================= */
-@media (max-width: 850px) {
+@media (max-width: 900px) {
+  .carrito-hero-black {
+    height: 180px;
+  }
+
+  .hero-logo-central .logo-temp {
+    font-size: 2rem;
+  }
+
   .carrito-container-grid {
-    flex-direction: column; /* 👈 ESTO PONE EL RESUMEN DEBAJO DE LOS PRODUCTOS */
-    margin-top: -30px;
+    flex-direction: column;
+    margin-top: -60px;
+    gap: 20px;
   }
 
   .main-cart, .summary-card {
-    width: 100%; /* Obliga a las tarjetas a usar el 100% de la pantalla */
-    box-sizing: border-box;
-  }
-
-  .carrito-acciones {
-    flex-direction: column; /* Apila los botones de "Seguir comprando" y "Actualizar" */
-    align-items: stretch;
-    text-align: center;
-  }
-
-  .btn-actualizar-outline {
     width: 100%;
+    padding: 25px;
+  }
+
+  .summary-card {
+    position: static; /* Deja de ser fijo en móvil */
+  }
+
+  .item-fila-pro {
+    flex-direction: row; /* Mantiene la fila pero con elementos más pequeños */
+    gap: 15px;
+  }
+
+  .item-thumb-pro img {
+    width: 80px;
+    height: 60px;
+  }
+
+  .item-detalles-pro h3 {
+    font-size: 1rem;
   }
 }

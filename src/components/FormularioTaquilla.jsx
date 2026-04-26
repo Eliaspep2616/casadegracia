@@ -4,17 +4,19 @@ import CryptoJS from 'crypto-js';
 
 const FormularioTaquilla = ({ onExito }) => {
   const [cargando, setCargando] = useState(false);
-  const [precioReal, setPrecioReal] = useState(0); 
+  const [precioReal, setPrecioReal] = useState(0);
   const [cargandoPrecio, setCargandoPrecio] = useState(true);
-  
+
   const EVENTO_ID = '42362cfe-8d10-414f-adb1-7310cec5f7f9';
-  const SECRET_KEY = "IglesiCDG@"; // 👈 Necesario para firmar el QR
+  
+  // IMPORTANTE: Esta llave debe ser la misma que usa el ScannerStaff para validar
+  const SECRET_KEY = 'tu_llave_secreta_aqui'; 
 
   const [form, setForm] = useState({
     nombre: '',
-    cedula: '', 
-    correo: '',   // 👈 Nuevo campo
-    telefono: '', // 👈 Nuevo campo
+    cedula: '',
+    correo: '',
+    telefono: '',
     cantidad: 1
   });
 
@@ -40,65 +42,69 @@ const FormularioTaquilla = ({ onExito }) => {
     e.preventDefault();
     setCargando(true);
 
-    const totalCobrado = form.cantidad * precioReal; 
-    
-    // Si dejan el correo/teléfono vacío, usamos valores por defecto
+    const totalCobrado = form.cantidad * precioReal;
     const correoFinal = form.correo.trim() !== '' ? form.correo.trim() : 'compra_fisica@iglesia.com';
     const telefonoFinal = form.telefono.trim() !== '' ? form.telefono.trim() : 'N/A';
 
     try {
-      // 1. Guardar en la base de datos y OBTENER el ID generado (.select())
-      const { data: registroGuardado, error } = await supabase.from('registrados').insert([{
-        evento_id: EVENTO_ID,
-        nombre: form.nombre,
-        cedula: form.cedula || 'N/A',
-        correo: correoFinal, 
-        telefono: telefonoFinal,
-        cantidad: parseInt(form.cantidad),
-        pagado: true, 
-        total_pagado: totalCobrado,
-        metodo_pago: 'Efectivo',
-        fecha_pago: new Date()
-      }]).select(); // 👈 El select() es crucial para que nos devuelva el ID de este nuevo usuario
+      // 1. Registro en la base de datos
+      const { data: registroGuardado, error: errorInsert } = await supabase
+        .from('registrados')
+        .insert([{
+          evento_id: EVENTO_ID,
+          nombre: form.nombre,
+          cedula: form.cedula || 'N/A',
+          correo: correoFinal,
+          telefono: telefonoFinal,
+          cantidad: parseInt(form.cantidad),
+          pagado: true,
+          total_pagado: totalCobrado,
+          metodo_pago: 'Efectivo',
+          fecha_pago: new Date()
+        }])
+        .select();
 
-      if (error) throw error;
-      
+      if (errorInsert) throw errorInsert;
+
       const nuevoAsistente = registroGuardado[0];
 
-      // 2. Si se ingresó un correo real, enviamos el ticket automáticamente
+      // 2. Generación de firma y envío de ticket por correo
       if (correoFinal !== 'compra_fisica@iglesia.com') {
-        const qrFirmado = `${nuevoAsistente.id}|${CryptoJS.HmacSHA256(nuevoAsistente.id, SECRET_KEY).toString()}`;
+        const hmac = CryptoJS.HmacSHA256(nuevoAsistente.id, SECRET_KEY).toString();
+        const qrFirmado = `${nuevoAsistente.id}|${hmac}`;
+
         const { data: { session } } = await supabase.auth.getSession();
 
         const respuesta = await fetch('https://lzvolnnndwpyxyoyldea.supabase.co/functions/v1/enviar-ticket', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${session?.access_token}` 
+            'Authorization': `Bearer ${session?.access_token}`
           },
-          body: JSON.stringify({ 
-            email: correoFinal, 
-            nombre: form.nombre, 
-            qr_data: qrFirmado 
+          body: JSON.stringify({
+            email: correoFinal,
+            nombre: form.nombre,
+            ticket_id: nuevoAsistente.id,
+            qr_data: qrFirmado
           })
         });
 
-        const datosRespuesta = await respuesta.json();
-
         if (!respuesta.ok) {
-          alert(`✅ Guardado en BD, pero hubo un error enviando el correo:\n${datosRespuesta.error}`);
+          const errorData = await respuesta.json();
+          console.error("Error en Edge Function:", errorData);
+          alert("✅ Registro guardado, pero el correo no pudo enviarse.");
         } else {
-          alert("✅ ¡Venta registrada y Ticket enviado al correo!");
+          alert("✅ Venta registrada y ticket enviado con éxito.");
         }
       } else {
-        alert("✅ ¡Venta registrada exitosamente (Sin envío de correo)!");
+        alert("✅ Venta registrada exitosamente.");
       }
 
-      // 3. Cerrar modal y actualizar tabla
-      onExito(); 
+      onExito();
 
     } catch (error) {
-      alert("❌ Error al registrar: " + error.message);
+      console.error("Error completo:", error);
+      alert("❌ Error al registrar: " + (error.message || "Error desconocido"));
     } finally {
       setCargando(false);
     }
@@ -128,7 +134,6 @@ const FormularioTaquilla = ({ onExito }) => {
           />
         </div>
 
-        {/* 👈 NUEVA FILA: Teléfono y Correo */}
         <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
           <div style={{ flex: 1, minWidth: '45%' }}>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 'bold', color: '#334155', marginBottom: '5px' }}>
@@ -155,7 +160,6 @@ const FormularioTaquilla = ({ onExito }) => {
           </div>
         </div>
 
-        {/* FILA ORIGINAL: Cédula y Cantidad */}
         <div style={{ display: 'flex', gap: '15px' }}>
           <div style={{ flex: 1 }}>
             <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 'bold', color: '#334155', marginBottom: '5px' }}>
