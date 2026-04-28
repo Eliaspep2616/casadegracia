@@ -71,8 +71,8 @@ const Home = () => {
       {/* 🎀 CINTA MARQUEE */}
       <div className="marquee-container">
         <div className="marquee-content">
-          <span>EN LA TIERRA COMO EN EL CIELO • EN LA TIERRA COMO EN EL CIELO •&nbsp;</span>
-          <span>EN LA TIERRA COMO EN EL CIELO • EN LA TIERRA COMO EN EL CIELO •&nbsp;</span>
+          <span>JUNTOS LO ESTAMOS HACIENDO • JUNTOS LO ESTAMOS HACIENDO • JUNTOS LO ESTAMOS HACIENDO • JUNTOS LO ESTAMOS HACIENDO • &nbsp;</span>
+          <span>JUNTOS LO ESTAMOS HACIENDO • JUNTOS LO ESTAMOS HACIENDO • JUNTOS LO ESTAMOS HACIENDO •&nbsp;</span>
         </div>
       </div>
 
