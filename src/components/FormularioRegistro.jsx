@@ -25,7 +25,7 @@ const FormularioRegistro = ({ onExito, onCerrar, cantidadSeleccionada, totalPaga
   const EVENTO_ID = '42362cfe-8d10-414f-adb1-7310cec5f7f9';
   
   // ⚠️ PON AQUÍ TU SITE KEY DE CLOUDFLARE
-  const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
+  const TURNSTILE_SITE_KEY = '0x4AAAAAADFIAFXFsTFEh24N';
 
   const [asistente, setAsistente] = useState({
     nombre: '', 
