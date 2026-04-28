@@ -17,9 +17,9 @@ const RetiroLanding = () => {
   }, []);
 
   const conferencistas = [
-    { nombre: "Josue Rincon", cargo: "Pst. Familia de Dios", bio: "Líder apasionado por la formación de familias." },
+    //{ nombre: "Josue Rincon", cargo: "Pst. Familia de Dios", bio: "Líder apasionado por la formación de familias." },
     { nombre: "Abraham", cargo: "Conferencista Invitado", bio: "Especialista en madurez espiritual." },
-    { nombre: "Diego", cargo: "Adoración y Palabra", bio: "Guía en experiencias profundas de alabanza." }
+   // { nombre: "Diego", cargo: "Adoración y Palabra", bio: "Guía en experiencias profundas de alabanza." }
   ];
 
   return (

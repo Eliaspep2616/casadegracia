@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import CryptoJS from 'crypto-js';
 
 const FormularioTaquilla = ({ onExito }) => {
   const [cargando, setCargando] = useState(false);
@@ -9,9 +8,6 @@ const FormularioTaquilla = ({ onExito }) => {
 
   const EVENTO_ID = '42362cfe-8d10-414f-adb1-7310cec5f7f9';
   
-  // IMPORTANTE: Esta llave debe ser la misma que usa el ScannerStaff para validar
-  const SECRET_KEY = 'tu_llave_secreta_aqui'; 
-
   const [form, setForm] = useState({
     nombre: '',
     cedula: '',
@@ -31,7 +27,7 @@ const FormularioTaquilla = ({ onExito }) => {
       if (data && !error) {
         setPrecioReal(data.precio_unitario);
       } else {
-        setPrecioReal(5.00); 
+        setPrecioReal(25.00); // 👈 Ajustado a tu precio base real
       }
       setCargandoPrecio(false);
     };
@@ -47,7 +43,7 @@ const FormularioTaquilla = ({ onExito }) => {
     const telefonoFinal = form.telefono.trim() !== '' ? form.telefono.trim() : 'N/A';
 
     try {
-      // 1. Registro en la base de datos
+      // 1. Registro directo en la base de datos (permitido porque el Staff está autenticado)
       const { data: registroGuardado, error: errorInsert } = await supabase
         .from('registrados')
         .insert([{
@@ -68,11 +64,8 @@ const FormularioTaquilla = ({ onExito }) => {
 
       const nuevoAsistente = registroGuardado[0];
 
-      // 2. Generación de firma y envío de ticket por correo
+      // 2. Si hay correo, le decimos a Deno que genere el QR seguro y lo envíe
       if (correoFinal !== 'compra_fisica@iglesia.com') {
-        const hmac = CryptoJS.HmacSHA256(nuevoAsistente.id, SECRET_KEY).toString();
-        const qrFirmado = `${nuevoAsistente.id}|${hmac}`;
-
         const { data: { session } } = await supabase.auth.getSession();
 
         const respuesta = await fetch('https://lzvolnnndwpyxyoyldea.supabase.co/functions/v1/enviar-ticket', {
@@ -84,20 +77,18 @@ const FormularioTaquilla = ({ onExito }) => {
           body: JSON.stringify({
             email: correoFinal,
             nombre: form.nombre,
-            ticket_id: nuevoAsistente.id,
-            qr_data: qrFirmado
+            ticket_id: nuevoAsistente.id // 🔴 Deno se encargará de la firma secreta
           })
         });
 
         if (!respuesta.ok) {
-          const errorData = await respuesta.json();
-          console.error("Error en Edge Function:", errorData);
-          alert("✅ Registro guardado, pero el correo no pudo enviarse.");
+          console.error("Error al enviar el correo desde Deno.");
+          alert("✅ Registro guardado en base de datos, pero el correo no pudo enviarse.");
         } else {
           alert("✅ Venta registrada y ticket enviado con éxito.");
         }
       } else {
-        alert("✅ Venta registrada exitosamente.");
+        alert("✅ Venta registrada exitosamente (sin envío de correo).");
       }
 
       onExito();

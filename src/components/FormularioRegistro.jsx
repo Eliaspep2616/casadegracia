@@ -1,14 +1,19 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import ReCAPTCHA from "react-google-recaptcha";
+import { Turnstile } from '@marsidev/react-turnstile';
 import './Formulario.css'; 
 
 const FormularioRegistro = ({ onExito, onCerrar, cantidadSeleccionada, totalPagar, precioManual }) => {
   const [paso, setPaso] = useState(1);
-  const [captchaValido, setCaptchaValido] = useState(false);
   const [cargando, setCargando] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
   
+  // 🛡️ Capa 1: Estado para la trampa del bot (Honeypot)
+  const [honeypot, setHoneypot] = useState('');
+  
+  // 🛡️ Capa 2: Estado para el token de Cloudflare
+  const [turnstileToken, setTurnstileToken] = useState(null);
+
   const [configEvento, setConfigEvento] = useState({ 
     cuenta: 'Cargando...', 
     telefono: '',
@@ -18,6 +23,9 @@ const FormularioRegistro = ({ onExito, onCerrar, cantidadSeleccionada, totalPaga
   });
   
   const EVENTO_ID = '42362cfe-8d10-414f-adb1-7310cec5f7f9';
+  
+  // ⚠️ PON AQUÍ TU SITE KEY DE CLOUDFLARE
+  const TURNSTILE_SITE_KEY = '1x00000000000000000000AA';
 
   const [asistente, setAsistente] = useState({
     nombre: '', 
@@ -42,8 +50,8 @@ const FormularioRegistro = ({ onExito, onCerrar, cantidadSeleccionada, totalPaga
       if (error || !data) {
         setConfigEvento({
           cuenta: 'Banco Pichincha - Ahorros #22000000',
-          telefono: '593999999999',
-          titular: 'Iglesia Gracia Kids',
+          telefono: '0969018532',
+          titular: 'Iglesia',
           cedula: '0987654321',
           correo: 'pagos@iglesia.com'
         });
@@ -83,39 +91,58 @@ const FormularioRegistro = ({ onExito, onCerrar, cantidadSeleccionada, totalPaga
 
   const manejarRegistro = async (e) => {
     e.preventDefault();
+
+    // 🛡️ VERIFICACIÓN 1: El Honeypot
+    if (honeypot !== '') {
+      console.warn("Bot detectado por Honeypot.");
+      setPaso(2); 
+      return;
+    }
+
+    // 🛡️ VERIFICACIÓN 2: Cédula ecuatoriana
     if (!validarCedula(asistente.cedula)) {
       setErrorMsg('La cédula ingresada no es válida.');
       return;
     }
-    if (!captchaValido) {
-      setErrorMsg('Por favor, completa el captcha.');
+
+    // 🛡️ VERIFICACIÓN 3: Cloudflare Turnstile
+    if (!turnstileToken) {
+      setErrorMsg('Por favor, espera la verificación de seguridad.');
       return;
     }
+
     setCargando(true);
     try {
-      const { data, error } = await supabase.rpc('comprar_ticket_seguro', {
-        _evento_id: EVENTO_ID,
-        _nombre: asistente.nombre,
-        _cedula: asistente.cedula,
-        _telefono: asistente.telefono,
-        _correo: asistente.correo,
-        _cantidad: parseInt(asistente.cantidad)
+      // LLAMAMOS A LA EDGE FUNCTION (Asegúrate de haberla subido con npx supabase functions deploy)
+      const { data, error } = await supabase.functions.invoke('procesar-compra', {
+        body: {
+          evento_id: EVENTO_ID,
+          nombre: asistente.nombre,
+          cedula: asistente.cedula,
+          telefono: asistente.telefono,
+          correo: asistente.correo,
+          cantidad: parseInt(asistente.cantidad),
+          turnstileToken: turnstileToken
+        }
       });
+
       if (error) throw error;
+
       if (data.status === 'error') {
         setErrorMsg(data.message);
       } else {
         setPaso(2);
       }
     } catch (err) {
-      setErrorMsg('Error de conexión.');
+      console.error(err);
+      setErrorMsg('Error de conexión con el servidor.');
     } finally {
       setCargando(false);
     }
   };
 
   const enviarWA = () => {
-    const texto = `¡Hola! Acabo de registrarme para el Retiro.\n👤: ${asistente.nombre}\n🆔: ${asistente.cedula}\n🎟️ Cantidad: ${asistente.cantidad}\n💰 Transferido: $${montoTotalSeguro.toFixed(2)}\n\nAdjunto el comprobante.`;
+    const texto = `¡Hola! Acabo de registrarme para el Retiro.\nNombre: ${asistente.nombre}\nID: ${asistente.cedula}\nCantidad: ${asistente.cantidad}\nTransferido: $${montoTotalSeguro.toFixed(2)}\n\nAdjunto el comprobante.`;
     window.open(`https://wa.me/${configEvento.telefono}?text=${encodeURIComponent(texto)}`, '_blank');
   };
 
@@ -123,26 +150,49 @@ const FormularioRegistro = ({ onExito, onCerrar, cantidadSeleccionada, totalPaga
     <div className="registro-container">
       {paso === 1 ? (
         <form onSubmit={manejarRegistro} className="registro-form">
-        {/* 👈 BOTÓN X FORZADO A APARECER */}
           <button type="button" className="btn-cerrar-flotante" onClick={onCerrar}>✕</button>
 
           <h2>Datos del Asistente</h2>
           <p>Se reservarán <strong>{asistente.cantidad} cupos</strong>.</p>
-          <input name="nombre" placeholder="Nombre y Apellido" onChange={handleChange} required />
+          
+          <input name="nombre" placeholder="Nombre y Apellido" onChange={handleChange} required autoComplete="name" />
           <input name="cedula" placeholder="Cédula (10 dígitos)" onChange={handleChange} required maxLength="10" />
-          <input name="telefono" placeholder="WhatsApp (ej: 099...)" onChange={handleChange} required />
-          <input name="correo" type="email" placeholder="Correo electrónico" onChange={handleChange} required />
+          <input name="telefono" placeholder="WhatsApp (ej: 099...)" onChange={handleChange} required autoComplete="tel" />
+          <input name="correo" type="email" placeholder="Correo electrónico" onChange={handleChange} required autoComplete="email" />
+          
+          {/* 🛡️ Campo Honeypot invisible */}
+          <input 
+            type="text" 
+            name="website_url" 
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            style={{ display: 'none' }} 
+            tabIndex="-1" 
+            autoComplete="off"
+          />
+
           {errorMsg && <div className="error-badge">{errorMsg}</div>}
-          <div className="captcha-wrapper" style={{ margin: '15px 0', display: 'flex', justifyContent: 'center' }}>
-            <ReCAPTCHA sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" onChange={() => setCaptchaValido(true)} />
+          
+          {/* 🛡️ Widget de Cloudflare Turnstile */}
+          <div className="captcha-wrapper" style={{ margin: '15px 0', display: 'flex', justifyContent: 'center', minHeight: '65px' }}>
+            <Turnstile 
+              siteKey={TURNSTILE_SITE_KEY}
+              onSuccess={(token) => {
+                setTurnstileToken(token);
+                setErrorMsg('');
+              }}
+              onError={() => setErrorMsg("Error en la verificación de seguridad.")}
+              options={{ theme: 'light' }}
+            />
           </div>
-          <button type="submit" disabled={cargando} className="btn-final">
+
+          <button type="submit" disabled={cargando || !turnstileToken} className="btn-final">
             {cargando ? 'PROCESANDO...' : 'RESERVAR MI LUGAR'}
           </button>
         </form>
       ) : (
         <div className="paso-pago" style={{textAlign: 'center'}}>
-     <button type="button" className="btn-cerrar-flotante" onClick={onCerrar}>✕</button>
+          <button type="button" className="btn-cerrar-flotante" onClick={onCerrar}>✕</button>
 
           <h3 style={{color: '#16a34a', fontSize: '1.5rem', marginBottom: '10px'}}>✅ ¡Reserva Exitosa!</h3>
           <p style={{color: '#334155', marginBottom: '15px'}}>Por favor, realiza la transferencia con estos datos:</p>

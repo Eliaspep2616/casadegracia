@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { QRCodeCanvas } from 'qrcode.react';
-
+import QRCode from 'qrcode'; // 👈 Usamos la librería segura
 import * as XLSX from 'xlsx';
 import ScannerStaff from './ScannerStaff';
 import FormularioTaquilla from './FormularioTaquilla';
@@ -68,7 +67,6 @@ const PanelStaff = () => {
 
   const EVENTO_ID = '42362cfe-8d10-414f-adb1-7310cec5f7f9';
 
-
   useEffect(() => {
     const inicializar = async () => {
       const { data: { session } } = await supabase.auth.getSession();
@@ -96,22 +94,69 @@ const PanelStaff = () => {
     if (data) setAsistentes(data);
   };
 
-const validarConMetodo = async (id, cantidad, email, nombre) => {
+  // 🛡️ FUNCIÓN SEGURA PARA DESCARGAR QR
+  const descargarQR = async (id, nombre) => {
+    try {
+      // Pedimos la firma a Supabase (así no exponemos la contraseña en React)
+      const { data: qrData, error } = await supabase.rpc('obtener_firma_ticket', { 
+        p_ticket_id: id 
+      });
+
+      if (error) throw error;
+
+      // Generamos la imagen con la librería qrcode
+      const imageUrl = await QRCode.toDataURL(qrData, { 
+        width: 512, 
+        margin: 2,
+        color: { dark: '#0f172a', light: '#ffffff' }
+      });
+
+      // Forzamos la descarga
+      const downloadLink = document.createElement("a");
+      downloadLink.href = imageUrl;
+      downloadLink.download = `Ticket_CDG_${nombre.replace(/\s+/g, '_')}.png`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+
+    } catch (err) {
+      console.error(err);
+      alert("❌ Error de seguridad al generar el ticket.");
+    }
+  };
+
+  // 🗑️ FUNCIÓN PARA ELIMINAR ASISTENTE
+  const eliminarAsistente = async (id, nombre) => {
+    if (window.confirm(`¿Estás seguro de que deseas eliminar a ${nombre}? Esta acción es permanente.`)) {
+      const { error } = await supabase
+        .from('registrados')
+        .delete()
+        .eq('id', id);
+
+      if (!error) {
+        alert("✅ Registro eliminado con éxito.");
+        fetchAsistentes();
+      } else {
+        alert("❌ Error al eliminar el registro.");
+      }
+    }
+  };
+
+  const validarConMetodo = async (id, cantidad, email, nombre) => {
     if (window.confirm(`¿Validar $${(cantidad * precioEvento).toFixed(2)} y enviar correo a ${nombre}?`)) {
       
-      // 1. Actualizamos la base de datos marcándolo como pagado
       const { error: updateError } = await supabase.from('registrados').update({ 
         pagado: true, 
         metodo_pago: metodoPagoValidar,
-        total_pagado: cantidad * precioEvento
+        total_pagado: cantidad * precioEvento,
+        fecha_pago: new Date().toISOString()
+        
       }).eq('id', id);
 
       if (!updateError) {
-        // Obtenemos la sesión para poder llamar a la Edge Function
         const { data: { session } } = await supabase.auth.getSession();
 
         try {
-          // 2. Llamamos a Resend mandando SOLO EL ID (la Edge Function hará la firma segura)
           const respuesta = await fetch('https://lzvolnnndwpyxyoyldea.supabase.co/functions/v1/enviar-ticket', {
             method: 'POST',
             headers: {
@@ -121,7 +166,7 @@ const validarConMetodo = async (id, cantidad, email, nombre) => {
             body: JSON.stringify({ 
               email: email, 
               nombre: nombre, 
-              ticket_id: id // 🔴 CAMBIO CLAVE: Mandamos el ID limpio
+              ticket_id: id 
             })
           });
 
@@ -138,7 +183,6 @@ const validarConMetodo = async (id, cantidad, email, nombre) => {
           alert("✅ Pago registrado. (Error de red al intentar enviar el correo).");
         }
         
-        // Refrescamos la tabla
         fetchAsistentes();
       } else {
         alert("❌ Error al actualizar el pago en la base de datos.");
@@ -203,7 +247,6 @@ const validarConMetodo = async (id, cantidad, email, nombre) => {
         <button onClick={cerrarSesion} className="btn-action-logout">Cerrar Sesión</button>
       </header>
 
-      {/* 📊 MÉTRICAS RÁPIDAS - SOLO VISIBLES SI ESTAMOS EN LA LISTA */}
       {tabActual === 'asistentes' && (
         <div style={{display: 'flex', gap: '15px', marginBottom: '20px', flexWrap: 'wrap'}}>
           <div className="stat-card" style={{borderLeft: '4px solid #3b82f6'}}>
@@ -221,21 +264,17 @@ const validarConMetodo = async (id, cantidad, email, nombre) => {
         </div>
       )}
 
-      {/* CONTROLES Y PESTAÑAS */}
       <div style={{display:'flex', alignItems:'center', gap:'15px', marginBottom:'20px', flexWrap: 'wrap'}}>
-        
-        {/* LAS PESTAÑAS SIEMPRE ESTÁN VISIBLES */}
         <div className="tab-navigation">
           <button onClick={() => setTabActual('asistentes')} className={tabActual === 'asistentes' ? 'tab-btn active' : 'tab-btn'}>📋 Lista</button>
           <button onClick={() => setTabActual('scanner')} className={tabActual === 'scanner' ? 'tab-btn active' : 'tab-btn'}>📷 Escáner</button>
         </div>
         
-        {/* EL BUSCADOR Y LOS BOTONES SOLO SON VISIBLES EN LA LISTA */}
         {tabActual === 'asistentes' && (
           <>
             <input 
               type="text" 
-              placeholder="🔍 Buscar por nombre, cédula, correo o teléfono..." 
+              placeholder="🔍 Buscar por nombre, cédula, correo..." 
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
               className="search-input"
@@ -244,7 +283,6 @@ const validarConMetodo = async (id, cantidad, email, nombre) => {
             <button onClick={() => setModalRegistro(true)} className="btn-new-sale">➕ Nueva Venta</button>
           </>
         )}
-
       </div>
 
       <main>
@@ -279,17 +317,37 @@ const validarConMetodo = async (id, cantidad, email, nombre) => {
                       </span>
                     </td>
                     <td className="action-cell">
-  {!a.pagado && (
-    <button 
-      onClick={() => validarConMetodo(a.id, a.cantidad, a.correo, a.nombre)} 
-      className="btn-icon check" 
-      title="Marcar como Pagado"
-    >
-      ✓
-    </button>
-  )}
-  {/* El botón de descarga manual de QR ha sido removido por seguridad. */}
-</td>
+                      {/* Botón de Validar Pago */}
+                      {!a.pagado && (
+                        <button 
+                          onClick={() => validarConMetodo(a.id, a.cantidad, a.correo, a.nombre)} 
+                          className="btn-icon check" 
+                          title="Marcar como Pagado"
+                        >
+                          ✓
+                        </button>
+                      )}
+                      
+                      {/* Botón de Descargar QR (Solo visible si ya pagó) */}
+                      {a.pagado && (
+                        <button 
+                          onClick={() => descargarQR(a.id, a.nombre)} 
+                          className="btn-icon qr" 
+                          title="Descargar Ticket QR"
+                        >
+                          📥
+                        </button>
+                      )}
+
+                      {/* Botón de Eliminar */}
+                      <button 
+                        onClick={() => eliminarAsistente(a.id, a.nombre)} 
+                        className="btn-icon trash" 
+                        title="Eliminar Registro"
+                      >
+                        🗑️
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -298,7 +356,6 @@ const validarConMetodo = async (id, cantidad, email, nombre) => {
         ) : <ScannerStaff />}
       </main>
 
-      {/* MODAL DE REGISTRO */}
       {modalRegistro && (
         <div className="taquilla-overlay">
           <div className="taquilla-modal">

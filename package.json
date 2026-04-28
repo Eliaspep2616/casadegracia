@@ -10,15 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "^1.5.1",
     "@supabase/supabase-js": "^2.103.3",
-    "crypto-js": "^4.2.0",
     "firebase": "^12.11.0",
     "html5-qrcode": "^2.3.8",
     "lucide-react": "^1.8.0",
-    "qrcode.react": "^4.2.0",
+    "qrcode": "^1.5.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-google-recaptcha": "^3.1.0",
     "react-router-dom": "^7.13.2",
     "xlsx": "^0.18.5"
   },

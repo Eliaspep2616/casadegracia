@@ -28,16 +28,17 @@ const CarritoPage = ({ items, alEliminar, alPagar }) => {
               {items.map((item, index) => (
                 <div key={index} className="item-fila-pro">
                   <div className="item-thumb-pro">
-                    <img src="/banner-retiro.jpg" alt="Evento" />
+                    {/* 🔄 IMAGEN DINÁMICA: Toma la del item, si no existe, usa la de respaldo */}
+                    <img src={item.img || "/banner-retiro.jpg"} alt={item.nombreEvento} />
                   </div>
                   <div className="item-detalles-pro">
                     <h3>{item.nombreEvento}</h3>
-                    <p>Fecha: 29 al 31 de Mayo</p>
+                    {/* 🔄 FECHA DINÁMICA */}
+                    <p>Fecha: {item.fecha || "Por confirmar"}</p>
                     <p>Cantidad: {item.cantidad}</p>
                     <span className="precio-unit-pro">${item.precio.toFixed(2)}</span>
                   </div>
                   <div className="item-acciones-pro">
-                    {/* 🔥 BOTÓN DE BORRAR CONECTADO */}
                     <button className="btn-borrar-pro" onClick={() => alEliminar(index)}>
                       <Trash2 size={20} />
                     </button>
@@ -59,7 +60,12 @@ const CarritoPage = ({ items, alEliminar, alPagar }) => {
           <div className="divider-line"></div>
           <div className="resumen-fila"><span>Subtotal</span><span>${subtotal.toFixed(2)}</span></div>
           <div className="resumen-fila total-row-pro"><span>Total</span><strong>${subtotal.toFixed(2)}</strong></div>
-          <button className="btn-pago-final-pro" onClick={() => alPagar(subtotal)} disabled={items.length === 0}>
+          
+          <button 
+            className="btn-pago-final-pro" 
+            onClick={() => alPagar(subtotal)} 
+            disabled={items.length === 0}
+          >
             Realizar Pago
           </button>
         </div>
