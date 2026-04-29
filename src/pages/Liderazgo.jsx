@@ -37,42 +37,42 @@ const Liderazgo = () => {
         </div>
       </section>
 
-      {/* SECCIÓN EQUIPO / OTROS PASTORES - Cuadrícula */}
+      {/* SECCIÓN EQUIPO / OTROS PASTORES - Cuadrícula
       <section className="equipo-section">
         <h2 className="equipo-titulo">EQUIPO PASTORAL</h2>
         
         <div className="equipo-grid">
-          {/* Tarjeta de Líder 1 */}
+           Tarjeta de Líder 1 
           <div className="lider-card">
             <div className="lider-foto bg-gris"></div>
             <h3 className="lider-nombre">Juan y María</h3>
             <p className="lider-area">Campus Norte</p>
           </div>
 
-          {/* Tarjeta de Líder 2 */}
+          Tarjeta de Líder 2
           <div className="lider-card">
             <div className="lider-foto bg-gris"></div>
             <h3 className="lider-nombre">Carlos Pérez</h3>
             <p className="lider-area">Jóvenes & Get Up</p>
           </div>
 
-          {/* Tarjeta de Líder 3 */}
+         Tarjeta de Líder 3 
           <div className="lider-card">
             <div className="lider-foto bg-gris"></div>
             <h3 className="lider-nombre">Ana Gómez</h3>
             <p className="lider-area">Kids</p>
           </div>
 
-           {/* Tarjeta de Líder 4 */}
+         Tarjeta de Líder 4
            <div className="lider-card">
             <div className="lider-foto bg-gris"></div>
             <h3 className="lider-nombre">Luis y Carmen</h3>
             <p className="lider-area">Grupos Pequeños</p>
           </div>
         </div>
-      </section>
+      </section>*/}
 
-    </div>
+    </div> 
   );
 };
 

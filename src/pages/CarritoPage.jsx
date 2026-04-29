@@ -9,7 +9,7 @@ const CarritoPage = ({ items, alEliminar, alPagar }) => {
     <div className="carrito-page-bg">
       <header className="carrito-hero-black">
         <div className="hero-logo-central">
-          <h1 className="logo-temp">GROW</h1>
+          <h1 className="logo-temp">CASA DE GRACIA</h1>
         </div>
       </header>
 
@@ -29,7 +29,7 @@ const CarritoPage = ({ items, alEliminar, alPagar }) => {
                 <div key={index} className="item-fila-pro">
                   <div className="item-thumb-pro">
                     {/* 🔄 IMAGEN DINÁMICA: Toma la del item, si no existe, usa la de respaldo */}
-                    <img src={item.img || "/banner-retiro.jpg"} alt={item.nombreEvento} />
+                    <img src={item.img || "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/banner_grow.png"} alt={item.nombreEvento} />
                   </div>
                   <div className="item-detalles-pro">
                     <h3>{item.nombreEvento}</h3>

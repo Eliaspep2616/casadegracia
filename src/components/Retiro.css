@@ -1,4 +1,3 @@
-
 /* Retiro.css */
 .retiro-wrapper {
   display: flex;
@@ -8,6 +7,7 @@
   min-height: 80vh;
 }
 
+/* Banner de éxito al agregar al carrito */
 .banner-exito {
   position: fixed;
   top: 80px;
@@ -38,6 +38,7 @@
   cursor: pointer;
 }
 
+/* Diseño de la tarjeta de compra */
 .retiro-card {
   background: white;
   display: flex;
@@ -102,6 +103,7 @@
   margin-top: auto;
 }
 
+/* Botones de cantidad y añadir */
 .selector-cantidad {
   display: flex;
   align-items: center;
@@ -152,7 +154,7 @@
   font-size: 1.2rem;
 }
 
-/* 📱 MÓVIL */
+/* 📱 ADAPTACIÓN PARA MÓVIL */
 @media (max-width: 850px) {
   .retiro-card { flex-direction: column; }
   .retiro-visual { min-height: 250px; }

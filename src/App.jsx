@@ -9,6 +9,19 @@ import PanelStaff from './components/PanelStaff';
 import RetiroLanding from './pages/RetiroLanding';
 import Liderazgo from './pages/Liderazgo';
 import './App.css';
+import Footer from './components/Footer';
+
+// 1️⃣ SACAMOS EL FOOTER CONDICIONAL AFUERA (ESTE ES EL LUGAR CORRECTO)
+const FooterCondicional = () => {
+  const location = useLocation();
+  
+  // Ocultamos el footer si estamos en el panel de administración (/admin)
+  if (location.pathname.startsWith('/admin')) {
+    return null;
+  }
+  
+  return <Footer />;
+};
 
 function AppContent() {
   const [carrito, setCarrito] = useState([]);
@@ -24,7 +37,6 @@ function AppContent() {
     setCarrito((prev) => [...prev, nuevoProducto]);
   };
 
-  // 🔥 ESTA FUNCIÓN ELIMINA EL ITEM POR SU ÍNDICE
   const eliminarDelCarrito = (indiceAEliminar) => {
     setCarrito((prevCarrito) => 
       prevCarrito.filter((_, index) => index !== indiceAEliminar)
@@ -33,6 +45,7 @@ function AppContent() {
 
   return (
     <>
+      {/* Navbar oculto en /admin */}
       {!location.pathname.startsWith('/admin') && <Navbar cantidadCarrito={carrito.length} />}
 
       <div className="main-wrapper">
@@ -49,7 +62,7 @@ function AppContent() {
             element={
               <CarritoPage 
                 items={carrito} 
-                alEliminar={eliminarDelCarrito} // 👈 Conectado aquí
+                alEliminar={eliminarDelCarrito} 
                 alPagar={() => setModal({ abierto: true, qty: totalItemsCount, total: totalMontoCalculado })} 
               />
             } 
@@ -58,6 +71,10 @@ function AppContent() {
         </Routes>
       </div>
 
+      {/* 2️⃣ LLAMAMOS AL FOOTER AQUÍ, DESPUÉS DEL MAIN-WRAPPER */}
+      <FooterCondicional />
+
+      {/* Modal de Pago */}
       {modal.abierto && (
         <FormularioRegistro 
           cantidadSeleccionada={modal.qty} 
@@ -73,5 +90,12 @@ function AppContent() {
   );
 }
 
-function App() { return <Router><AppContent /></Router>; }
+function App() { 
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  ); 
+}
+
 export default App;

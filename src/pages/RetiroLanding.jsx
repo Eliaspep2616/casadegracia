@@ -17,7 +17,6 @@ const RetiroLanding = () => {
     return () => observer.disconnect();
   }, []);
 
-  // 1. Agregamos la propiedad "imagen" a cada conferencista
   const conferencistas = [
     { 
       nombre: "Abraham Estrada", 
@@ -29,22 +28,27 @@ const RetiroLanding = () => {
       nombre: "Josue Rincon", 
       cargo: "Pst. Familia de Dios", 
       bio: "Líder apasionado por la formación de familias.",
-      imagen: "/imagen-josue.jpg" // REEMPLAZAR CON LA URL REAL EN SUPABASE
+      imagen: "/imagen-josue.jpg" 
     },
     { 
       nombre: "Diego", 
       cargo: "Adoración y Palabra", 
       bio: "Guía en experiencias profundas de alabanza.",
-      imagen: "/imagen-diego.jpg" // REEMPLAZAR CON LA URL REAL EN SUPABASE
+      imagen: "/imagen-diego.jpg" 
     }
   ];
 
   return (
     <div className="landing-full">
-      <section className="hero-foton">
-        <div className="hero-overlay-dark">
-          <h1 className="hero-title-main">GROW</h1>
-          <p className="hero-subtitle-main">GUAYAQUIL | 29 - 31 DE MAYO</p>
+      
+      {/* --- NUEVA SECCIÓN DEL BANNER PRINCIPAL --- */}
+      <section className="hero-banner-section">
+        <img 
+          src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/banner_grow.png" 
+          alt="Banner GROW 2026" 
+          className="banner-image-main"
+        />
+        <div className="banner-overlay-action">
           <button className="btn-foton-action" onClick={() => navigate('/inscripcion')}>
             ADQUIRIR TUS ENTRADAS ➔
           </button>
@@ -68,7 +72,6 @@ const RetiroLanding = () => {
           {conferencistas.map((c, i) => (
             <div className={`speaker-row oculto-scroll ${i % 2 !== 0 ? 'reverso' : ''}`} key={i}>
               <div className="speaker-image-box">
-                {/* 2. Ahora la imagen es 100% dinámica */}
                 <img 
                   src={c.imagen} 
                   alt={c.nombre} 

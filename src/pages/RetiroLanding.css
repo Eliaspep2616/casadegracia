@@ -1,185 +1,184 @@
-/* RetiroLanding.css */
-
+/* =========================================
+   RESET BÁSICO
+   ========================================= */
 .landing-full {
+  width: 100%;
+  overflow-x: hidden;
   background-color: #ffffff;
-  color: #0f172a;
+  font-family: 'Inter', system-ui, sans-serif;
 }
 
 /* =========================================
-   1. HERO SECTION
+   1. SECCIÓN DEL BANNER Y BOTÓN FLOTANTE
    ========================================= */
-.hero-foton {
-  height: 90vh;
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.5)), 
-              url('/banner-retiro.jpg') center/cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.hero-banner-section {
   position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
-.hero-overlay-dark {
-  text-align: center;
-  color: white;
-  padding: 0 20px;
+.banner-image-main {
+  width: 100%;
+  height: auto;
+  display: block; /* Elimina espacio fantasma debajo de la imagen */
+  object-fit: cover;
 }
 
-.hero-title-main {
-  font-size: clamp(4rem, 18vw, 12rem);
-  font-weight: 900;
-  letter-spacing: -5px;
-  margin-bottom: 5px;
-  text-transform: uppercase;
-  line-height: 0.9;
-}
-
-.hero-subtitle-main {
-  font-size: clamp(1rem, 4vw, 1.4rem);
-  letter-spacing: 5px;
-  font-weight: 700;
-  margin-bottom: 40px;
-  opacity: 0.95;
-  text-transform: uppercase;
+.banner-overlay-action {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%); /* El truco matemático para cortar la línea */
+  width: 90%;
+  max-width: 450px;
+  z-index: 10;
 }
 
 .btn-foton-action {
-  background: white;
-  color: #004a99;
-  border: none;
-  padding: 22px 55px;
-  border-radius: 4px;
+  width: 100%;
+  background-color: black;
+  color: white;
+  font-size: 16px;
   font-weight: 900;
-  font-size: 1.1rem;
-  letter-spacing: 2px;
+  letter-spacing: 1.5px;
+  padding: 22px 20px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  transition: 0.3s ease;
-  text-transform: uppercase;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  transition: transform 0.3s ease;
 }
 
 .btn-foton-action:hover {
-  background: #004a99;
-  color: white;
-  transform: translateY(-5px);
+  transform: translateY(-2px);
 }
 
 /* =========================================
-   2. SECCIÓN DEL CONCEPTO (NUEVA UBICACIÓN)
+   2. SECCIÓN DE CONCEPTO
    ========================================= */
 .concept-section-clean {
-  padding: 80px 5%;
-  background-color: #f8fafc; /* Gris muy suave para separar secciones */
+  background-color: #ffffff;
+  padding-top: 70px; /* Da aire para recibir el botón flotante */
+  padding-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
 .concept-container {
+  width: 90%;
   max-width: 800px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-}
-
-.concept-text-main {
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-  line-height: 1.6;
-  font-weight: 700;
-  color: #1e293b;
-  text-transform: uppercase;
-  letter-spacing: 1px;
 }
 
 .concept-line {
   width: 60px;
   height: 3px;
-  background-color: #004a99;
+  background-color: #003b73;
+  margin: 0 auto 25px auto;
+}
+
+.concept-text-main {
+  color: #003b73;
+  font-size: clamp(1rem, 2.5vw, 1.3rem); /* Texto responsivo por defecto */
+  font-weight: 800;
+  line-height: 1.6;
+  margin: 0 0 25px 0;
 }
 
 /* =========================================
-   3. DISEÑO ZIG-ZAG CONFERENCISTAS
+   3. SECCIÓN DE CONFERENCISTAS (ZIG-ZAG)
    ========================================= */
 .speakers-section-landing {
-  padding: 100px 5%;
-  background: #ffffff;
+  background-color: #f8fafc;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .landing-section-title {
-  text-align: center;
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 900;
-  margin-bottom: 80px;
-  letter-spacing: 2px;
   color: #0f172a;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 50px;
   text-transform: uppercase;
 }
 
 .speakers-zigzag-container {
-  max-width: 1000px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 900px;
   display: flex;
   flex-direction: column;
-  gap: 100px;
+  gap: 60px;
 }
 
 .speaker-row {
   display: flex;
-  align-items: center;      /* Centra verticalmente */
-  justify-content: center;  /* 👈 ESTA ES LA CLAVE: Centra horizontalmente */
-  gap: 60px;                /* Mantiene la separación entre foto y texto */
+  align-items: center;
+  gap: 40px;
 }
+
 .speaker-row.reverso {
   flex-direction: row-reverse;
 }
 
 .speaker-image-box {
-  flex: 0 0 500px; /* Tamaño fijo para que no se deforme */
-  aspect-ratio: 1 / 1; /* Cuadrado perfecto */
-  background-color: #e2e8f0; /* El color gris del placeholder */
-  border-radius: 12px;
-  /* Sombra sutil hacia la izquierda y abajo como en la foto */
-  box-shadow: -12px 15px 35px rgba(0, 0, 0, 0.06); 
-  overflow: hidden;
+  flex: 1;
+  display: flex;
+  justify-content: center;
 }
 
 .speaker-image-box img {
   width: 100%;
-  height: 100%;
-  object-fit: cover; /* Asegura que la foto llene la caja sin estirarse */
-}
-/* El nombre debe ser muy oscuro y pesado */
-.speaker-name-zigzag {
-  font-size: clamp(2.2rem, 4vw, 2.8rem);
-  font-weight: 900;
-  color: #001d3d; /* Azul marino muy oscuro, casi negro */
-  margin-bottom: 4px;
+  max-width: 350px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
-/* La etiqueta azul debe estar en mayúsculas y con espacio entre letras */
+.speaker-text-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.speaker-name-zigzag {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  color: #0f172a;
+  margin: 0 0 5px 0;
+  font-weight: 900;
+}
+
 .speaker-role-zigzag {
-  display: block;
-  font-size: 14px;
+  color: #1ed94f;
   font-weight: 800;
-  color: #004a99; /* El azul vibrante de la marca */
+  font-size: 1rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
-/* La descripción debe ser de un gris suave y delgado */
 .speaker-bio-zigzag {
+  color: #475569;
+  line-height: 1.6;
   font-size: 1.1rem;
-  font-weight: 400;
-  color: #64748b; /* Gris pizarra claro */
-  line-height: 1.5;
+  margin: 0;
 }
+
 /* =========================================
-   ANIMACIONES DE SCROLL Y RESPONSIVE
+   4. ANIMACIONES (Observer)
    ========================================= */
 .oculto-scroll {
   opacity: 0;
-  transform: translateY(50px);
-  transition: all 0.8s ease-out;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 .mostrar-scroll {
@@ -187,52 +186,38 @@
   transform: translateY(0);
 }
 
+/* =========================================
+   5. 📱 MODO CELULAR (Responsive Real)
+   ========================================= */
 @media (max-width: 768px) {
-  .hero-foton { height: 80vh; }
+  
+  /* El botón ocupa más espacio en pantallas pequeñas */
+  .banner-overlay-action {
+    width: 95%; 
+  }
   
   .btn-foton-action {
-    width: 100%;
-    padding: 20px;
+    padding: 18px 15px;
+    font-size: 14px;
   }
 
-  .speaker-row, .speaker-row.reverso {
+  /* Rompemos el Zig-Zag y apilamos la foto arriba y texto abajo */
+  .speaker-row, 
+  .speaker-row.reverso {
     flex-direction: column;
     text-align: center;
-    gap: 30px;
+    gap: 25px;
   }
-
-  .speaker-image-box {
-    width: 100%;
-    max-width: 320px;
-    margin: 0 auto;
+  
+  .speaker-image-box img {
+    max-width: 280px;
   }
-}
-/* Resumen de cambios clave para el diseño */
-.concept-section-clean {
-  padding: 60px 5%;
-  background-color: #f8fafc;
-  text-align: center;
-}
-
-.concept-text-main {
-  font-size: clamp(1rem, 2.5vw, 1.3rem);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.hero-foton {
-  height: 85vh; /* Un poco menos de pantalla completa para ver que hay contenido abajo */
-}
-
-.btn-foton-action {
-  width: auto;
-  min-width: 280px;
-}
-
-@media (max-width: 768px) {
-  .btn-foton-action { width: 100%; }
-  .concept-section-clean { padding: 40px 20px; }
+  
+  .speaker-text-box {
+    align-items: center; /* Centramos el texto de los conferencistas */
+  }
+  
+  .concept-section-clean {
+    padding-top: 50px;
+  }
 }

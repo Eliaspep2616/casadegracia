@@ -10,26 +10,26 @@ const Home = () => {
     { 
       id: 1, 
       titulo: "RETIRO DE PROVISIÓN", 
-      tag: "EDICIÓN 2026",
+      tag: "GROW",
       desc: "Una experiencia de inmersión espiritual en el corazón de Guayaquil.",
-      img: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=1600", 
+      img: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/banner_grow.png", 
       link: "/retiro" 
     },
     { 
       id: 2, 
-      titulo: "GRACIA YOUTH", 
-      tag: "CONGRESO",
+      titulo: "KNOCKOUT", 
+      tag: "CAMPAMENTO",
       desc: "Redefiniendo el propósito de una nueva generación tecnológica.",
       img: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=1600", 
       link: "#" 
     },
     { 
       id: 3, 
-      titulo: "NOCHE DE ADORACIÓN", 
-      tag: "LIVE EXPERIENCE",
-      desc: "Atmósfera, música y palabra en una sola frecuencia.",
-      img: "https://images.unsplash.com/photo-1478147427282-58a87a120781?q=80&w=1600", 
-      link: "#" 
+      titulo: "Extra"+"\n ordinarias",
+      tag: "MUJERES VALIENTES",
+      desc: "16 DE MAYO",
+      img: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/Extraordinarias.webp", 
+      link: "https://www.instagram.com/extraordinariascdg/" 
     }
   ];
 
@@ -122,36 +122,69 @@ const Home = () => {
       </section>
 
       {/* 🗓️ REUNIONES */}
-      <section className="ministries-section">
-        <h2 className="section-title">REUNIONES</h2>
-        <div className="ministries-grid">
-          <div className="ministry-card bg-kids">
-            <h3>Gracia kids Kids</h3>
-            <p>Niños y Niñas</p>
-          </div>
-          <div className="ministry-card bg-getup">
-            <h3>Gracia Youth</h3>
-            <p>Jóvenes de Secundaria</p>
-          </div>
-          <div className="ministry-card bg-central">
-            <h3>viernes de enseñanza</h3>
-            <p>Para aprender</p>
-          </div>
-          <div className="ministry-card bg-punto">
-            <h3>Domingo de Familia</h3>
-            <p>toda la familia</p>
-          </div>
-        </div>
-      </section>
+     <section className="ministries-section">
+  <h2 className="section-title">REUNIONES</h2>
+  <div className="ministries-grid">
+    
+    <div className="ministry-card bg-kids">
+      <img 
+        src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/foto-kids.jpg" 
+        alt="Gracia kids" 
+        className="ministry-image" 
+      />
+      <div className="ministry-content">
+        <h3>Gracia kids</h3>
+        <p>Niños y Niñas</p>
+      </div>
+    </div>
 
+    <div className="ministry-card bg-getup">
+      <img 
+        src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/foto-youth.jpg" 
+        alt="Gracia Youth" 
+        className="ministry-image" 
+      />
+      <div className="ministry-content">
+        <h3>Gracia Youth</h3>
+        <p>Jóvenes</p>
+      </div>
+    </div>
+
+    <div className="ministry-card bg-central">
+      <img 
+        src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/foto-extraordinaria.jpg" 
+        alt="Extraordinaria" 
+        className="ministry-image" 
+      />
+      <div className="ministry-content">
+        <h3>Extraordinaria</h3>
+        <p>Para aprender</p>
+      </div>
+    </div>
+
+    <div className="ministry-card bg-punto">
+      <img 
+        src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/foto-familia.jpg" 
+        alt="Domingo de Familia" 
+        className="ministry-image" 
+      />
+      <div className="ministry-content">
+        <h3>Domingo de Familia</h3>
+        <p>Toda la familia</p>
+      </div>
+    </div>
+
+  </div>
+</section>
       {/* 🤝 GRUPOS PEQUEÑOS */}
+{/*
       <section className="groups-section">
         <div className="groups-content">
           <h2>Grupos Pequeños</h2>
           <p>La mejor forma de encontrar amigos, conectarnos como familia y crecer como personas en base a intereses comunes.</p>
           <Link to="/grupos" className="btn-primary dark-btn">VER DIRECTORIO</Link>
         </div>
-      </section>
+      </section>*/}
     </div>
   );
 };
