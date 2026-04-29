@@ -12,15 +12,31 @@ const RetiroLanding = () => {
         else entry.target.classList.remove('mostrar-scroll');
       });
     }, { threshold: 0.1 });
+    
     document.querySelectorAll('.oculto-scroll').forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
+  // 1. Agregamos la propiedad "imagen" a cada conferencista
   const conferencistas = [
-     { nombre: "Abraham", cargo: "Conferencista Invitado", bio: "Especialista en madurez espiritual." },
-    { nombre: "Josue Rincon", cargo: "Pst. Familia de Dios", bio: "Líder apasionado por la formación de familias." },
-   
-   { nombre: "Diego", cargo: "Adoración y Palabra", bio: "Guía en experiencias profundas de alabanza." }
+    { 
+      nombre: "Abraham Estrada", 
+      cargo: "Conferencista Invitado", 
+      bio: "Especialista en madurez espiritual.",
+      imagen: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/Abraham_Estrada.webp"
+    },
+    { 
+      nombre: "Josue Rincon", 
+      cargo: "Pst. Familia de Dios", 
+      bio: "Líder apasionado por la formación de familias.",
+      imagen: "/imagen-josue.jpg" // REEMPLAZAR CON LA URL REAL EN SUPABASE
+    },
+    { 
+      nombre: "Diego", 
+      cargo: "Adoración y Palabra", 
+      bio: "Guía en experiencias profundas de alabanza.",
+      imagen: "/imagen-diego.jpg" // REEMPLAZAR CON LA URL REAL EN SUPABASE
+    }
   ];
 
   return (
@@ -35,7 +51,6 @@ const RetiroLanding = () => {
         </div>
       </section>
 
-      {/* CONCEPTO NO INVASIVO ABAJO DEL HEADER */}
       <section className="concept-section-clean">
         <div className="concept-container">
           <div className="concept-line"></div>
@@ -53,11 +68,12 @@ const RetiroLanding = () => {
           {conferencistas.map((c, i) => (
             <div className={`speaker-row oculto-scroll ${i % 2 !== 0 ? 'reverso' : ''}`} key={i}>
               <div className="speaker-image-box">
-              <img 
-  src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/Abraham_Estrada.webp"
-  alt="Abraham Estrada"
-  loading="lazy"
-/>
+                {/* 2. Ahora la imagen es 100% dinámica */}
+                <img 
+                  src={c.imagen} 
+                  alt={c.nombre} 
+                  loading="lazy" 
+                />
               </div>
               <div className="speaker-text-box">
                 <h3 className="speaker-name-zigzag">{c.nombre}</h3>
