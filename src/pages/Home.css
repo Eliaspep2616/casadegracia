@@ -270,7 +270,7 @@
   width: 100%;
   height: 60vh;
   border-radius: 40px; /* Puntas muy redondeadas como la imagen */
-  background-image: url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?q=80&w=1600'); 
+  background-image: url('https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/portada.webp'); 
   background-size: cover;
   background-position: center;
   position: relative;

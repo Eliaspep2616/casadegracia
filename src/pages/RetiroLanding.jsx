@@ -17,9 +17,10 @@ const RetiroLanding = () => {
   }, []);
 
   const conferencistas = [
-    //{ nombre: "Josue Rincon", cargo: "Pst. Familia de Dios", bio: "Líder apasionado por la formación de familias." },
-    { nombre: "Abraham", cargo: "Conferencista Invitado", bio: "Especialista en madurez espiritual." },
-   // { nombre: "Diego", cargo: "Adoración y Palabra", bio: "Guía en experiencias profundas de alabanza." }
+     { nombre: "Abraham", cargo: "Conferencista Invitado", bio: "Especialista en madurez espiritual." },
+    { nombre: "Josue Rincon", cargo: "Pst. Familia de Dios", bio: "Líder apasionado por la formación de familias." },
+   
+   { nombre: "Diego", cargo: "Adoración y Palabra", bio: "Guía en experiencias profundas de alabanza." }
   ];
 
   return (
@@ -51,7 +52,13 @@ const RetiroLanding = () => {
         <div className="speakers-zigzag-container">
           {conferencistas.map((c, i) => (
             <div className={`speaker-row oculto-scroll ${i % 2 !== 0 ? 'reverso' : ''}`} key={i}>
-              <div className="speaker-image-box"></div>
+              <div className="speaker-image-box">
+              <img 
+  src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/Abraham_Estrada.webp"
+  alt="Abraham Estrada"
+  loading="lazy"
+/>
+              </div>
               <div className="speaker-text-box">
                 <h3 className="speaker-name-zigzag">{c.nombre}</h3>
                 <span className="speaker-role-zigzag">{c.cargo}</span>
