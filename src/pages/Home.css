@@ -148,7 +148,7 @@
 .f-glass-card { background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; max-width: 500px; border-radius: 8px; transform: translateX(-50px); opacity: 0; transition: all 0.8s ease 0.4s; }
 .f-slide.active .f-glass-card { transform: translateX(0); opacity: 1; }
 
-.f-tag { color: #004a99; font-weight: 900; font-size: 0.8rem; letter-spacing: 4px; display: block; margin-bottom: 10px; }
+.f-tag { color:#eeff00; font-weight: 900; font-size: 0.8rem; letter-spacing: 4px; display: block; margin-bottom: 10px; }
 .f-title { font-size: clamp(2rem, 4vw, 3rem); color: white; font-weight: 900; line-height: 1; margin-bottom: 15px; text-transform: uppercase; }
 .f-description { white-space: pre-line;
 color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 30px; line-height: 1.5; }
@@ -348,7 +348,7 @@ color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 30px; line-height:
   margin-bottom: 30px;
   letter-spacing: -3px;
   color: #1a1a1a;
-  text-transform: lowercase; /* Estilo de la imagen */
+  /* Estilo de la imagen */
 }
 
 .hero-main-rounded-container {

@@ -1,5 +1,6 @@
 import React from 'react';
 import './Footer.css';
+import { FaInstagram, FaFacebook } from 'react-icons/fa'; /* 🚨 Importación de react-icons */
 
 const Footer = () => {
   // Obtenemos el año actual automáticamente para el Copyright
@@ -31,12 +32,15 @@ const Footer = () => {
         <div className="footer-seccion">
           <h3 className="footer-titulo">Síguenos</h3>
           <div className="footer-redes">
+            
             <a href="https://www.instagram.com/casadegracia_ec" target="_blank" rel="noopener noreferrer" className="red-link">
-              @casadegracia_ec
+              <FaInstagram size={20} /> @casadegracia_ec
             </a>
+
             <a href="https://www.facebook.com/CasaDeGraciaJNF" target="_blank" rel="noopener noreferrer" className="red-link">
-              Facebook
+              <FaFacebook size={20} /> Facebook
             </a>
+
           </div>
         </div>
 
