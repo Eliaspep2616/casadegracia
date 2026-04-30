@@ -38,7 +38,7 @@ const Footer = () => {
             </a>
 
             <a href="https://www.facebook.com/CasaDeGraciaJNF" target="_blank" rel="noopener noreferrer" className="red-link">
-              <FaFacebook size={20} /> Facebook
+              <FaFacebook size={20} /> Casa de Gracia JNF
             </a>
 
           </div>

@@ -48,24 +48,26 @@
   margin: 0;
 }
 
+/* Esto acomoda los enlaces uno debajo del otro con un buen espacio */
 .footer-redes {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 15px; 
 }
 
+/* Esta es la regla de oro para centrar el icono con el texto */
 .red-link {
-  color: #cbd5e1;
+  display: flex; /* Cambiamos a flex para tener control total */
+  align-items: center; /* 🚨 Esto centra todo verticalmente a la perfección */
+  gap: 10px; /* Separación exacta entre el icono y la primera letra */
   text-decoration: none;
+  color: #fff; /* Asegúrate de poner el color correcto que estabas usando */
   font-size: 1rem;
-  font-weight: 600;
-  transition: color 0.2s ease, transform 0.2s ease;
-  display: inline-block;
+  transition: all 0.3s ease;
 }
 
 .red-link:hover {
-  color: #38bdf8;
-  transform: translateX(5px); /* Pequeña animación al pasar el mouse */
+  color: #00aced; /* El color que quieras al pasar el mouse */
 }
 
 .footer-copyright {

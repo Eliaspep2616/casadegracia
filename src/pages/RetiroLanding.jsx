@@ -20,7 +20,7 @@ const RetiroLanding = () => {
   const conferencistas = [
     { 
       nombre: "Abraham Estrada", 
-      cargo: "Conferencista Invitado", 
+      cargo: "Pst. Casa de Dios en la Roca", 
       bio: "Especialista en madurez espiritual.",
       imagen: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/Abraham_Estrada.webp"
     },
@@ -28,13 +28,13 @@ const RetiroLanding = () => {
       nombre: "Josue Rincon", 
       cargo: "Pst. Familia de Dios", 
       bio: "Líder apasionado por la formación de familias.",
-      imagen: "/imagen-josue.jpg" 
+      imagen: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/Josue_Rincon.webp" 
     },
     { 
-      nombre: "Diego", 
+      nombre: "Diego Vasquez", 
       cargo: "Adoración y Palabra", 
       bio: "Guía en experiencias profundas de alabanza.",
-      imagen: "/imagen-diego.jpg" 
+      imagen: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/Diego_Vasquez.webp" 
     }
   ];
 
