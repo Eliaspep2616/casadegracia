@@ -55,14 +55,15 @@
   gap: 15px; 
 }
 
-/* Esta es la regla de oro para centrar el icono con el texto */
-.red-link {
-  display: flex; /* Cambiamos a flex para tener control total */
-  align-items: center; /* 🚨 Esto centra todo verticalmente a la perfección */
-  gap: 10px; /* Separación exacta entre el icono y la primera letra */
+/* Blindamos el enlace para que su color no cambie a azul y mantenga la estructura */
+.red-link, 
+.red-link:visited, 
+.red-link:active {
+  display: inline-flex; /* inline-flex respeta el centrado mejor que flex */
+  align-items: center; /* Centrado vertical entre icono y texto */
+  gap: 10px;
   text-decoration: none;
-  color: #fff; /* Asegúrate de poner el color correcto que estabas usando */
-  font-size: 1rem;
+  color: #f8fafc; /* Forzamos el color blanco para matar el azul */
   transition: all 0.3s ease;
 }
 
@@ -86,7 +87,13 @@
     gap: 40px;
   }
 
-  .red-link:hover {
-    transform: none; /* Quitamos la animación de mover al lado en celular */
+  /* Obliga a los enlaces flex a centrarse horizontalmente en el celular */
+  .footer-redes {
+    align-items: center; 
+  }
+
+  /* El empujoncito del icono hacia abajo solo en celular */
+  .red-link svg {
+    transform: translateY(2px); 
   }
 }
