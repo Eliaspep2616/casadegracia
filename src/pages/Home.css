@@ -150,7 +150,8 @@
 
 .f-tag { color: #004a99; font-weight: 900; font-size: 0.8rem; letter-spacing: 4px; display: block; margin-bottom: 10px; }
 .f-title { font-size: clamp(2rem, 4vw, 3rem); color: white; font-weight: 900; line-height: 1; margin-bottom: 15px; text-transform: uppercase; }
-.f-description { color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 30px; line-height: 1.5; }
+.f-description { white-space: pre-line;
+color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 30px; line-height: 1.5; }
 
 .f-btn { display: inline-flex; align-items: center; gap: 15px; background: white; color: black; padding: 12px 28px; font-weight: 800; font-size: 0.85rem; text-decoration: none; border-radius: 4px; }
 
@@ -163,10 +164,92 @@
 /* =========================================
    RESTO DEL CONTENIDO (REUNIONES, GRUPOS)
    ========================================= */
-.ministries-section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
-.section-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 40px; }
-.ministries-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-.ministry-card { padding: 60px 30px; color: white; border-radius: 8px; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; text-transform: uppercase; }
+/* =========================================
+   SECCIÓN DE REUNIONES (CONTENEDOR Y GRID)
+   ========================================= */
+.ministries-section { 
+  padding: 60px 20px; 
+  max-width: 1200px; 
+  margin: 0 auto; 
+}
+
+.section-title { 
+  font-size: 2.5rem; 
+  font-weight: 900; 
+  margin-bottom: 40px; 
+  text-align: center; /* Centramos el título para que se vea más ordenado */
+}
+
+.ministries-grid { 
+  display: grid; 
+  /* AQUÍ ESTÁ LA MAGIA: Crea columnas automáticamente que no midan menos de 280px */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  gap: 25px; 
+}
+
+/* =========================================
+   DISEÑO DE LAS TARJETAS (ESTILO PREMIUM)
+   ========================================= */
+.ministry-card { 
+  position: relative; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: flex-end; 
+  border-radius: 12px; 
+  overflow: hidden; 
+  min-height: 380px; 
+  padding: 0; 
+  color: white;
+  text-transform: uppercase;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+  transition: transform 0.3s ease;
+}
+
+.ministry-card:hover {
+  transform: translateY(-5px);
+}
+
+.ministry-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1; 
+}
+
+/* LA CAPA DE DEGRADADO OSCURO */
+.ministry-card::after {
+  content: '';
+  position: absolute;
+  inset: 0; 
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+  z-index: 2; 
+}
+
+/* EL TEXTO FLOTANDO SOBRE TODO */
+.ministry-content {
+  position: relative;
+  z-index: 3; 
+  padding: 30px 25px; 
+  text-align: left;
+}
+
+.ministry-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.5); 
+}
+
+.ministry-content p {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e2e8f0; 
+}
 .bg-kids { background-color: #FF5A5F; }
 .bg-getup { background-color: #087E8B; }
 .bg-central { background-color: #3C3C3C; }

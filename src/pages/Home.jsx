@@ -19,8 +19,8 @@ const Home = () => {
       id: 2, 
       titulo: "KNOCKOUT", 
       tag: "CAMPAMENTO",
-      desc: "Redefiniendo el propósito de una nueva generación tecnológica.",
-      img: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=1600", 
+      desc: "Del 29 al 30 de Agosto\nSepara tu cupo ahora mismo",
+      img: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/knockout.webp", 
       link: "#" 
     },
     { 
@@ -97,9 +97,9 @@ const Home = () => {
                   <span className="f-tag">{ev.tag}</span>
                   <h2 className="f-title">{ev.titulo}</h2>
                   <p className="f-description">{ev.desc}</p>
-                  <Link to={ev.link} className="f-btn">
+                 {/* <Link to={ev.link} className="f-btn">
                     EXPLORAR PROYECTO <ArrowRight size={18} />
-                  </Link>
+                  </Link>*/}
                 </div>
               </div>
             </div>
@@ -128,49 +128,61 @@ const Home = () => {
     
     <div className="ministry-card bg-kids">
       <img 
-        src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/foto-kids.jpg" 
+        src="/assets/Gracia_Kids.webp" 
         alt="Gracia kids" 
         className="ministry-image" 
       />
       <div className="ministry-content">
         <h3>Gracia kids</h3>
-        <p>Niños y Niñas</p>
+        <p>Domingos 10:00 AM</p>
       </div>
     </div>
+     <div className="ministry-card bg-kids">
+      <img 
+        src="/assets/Enseñanza.webp" 
+        alt="Gracia kids" 
+        className="ministry-image" 
+      />
+      <div className="ministry-content">
+        <h3>Enseñanza</h3>
+        <p>Viernes 7:30 PM</p>
+      </div>
+    </div>
+    
 
     <div className="ministry-card bg-getup">
       <img 
-        src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/foto-youth.jpg" 
+        src="/assets/Gracia_youth.webp" 
         alt="Gracia Youth" 
         className="ministry-image" 
       />
       <div className="ministry-content">
         <h3>Gracia Youth</h3>
-        <p>Jóvenes</p>
+        <p>Poner Fecha</p>
       </div>
     </div>
 
     <div className="ministry-card bg-central">
       <img 
-        src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/foto-extraordinaria.jpg" 
+        src="/assets/Extraordinaria_img.webp" 
         alt="Extraordinaria" 
         className="ministry-image" 
       />
       <div className="ministry-content">
         <h3>Extraordinaria</h3>
-        <p>Para aprender</p>
+        <p>16 de Mayo</p>
       </div>
     </div>
 
     <div className="ministry-card bg-punto">
       <img 
-        src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/foto-familia.jpg" 
+        src="/assets/Domingo_fa.webp" 
         alt="Domingo de Familia" 
         className="ministry-image" 
       />
       <div className="ministry-content">
         <h3>Domingo de Familia</h3>
-        <p>Toda la familia</p>
+        <p>Domingo 10:00 AM</p>
       </div>
     </div>
 
