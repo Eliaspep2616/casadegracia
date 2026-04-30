@@ -160,3 +160,20 @@
   align-items: center;
   z-index: 999999; /* Por encima de todo en la caja */
 }
+.red-link {
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: color 0.2s ease, transform 0.2s ease;
+  
+  /* ESTO ES LO NUEVO: Alinea el icono y el texto perfectamente */
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Espacio entre el icono y el texto */
+}
+
+.red-link:hover {
+  color: #38bdf8;
+  transform: translateX(5px);
+}

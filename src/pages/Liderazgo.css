@@ -54,7 +54,7 @@
 }
 
 .pastores-nombres {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(1.5rem, 5vw, 3rem);
   font-weight: 900;
   line-height: 1;
   text-transform: uppercase;

@@ -16,22 +16,22 @@ const Liderazgo = () => {
           <div className="pastores-imagen-wrapper">
             {/* Reemplaza el src con tu foto */}
             <img 
-              src="https://via.placeholder.com/600x800" 
+              src="/assets/Pastores.webp" 
               alt="Pastores Principales" 
               className="img-pastores" 
             />
           </div>
           <div className="pastores-info">
-            <h2 className="pastores-nombres">Nombres de<br/>los Pastores</h2>
+            <h2 className="pastores-nombres">Reinaldo Romero<br/>& Adriana Lara</h2>
             <span className="pastores-rol">PASTORES PRINCIPALES</span>
             <p className="pastores-bio">
-              Somos una iglesia que ama a Dios y a las personas. Nuestro corazón 
-              es ver vidas cambiadas por Jesús y construir una casa donde todos 
-              puedan encontrar un lugar al cual pertenecer.
+             Desde 2015, los pastores Reinaldo y Adriana asumieron el liderazgo de Casa de Gracia,
+             dando continuidad al legado de los pastores Fausto Romero y Maria Berrones.
+           
             </p>
             <p className="pastores-bio">
-              Creemos en empoderar a la siguiente generación y en el potencial 
-              que Dios ha puesto en ti.
+              En sus corazones arde el deseo de seguir viendo vidas transformadas y generaciones bendecidas por Jesús.
+              Creen firmemente que la iglesia es la esperanza de este mundo y un lugar donde cada persona puede sentirse como en casa.
             </p>
           </div>
         </div>

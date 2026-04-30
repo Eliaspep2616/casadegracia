@@ -376,6 +376,7 @@ color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 30px; line-height:
   color: white;
   font-size: 1.8rem;
   font-weight: 900;
+   line-height: 1;
   margin: 0;
 }
 
@@ -425,6 +426,7 @@ color: rgba(255,255,255,0.7); font-size: 1rem; margin-bottom: 30px; line-height:
 /* ... (el resto de estilos .f-slide, .f-overlay, .f-glass-card, etc. se mantienen) ... */
 
 @media (max-width: 768px) {
+  .hero-inner-title{ font-size: 1.2rem; }
   .hero-header-text { font-size: 3.5rem; }
   .hero-main-rounded-container { height: 40vh; border-radius: 20px; }
   .hero-content-overlay { flex-direction: column; align-items: flex-start; gap: 20px; padding: 20px; }

@@ -79,7 +79,7 @@ const RetiroDeProvision = ({ onComprar }) => {
           </p>
 
           <div className="meta-data">
-            <p>📅 29 hasta el 31 de Mayo</p>
+            <p>📅 29 y 30 de Mayo</p>
             <p>📍 Guayaquil, Ecuador</p>
           </div>
 

@@ -27,7 +27,7 @@ const Home = () => {
       id: 3, 
       titulo: "Extra"+"\n ordinarias",
       tag: "MUJERES VALIENTES",
-      desc: "16 DE MAYO",
+      desc: "sábado 16 DE MAYO 7PM",
       img: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/Extraordinarias.webp", 
       link: "https://www.instagram.com/extraordinariascdg/" 
     }
@@ -46,11 +46,11 @@ const Home = () => {
       
       {/* 🏠 NUEVA CABECERA ESTILO IMAGEN */}
       <section className="hero-reference-section">
-        <h1 className="hero-header-text">bienvenido<br/>a casa</h1>
+        <h1 className="hero-header-text">Bienvenido<br/>a casa</h1>
         
         <div className="hero-main-rounded-container">
           <div className="hero-content-overlay">
-            <h2 className="hero-inner-title">conoce gracia guayaquil</h2>
+            <h2 className="hero-inner-title">CONOCE MÁS DE NOSOTROS</h2>
             
             <div className="hero-inner-buttons">
               {/* Botón que abre el mapa de Guayaquil */}
@@ -144,7 +144,7 @@ const Home = () => {
         className="ministry-image" 
       />
       <div className="ministry-content">
-        <h3>Enseñanza</h3>
+        <h3>viernes <br />de discipulado</h3>
         <p>Viernes 7:30 PM</p>
       </div>
     </div>
@@ -158,7 +158,8 @@ const Home = () => {
       />
       <div className="ministry-content">
         <h3>Gracia Youth</h3>
-        <p>Poner Fecha</p>
+        <p>Sábado 09 mayo 6:30 PM 
+ | <br />13 junio</p>
       </div>
     </div>
 
@@ -169,8 +170,8 @@ const Home = () => {
         className="ministry-image" 
       />
       <div className="ministry-content">
-        <h3>Extraordinaria</h3>
-        <p>16 de Mayo</p>
+        <h3>Extraordinarias</h3>
+        <p>Mujeres con identidad, asignación y propósito.</p>
       </div>
     </div>
 
@@ -181,7 +182,7 @@ const Home = () => {
         className="ministry-image" 
       />
       <div className="ministry-content">
-        <h3>Domingo de Familia</h3>
+        <h3>Domingo <br />en familia </h3>
         <p>Domingo 10:00 AM</p>
       </div>
     </div>
