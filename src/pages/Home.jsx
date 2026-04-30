@@ -165,7 +165,7 @@ const Home = () => {
 
     <div className="ministry-card bg-central">
       <img 
-        src="/assets/Extraordinaria_img.webp" 
+        src="/assets/Extraordinaria_imgV2.webp" 
         alt="Extraordinaria" 
         className="ministry-image" 
       />
