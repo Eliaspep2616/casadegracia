@@ -1,74 +1,58 @@
 /* Footer.css */
 .footer-principal {
-  background-color: #141414; /* Un azul marino casi negro, muy elegante */
+  background-color: #141414;
   color: #f8fafc;
   padding: 60px 20px 20px 20px;
-  font-family: 'Inter', system-ui, sans-serif;
-  margin-top: auto; /* Empuja el footer siempre al fondo de la página */
+  font-family: 'Inter', system-ui, sans-serif; /* */
+  margin-top: auto; 
 }
 
 .footer-contenido {
   max-width: 1100px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas en desktop */
   gap: 40px;
   margin-bottom: 40px;
 }
 
 .footer-titulo {
-  color: #38bdf8; /* Un celeste vibrante para resaltar los títulos */
+  color: #38bdf8;
   font-size: 1.2rem;
-  font-weight: 800;
+  font-weight: 800; /*[cite: 8] */
   margin-bottom: 20px;
   text-transform: uppercase;
   letter-spacing: 1px;
+  text-align: center; /* Títulos centrados */
 }
 
-.footer-lista {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.footer-lista li {
-  margin-bottom: 10px;
-  color: #cbd5e1;
-  font-size: 0.95rem;
-}
-
-.footer-lista strong {
-  color: #ffffff;
-}
-
+/* Alineación central para el bloque de dirección e icono */
 .footer-texto {
   color: #cbd5e1;
   line-height: 1.6;
   font-size: 0.95rem;
   margin: 0;
+  display: flex;
+  flex-direction: column; /* Icono arriba y texto abajo para un mejor centrado */
+  align-items: center;    /* Centra horizontalmente el icono y el span */
+  text-align: center;     /* Centra las líneas de texto dentro del span */
+  gap: 8px;
 }
 
-/* Esto acomoda los enlaces uno debajo del otro con un buen espacio */
 .footer-redes {
   display: flex;
   flex-direction: column;
+  align-items: center; /* Centra la lista de redes sociales */
   gap: 15px; 
 }
 
-/* Blindamos el enlace para que su color no cambie a azul y mantenga la estructura */
-.red-link, 
-.red-link:visited, 
-.red-link:active {
-  display: inline-flex; /* inline-flex respeta el centrado mejor que flex */
-  align-items: center; /* Centrado vertical entre icono y texto */
+.red-link {
+  display: inline-flex; 
+  align-items: center; 
   gap: 10px;
   text-decoration: none;
-  color: #f8fafc; /* Forzamos el color blanco para matar el azul */
+  color: #f8fafc;
   transition: all 0.3s ease;
-}
-
-.red-link:hover {
-  color: #00aced; /* El color que quieras al pasar el mouse */
 }
 
 .footer-copyright {
@@ -79,21 +63,16 @@
   font-size: 0.85rem;
 }
 
-/* 📱 MODO CELULAR */
+/* 📱 MODO CELULAR[cite: 4] */
 @media (max-width: 768px) {
   .footer-contenido {
-    grid-template-columns: 1fr; /* Pasa de 3 columnas a 1 sola */
+    grid-template-columns: 1fr; /* Una sola columna[cite: 4] */
     text-align: center;
     gap: 40px;
   }
 
-  /* Obliga a los enlaces flex a centrarse horizontalmente en el celular */
-  .footer-redes {
-    align-items: center; 
-  }
-
-  /* El empujoncito del icono hacia abajo solo en celular */
-  .red-link svg {
-    transform: translateY(2px); 
+  .footer-texto {
+    /* Mantiene la configuración central del desktop */
+    justify-content: center;
   }
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import './Footer.css';
 import { FaInstagram, FaFacebook } from 'react-icons/fa'; /* 🚨 Importación de react-icons */
+import { MapPin, Map } from 'lucide-react';
+
 
 const Footer = () => {
   // Obtenemos el año actual automáticamente para el Copyright
@@ -20,14 +22,27 @@ const Footer = () => {
         </div>
 
         {/* Columna 2: Ubicación */}
-        <div className="footer-seccion">
+<div className="footer-seccion">
           <h3 className="footer-titulo">Encuéntranos</h3>
-          <p className="footer-texto">
-            Domingo Norero C., 090409<br />
-            Guayaquil, Ecuador
-          </p>
+          <a 
+            href="https://maps.app.goo.gl/ZXtQLQtb9eMktU2w7" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{ textDecoration: 'none', color: 'inherit' }}
+          >
+            {/* Cambiamos la <p> por un <div> y eliminamos los style conflictivos */}
+            <div className="footer-texto">
+              {/* Le puse el color celeste de tus títulos para que combine */}
+              <MapPin size={28} color="#38bdf8" /> 
+              
+              <span>
+                Domingo Norero C., 090409<br />
+                (24 y Bolivia)<br />
+                Guayaquil, Ecuador
+              </span>
+            </div>
+          </a>
         </div>
-
         {/* Columna 3: Redes Sociales */}
         <div className="footer-seccion">
           <h3 className="footer-titulo">Síguenos</h3>
