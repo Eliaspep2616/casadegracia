@@ -251,7 +251,7 @@ const PanelStaff = () => {
         <div style={{display: 'flex', gap: '15px', marginBottom: '20px', flexWrap: 'wrap'}}>
           <div className="stat-card" style={{borderLeft: '4px solid #3b82f6'}}>
             <p>TOTAL VENDIDAS</p>
-            <h2>{stats.totalCompradas}</h2>
+            <h2>{stats.pagadas}</h2>
           </div>
           <div className="stat-card" style={{borderLeft: '4px solid #f59e0b'}}>
             <p>POR VALIDAR</p>
