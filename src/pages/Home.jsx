@@ -17,7 +17,7 @@ const Home = () => {
     },
     { 
       id: 2, 
-      titulo: "KNOCKOUT", 
+      titulo: "KNOCK OUT", 
       tag: "CAMPAMENTO",
       desc: "Del 29 al 30 de Agosto\nSepara tu cupo ahora mismo",
       img: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/knockout.webp", 
@@ -26,7 +26,7 @@ const Home = () => {
     { 
       id: 3, 
       titulo: "Extra"+"\n ordinarias",
-      tag: "MUJERES VALIENTES",
+      tag: "",
       desc: "sábado 16 DE MAYO 7PM",
       img: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/Extraordinarias.webp", 
       link: "https://www.instagram.com/extraordinariascdg/" 
@@ -78,7 +78,7 @@ const Home = () => {
 
       {/* 📖 CONOCE LA IGLESIA / PASTORES */}
       <section className="about-section">
-        <h2 className="about-title">Somos una iglesia donde amamos a las personas</h2>
+        <h2 className="about-title">Somos una iglesia que ama a las personas</h2>
         <p className="about-text">Creemos que su Palabra hace la obra y nos encantaría que esta sea una realidad en tu vida.</p>
         <Link to="/Liderazgo" className="link-arrow">Conoce a nuestros pastores ➔</Link>
       </section>
@@ -122,10 +122,22 @@ const Home = () => {
       </section>
 
       {/* 🗓️ REUNIONES */}
+      
+      
      <section className="ministries-section">
   <h2 className="section-title">REUNIONES</h2>
   <div className="ministries-grid">
-    
+    <div className="ministry-card bg-punto">
+      <img 
+        src="/assets/Gracia_Baby.webp" 
+        alt="Gracia Baby" 
+        className="ministry-image" 
+      />
+      <div className="ministry-content">
+        <h3>Gracia <br />Baby </h3>
+        <p>Domingo 10:00 AM</p>
+      </div>
+    </div>
     <div className="ministry-card bg-kids">
       <img 
         src="/assets/Gracia_Kids.webp" 
@@ -165,7 +177,7 @@ const Home = () => {
 
     <div className="ministry-card bg-central">
       <img 
-        src="/assets/Extraordinaria_imgV2.webp" 
+        src="/assets/Extraordinarias_img2.webp" 
         alt="Extraordinaria" 
         className="ministry-image" 
       />
@@ -177,7 +189,7 @@ const Home = () => {
 
     <div className="ministry-card bg-punto">
       <img 
-        src="/assets/Domingo_fa.webp" 
+        src="/assets/Domingo_familia.webp" 
         alt="Domingo de Familia" 
         className="ministry-image" 
       />
@@ -186,6 +198,8 @@ const Home = () => {
         <p>Domingo 10:00 AM</p>
       </div>
     </div>
+    
+
 
   </div>
 </section>

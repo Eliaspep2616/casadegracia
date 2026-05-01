@@ -22,16 +22,16 @@ const Liderazgo = () => {
             />
           </div>
           <div className="pastores-info">
-            <h2 className="pastores-nombres">Reinaldo Romero<br/>& Adriana Lara</h2>
+            <h2 className="pastores-nombres">Reinaldo & Adriana <br/> Romero</h2>
             <span className="pastores-rol">PASTORES PRINCIPALES</span>
             <p className="pastores-bio">
-             Desde 2015, los pastores Reinaldo y Adriana asumieron el liderazgo de Casa de Gracia,
-             dando continuidad al legado de los pastores Fausto Romero y Maria Berrones.
-           
+             Casa de Gracia  cuenta con un equipo ministerial comprometido, enfocado en conducir a cada persona a una 
+             comunión genuina y transformadora con Jesús. Los pastores Reinaldo y Adriana Romero, 
+             lideran este equipo con una fe firme, un amor sincero y una entrega total por la iglesia y por ti. 
             </p>
             <p className="pastores-bio">
-              En sus corazones arde el deseo de seguir viendo vidas transformadas y generaciones bendecidas por Jesús.
-              Creen firmemente que la iglesia es la esperanza de este mundo y un lugar donde cada persona puede sentirse como en casa.
+              Nuestros pastores enseñan la Palabra con sabiduría y la respaldan con un
+              testimonio diario guiado por el Espíritu Santo, reflejando el amor de Dios en cada acción.
             </p>
           </div>
         </div>
