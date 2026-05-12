@@ -9,6 +9,7 @@ import PanelStaff from './components/PanelStaff';
 import RetiroLanding from './pages/RetiroLanding';
 import Liderazgo from './pages/Liderazgo';
 import './App.css';
+import LoginAcademia from './pages/AcademiaLideres'; // 1️⃣ Importamos la nueva vista de login
 import Footer from './components/Footer';
 
 // 1️⃣ SACAMOS EL FOOTER CONDICIONAL AFUERA (ESTE ES EL LUGAR CORRECTO)
@@ -68,6 +69,7 @@ function AppContent() {
             } 
           />
           <Route path="/liderazgo" element={<Liderazgo />} />
+          <Route path="/login-academia" element={<LoginAcademia />} />
         </Routes>
       </div>
 
