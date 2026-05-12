@@ -131,6 +131,15 @@ const FormularioRegistro = ({ onExito, onCerrar, cantidadSeleccionada, totalPaga
       if (data.status === 'error') {
         setErrorMsg(data.message);
       } else {
+        // 🔥 INICIO DE INTEGRACIÓN META PIXEL 🔥
+        // Verificamos que el objeto fbq exista (para evitar errores si un adblocker lo bloquea)
+        if (typeof window !== 'undefined' && window.fbq) {
+          window.fbq('track', 'CompleteRegistration', {
+            value: montoTotalSeguro, // Le enviamos cuánto dinero representa esta inscripción
+            currency: 'USD',
+            content_name: 'Retiro de Provisión'
+          });
+        }
         setPaso(2);
       }
     } catch (err) {
