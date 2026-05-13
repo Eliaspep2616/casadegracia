@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap');
+
+.dash-page-container {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f9f7f2; /* Mantenemos el fondo crema elegante */
+  min-height: 100vh;
+  padding: 60px 5%;
+}
+
+.dash-main-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =========================================
+   CABECERA
+   ========================================= */
+.dash-header {
+  margin-bottom: 50px;
+}
+
+.dash-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.dash-title {
+  font-size: clamp(3.5rem, 8vw, 6rem);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -3px;
+  color: #1a1a1a;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* =========================================
+   MÉTRICAS (TARJETAS SUPERIORES)
+   ========================================= */
+.dash-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 60px;
+}
+
+.metric-card {
+  border-radius: 24px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.bg-crema { background-color: #f1ede1; }
+.bg-blanco { background-color: #ffffff; }
+
+.metric-icon {
+  background-color: #1a1a1a;
+  color: white;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.metric-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #777;
+  margin: 0 0 5px 0;
+}
+
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+/* =========================================
+   MÓDULOS (CLASES)
+   ========================================= */
+.section-heading {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin-bottom: 25px;
+  letter-spacing: -0.5px;
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.module-card {
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 280px;
+  padding: 35px;
+  transition: transform 0.3s ease;
+}
+
+.module-card:hover {
+  transform: translateY(-5px);
+}
+
+/* TEMA OSCURO */
+.modulo-dark {
+  background-color: #1a1a1a;
+  color: white;
+}
+.modulo-dark .module-tag { background-color: rgba(255,255,255,0.1); color: white; }
+.modulo-dark .module-teacher { color: #aaa; }
+.modulo-dark .module-footer { border-top: 1px solid rgba(255,255,255,0.1); }
+.modulo-dark .btn-entrar-clase { background-color: white; color: #1a1a1a; }
+
+/* TEMA CLARO */
+.modulo-light {
+  background-color: white;
+  color: #1a1a1a;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+}
+.modulo-light .module-tag { background-color: #f1ede1; color: #1a1a1a; }
+.modulo-light .module-teacher { color: #666; }
+.modulo-light .module-footer { border-top: 1px solid #eaeaea; }
+.modulo-light .btn-entrar-clase { background-color: #1a1a1a; color: white; }
+
+/* CONTENIDO INTERNO DE LA TARJETA */
+.module-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 6px 14px;
+  border-radius: 50px;
+  margin-bottom: 20px;
+}
+
+.module-title {
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  margin: 0 0 10px 0;
+}
+
+.module-teacher {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.module-footer {
+  margin-top: 30px;
+  padding-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.module-tasks {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.btn-entrar-clase {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.btn-entrar-clase:hover {
+  opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+  .dash-page-container { padding: 40px 20px; }
+  .dash-title { font-size: 3rem; }
+  .metric-card { flex-direction: column; align-items: flex-start; gap: 15px; }
+  .module-footer { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .btn-entrar-clase { width: 100%; justify-content: center; }
+}

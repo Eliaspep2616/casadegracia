@@ -32,6 +32,7 @@ const Navbar = ({ cantidadCarrito }) => {
           <ul className="nav-links">
             <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>INICIO</Link></li>
             <li><Link to="/retiro" className={location.pathname === '/retiro' ? 'active' : ''}>RETIRO DE PROVISIÓN</Link></li>
+             <li><Link to="/retiro" className={location.pathname === '/retiro' ? 'active' : ''}>RETIRO DE PROVISIÓN</Link></li>
           </ul>
 
           <Link to="/carrito" className="cart-icon-container">

@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap');
+
+.prof-page-container {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #f1f1f1; /* Un fondo un poco más grisáceo para diferenciarlo del estudiante */
+  min-height: 100vh;
+  padding: 60px 5%;
+}
+
+.prof-main-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =========================================
+   CABECERA
+   ========================================= */
+.prof-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.prof-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.prof-title {
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -3px;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* Botón Sincronizar Global */
+.btn-sync-global {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #1a1a1a;
+  color: white;
+  padding: 16px 30px;
+  border-radius: 50px; /* Bordes muy redondeados */
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-sync-global:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.btn-sync-global:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* =========================================
+   MÉTRICAS (TARJETAS SUPERIORES)
+   ========================================= */
+.prof-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 50px;
+}
+
+.prof-metric-card {
+  border-radius: 24px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.dark-card { background-color: #1a1a1a; color: white; }
+.alert-card { background-color: #ffffff; color: #1a1a1a; border-left: 6px solid #eab308; } /* Borde amarillo de alerta */
+
+.metric-icon-prof {
+  background-color: rgba(255,255,255,0.1);
+  color: inherit;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.alert-card .metric-icon-prof { background-color: #f3f3f3; color: #1a1a1a; }
+
+.metric-label-prof {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 0 5px 0;
+  opacity: 0.8;
+}
+
+.metric-value-prof {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+/* =========================================
+   CLASES ASIGNADAS
+   ========================================= */
+.section-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.section-heading {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.btn-settings {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #555;
+  transition: all 0.3s;
+}
+
+.btn-settings:hover { background: #1a1a1a; color: white; border-color: #1a1a1a; }
+
+.classes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 30px;
+}
+
+.prof-class-card {
+  background-color: white;
+  border-radius: 30px;
+  padding: 35px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.class-card-header { margin-bottom: 25px; }
+
+.class-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+}
+
+.sync-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #999;
+  text-transform: uppercase;
+}
+
+.class-stats {
+  display: flex;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 25px;
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-item strong {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  line-height: 1;
+}
+
+.stat-item span {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #777;
+  text-transform: uppercase;
+  margin-top: 5px;
+}
+
+.stat-item.highlight strong { color: #eab308; } /* Amarillo para resaltar entregas */
+
+.stat-divider {
+  width: 1px;
+  height: 40px;
+  background-color: #ddd;
+}
+
+.class-card-footer { display: flex; justify-content: flex-end; }
+
+.btn-outline-dark {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  color: #1a1a1a;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: 2px solid #1a1a1a;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-dark:hover {
+  background-color: #1a1a1a;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .prof-page-container { padding: 40px 20px; }
+  .prof-header { flex-direction: column; align-items: flex-start; }
+  .btn-sync-global { width: 100%; justify-content: center; }
+  .classes-grid { grid-template-columns: 1fr; }
+}
