@@ -1,17 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; // 👈 Importamos el navegador
 import { supabase } from '../supabaseClient';
-import { Check, BookOpen, Users, GraduationCap } from 'lucide-react'; // Usamos los mismos íconos de tu proyecto
+import { Check, BookOpen, Users, GraduationCap } from 'lucide-react'; 
 import './AcademiaLideres.css';
 
 const AcademiaLideres = () => {
   const [loading, setLoading] = useState(false);
   const [rol, setRol] = useState('estudiante'); 
+  const navigate = useNavigate(); // 👈 Activamos el navegador
+
+  // 🛡️ EL VIGILANTE: Detecta si ya tienes sesión (o si acabas de regresar de Google)
+  useEffect(() => {
+    const revisarSiYaEstaLogueado = async () => {
+      // 1. Preguntamos si hay una sesión activa en este momento
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session) {
+        // 2. Si hay sesión, buscamos tu rol oficial en la base de datos
+        const { data: perfil } = await supabase
+          .from('perfiles')
+          .select('rol')
+          .eq('id', session.user.id)
+          .single();
+
+        // 3. ¡Te lanzamos a tu destino como un cohete!
+        if (perfil && perfil.rol === 'profesor') {
+          navigate('/admin-academico');
+        } else {
+          navigate('/portal-estudiante');
+        }
+      }
+    };
+
+    revisarSiYaEstaLogueado();
+  }, [navigate]);
 
   const handleGoogleLogin = async () => {
     setLoading(true);
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
+        // 🚨 LA PIEZA CLAVE: Le decimos a Supabase a qué ruta exacta volver
+        redirectTo: `${window.location.origin}/Academia-lideres`, 
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',

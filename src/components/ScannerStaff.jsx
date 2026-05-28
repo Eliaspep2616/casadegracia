@@ -10,15 +10,17 @@ const ScannerStaff = () => {
   const scannerRef = useRef(null);
   const ultimoEscaneoValido = useRef(0);
 
-
   useEffect(() => {
     const timer = setTimeout(() => {
       if (!scannerRef.current) {
+        // Corrección para iOS: Eliminar aspectRatio y forzar cámara trasera
         scannerRef.current = new Html5QrcodeScanner("reader", { 
           fps: 10, 
           qrbox: { width: 250, height: 250 },
-          aspectRatio: 1.0
-        });
+          videoConstraints: {
+            facingMode: "environment"
+          }
+        }, false);
         scannerRef.current.render(manejarLectura);
       }
     }, 300);
@@ -32,7 +34,7 @@ const ScannerStaff = () => {
     };
   }, []);
 
-const manejarLectura = async (lectura) => {
+  const manejarLectura = async (lectura) => {
     const ahora = Date.now();
     if (isProcessing || asistente) return;
     setIsProcessing(true);

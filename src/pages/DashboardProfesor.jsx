@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Users, FileText, RefreshCw, Settings, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { supabase } from '../supabaseClient';
+import { Users, FileText, RefreshCw, Settings, ArrowRight, LogOut } from 'lucide-react';
 import './DashboardProfesor.css';
 
 const DashboardProfesor = () => {
   const [sincronizando, setSincronizando] = useState(false);
+  const navigate = useNavigate();
   const profesor = { nombre: "JUAN PÉREZ" };
   
-  // Datos simulados
   const metricas = { alumnos: 45, tareasPorCalificar: 12 };
   
   const clases = [
@@ -28,32 +30,51 @@ const DashboardProfesor = () => {
 
   const handleSincronizarGlobal = () => {
     setSincronizando(true);
-    // Aquí irá la lógica futura para llamar a la API de Google Classroom
     setTimeout(() => setSincronizando(false), 2000); 
+  };
+
+  const handleCerrarSesion = async () => {
+    await supabase.auth.signOut();
+    navigate('/Academia-lideres');
   };
 
   return (
     <div className="prof-page-container">
       <div className="prof-main-wrapper">
         
-        {/* Cabecera del Profesor y Botón Global */}
         <header className="prof-header">
           <div>
             <p className="prof-subtitle">PANEL DOCENTE</p>
             <h1 className="prof-title">HOLA,<br/>{profesor.nombre}</h1>
           </div>
           
-          <button 
-            className="btn-sync-global" 
-            onClick={handleSincronizarGlobal}
-            disabled={sincronizando}
-          >
-            <RefreshCw size={18} className={sincronizando ? "animate-spin" : ""} />
-            {sincronizando ? 'SINCRONIZANDO...' : 'SINCRONIZAR TODO'}
-          </button>
+          <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+            <button 
+              className="btn-sync-global" 
+              onClick={handleSincronizarGlobal}
+              disabled={sincronizando}
+            >
+              <RefreshCw size={18} className={sincronizando ? "animate-spin" : ""} />
+              {sincronizando ? 'SINCRONIZANDO...' : 'SINCRONIZAR TODO'}
+            </button>
+
+            <button 
+              onClick={handleCerrarSesion}
+              title="Cerrar Sesión"
+              style={{ 
+                display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                width: '50px', height: '50px', borderRadius: '50%', 
+                backgroundColor: '#ffeaea', color: '#dc2626', border: 'none', 
+                cursor: 'pointer', transition: 'all 0.3s' 
+              }}
+              onMouseOver={(e) => { e.currentTarget.style.backgroundColor = '#dc2626'; e.currentTarget.style.color = 'white'; }}
+              onMouseOut={(e) => { e.currentTarget.style.backgroundColor = '#ffeaea'; e.currentTarget.style.color = '#dc2626'; }}
+            >
+              <LogOut size={20} strokeWidth={2.5} />
+            </button>
+          </div>
         </header>
 
-        {/* Tarjetas de Resumen (Métricas de Gestión) */}
         <section className="prof-metrics-grid">
           <div className="prof-metric-card dark-card">
             <div className="metric-icon-prof"><Users size={24} strokeWidth={2.5} /></div>
@@ -72,7 +93,6 @@ const DashboardProfesor = () => {
           </div>
         </section>
 
-        {/* Lista de Clases Asignadas */}
         <section className="prof-classes-section">
           <div className="section-header-flex">
             <h3 className="section-heading">TUS CLASES</h3>

@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import RetiroDeProvision from './components/RetiroDeProvision';
@@ -9,22 +9,25 @@ import PanelStaff from './components/PanelStaff';
 import RetiroLanding from './pages/RetiroLanding';
 import Liderazgo from './pages/Liderazgo';
 import './App.css';
-import LoginAcademia from './pages/AcademiaLideres'; // 1️⃣ Importamos la nueva vista de login
+import Academialideres from './pages/AcademiaLideres'; 
 import Footer from './components/Footer';
 
-// 1️⃣ SACAMOS EL FOOTER CONDICIONAL AFUERA (ESTE ES EL LUGAR CORRECTO)
+// 🔒 NUEVAS IMPORTACIONES DE SEGURIDAD Y DASHBOARDS
+import { supabase } from './supabaseClient'; // Verifica que la ruta de tu archivo supabaseClient sea esta
+import RutaProtegida from './components/RutaProtegida';
+import DashboardEstudiante from './pages/DashboardEstudiante';
+import DashboardProfesor from './pages/DashboardProfesor';
+
 const FooterCondicional = () => {
   const location = useLocation();
-  
-  // Ocultamos el footer si estamos en el panel de administración (/admin)
   if (location.pathname.startsWith('/admin')) {
     return null;
   }
-  
   return <Footer />;
 };
 
 function AppContent() {
+  // --- ESTADOS ORIGINALES DEL CARRITO ---
   const [carrito, setCarrito] = useState([]);
   const [modal, setModal] = useState({ abierto: false, qty: 0, total: 0 });
   const [precioEvento, setPrecioEvento] = useState(25); 
@@ -44,20 +47,59 @@ function AppContent() {
     );
   };
 
+  // --- 🛡️ ESTADOS DE SEGURIDAD DE SUPABASE ---
+  const [estaAutenticado, setEstaAutenticado] = useState(false);
+  const [rolUsuario, setRolUsuario] = useState(null);
+  const [cargandoAuth, setCargandoAuth] = useState(true);
+
+  // Efecto para escuchar cuando el usuario inicia o cierra sesión
+  useEffect(() => {
+    const manejarSesion = async (session) => {
+      if (session) {
+        setEstaAutenticado(true);
+        // Preguntamos a la base de datos qué rol tiene
+        const { data, error } = await supabase
+          .from('perfiles')
+          .select('rol')
+          .eq('id', session.user.id)
+          .single();
+
+        if (data) {
+          setRolUsuario(data.rol);
+        } else {
+          setRolUsuario('estudiante'); // Rol por defecto por si acaso
+        }
+      } else {
+        setEstaAutenticado(false);
+        setRolUsuario(null);
+      }
+      setCargandoAuth(false); // Quitamos la pantalla de carga
+    };
+
+    // Revisar la sesión actual al cargar la página
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      manejarSesion(session);
+    });
+
+    // Quedarse escuchando cambios (cuando vuelve de Google)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      manejarSesion(session);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   return (
     <>
-      {/* Navbar oculto en /admin */}
       {!location.pathname.startsWith('/admin') && <Navbar cantidadCarrito={carrito.length} />}
 
       <div className="main-wrapper">
         <Routes>
+          {/* RUTAS PÚBLICAS */}
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<PanelStaff />} />
           <Route path="/retiro" element={<RetiroLanding />} />
-          <Route 
-            path="/inscripcion" 
-            element={<RetiroDeProvision onComprar={añadirAlCarrito} />} 
-          />
+          <Route path="/inscripcion" element={<RetiroDeProvision onComprar={añadirAlCarrito} />} />
           <Route 
             path="/carrito" 
             element={
@@ -69,14 +111,41 @@ function AppContent() {
             } 
           />
           <Route path="/liderazgo" element={<Liderazgo />} />
-          <Route path="/login-academia" element={<LoginAcademia />} />
+          <Route path="/Academia-lideres" element={<Academialideres />} />
+
+          {/* 🔒 RUTAS PROTEGIDAS (DASHBOARDS) */}
+          <Route 
+            path="/portal-estudiante" 
+            element={
+              <RutaProtegida 
+                usuarioAutenticado={estaAutenticado} 
+                rolRequerido="estudiante" 
+                rolUsuario={rolUsuario}
+                cargando={cargandoAuth}
+              >
+                <DashboardEstudiante />
+              </RutaProtegida>
+            } 
+          />
+
+          <Route 
+            path="/admin-academico" 
+            element={
+              <RutaProtegida 
+                usuarioAutenticado={estaAutenticado} 
+                rolRequerido="profesor" 
+                rolUsuario={rolUsuario}
+                cargando={cargandoAuth}
+              >
+                <DashboardProfesor />
+              </RutaProtegida>
+            } 
+          />
         </Routes>
       </div>
 
-      {/* 2️⃣ LLAMAMOS AL FOOTER AQUÍ, DESPUÉS DEL MAIN-WRAPPER */}
       <FooterCondicional />
 
-      {/* Modal de Pago */}
       {modal.abierto && (
         <FormularioRegistro 
           cantidadSeleccionada={modal.qty} 
