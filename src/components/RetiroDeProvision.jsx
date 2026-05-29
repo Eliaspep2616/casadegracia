@@ -8,28 +8,33 @@ const RetiroDeProvision = ({ onComprar }) => {
   const [agregado, setAgregado] = useState(false);
   
   const [precioReal, setPrecioReal] = useState(0);
-  const [cargandoPrecio, setCargandoPrecio] = useState(true);
+  // 🛡️ CORRECCIÓN: Usamos stockDisponible para coincidir con la base de datos
+  const [stockDisponible, setStockDisponible] = useState(null); 
+  const [cargandoDatos, setCargandoDatos] = useState(true);
   
   const navigate = useNavigate();
   const EVENTO_ID = '42362cfe-8d10-414f-adb1-7310cec5f7f9'; 
 
   useEffect(() => {
-    const fetchPrecio = async () => {
+    const fetchEventoData = async () => {
       const { data, error } = await supabase
         .from('eventos')
-        .select('precio_unitario')
+        // 🚨 CORRECCIÓN: El nombre exacto en tu BD es stock_disponible
+        .select('precio_unitario, stock_disponible') 
         .eq('id', EVENTO_ID)
         .single();
       
       if (data && !error) {
         setPrecioReal(data.precio_unitario);
+        setStockDisponible(data.stock_disponible); 
       } else {
         setPrecioReal(25.00); 
+        setStockDisponible(0); 
       }
-      setCargandoPrecio(false);
+      setCargandoDatos(false);
     };
 
-    fetchPrecio();
+    fetchEventoData();
   }, []);
 
   const manejarCarrito = () => {
@@ -43,6 +48,9 @@ const RetiroDeProvision = ({ onComprar }) => {
     setAgregado(true);
     setTimeout(() => setAgregado(false), 6000); 
   };
+
+  // 🛡️ VARIABLE PARA SABER SI ESTÁ AGOTADO
+  const estaAgotado = stockDisponible !== null && stockDisponible <= 0;
 
   return (
     <div className="retiro-wrapper">
@@ -62,12 +70,14 @@ const RetiroDeProvision = ({ onComprar }) => {
 
       <div className="retiro-card">
         <div className="retiro-visual">
-          {/* AQUÍ ESTÁ TU NUEVO ENLACE DE SUPABASE */}
           <img 
             src="https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/retiro_provision_entrada.webp" 
             alt="Retiro de Provisión" 
             className="img-retiro-principal" 
           />
+          {estaAgotado && (
+             <div className="etiqueta-agotado-img">SOLD OUT</div>
+          )}
         </div>
 
         <div className="retiro-info">
@@ -81,26 +91,43 @@ const RetiroDeProvision = ({ onComprar }) => {
           <div className="meta-data">
             <p>📅 29 y 30 de Mayo</p>
             <p>📍 Guayaquil, Ecuador</p>
+            {!estaAgotado && stockDisponible !== null && stockDisponible <= 10 && (
+              <p style={{color: '#e11d48', fontWeight: 'bold'}}>⚠️ ¡Últimos {stockDisponible} cupos!</p>
+            )}
           </div>
 
           <div className="precio-tag">
-            {cargandoPrecio ? 'Cargando...' : `$${precioReal.toFixed(2)}`}
+            {cargandoDatos ? 'Cargando...' : `$${precioReal.toFixed(2)}`}
           </div>
 
           <div className="compra-footer">
             <div className="selector-cantidad">
-              <button onClick={() => setCantidad(c => Math.max(1, c - 1))}>-</button>
-              <input type="number" value={cantidad} readOnly />
-              <button onClick={() => setCantidad(c => c + 1)}>+</button>
+              <button 
+                onClick={() => setCantidad(c => Math.max(1, c - 1))} 
+                disabled={estaAgotado || cargandoDatos}
+              >
+                -
+              </button>
+              <input type="number" value={estaAgotado ? 0 : cantidad} readOnly />
+              <button 
+                onClick={() => setCantidad(c => (c < stockDisponible ? c + 1 : c))} 
+                disabled={estaAgotado || cargandoDatos || cantidad >= stockDisponible}
+              >
+                +
+              </button>
             </div>
             
-            <button className="btn-add-cart" onClick={manejarCarrito} disabled={cargandoPrecio}>
-              AÑADIR AL CARRITO
+            <button 
+              className={`btn-add-cart ${estaAgotado ? 'btn-sold-out' : ''}`} 
+              onClick={manejarCarrito} 
+              disabled={cargandoDatos || estaAgotado}
+            >
+              {estaAgotado ? 'AGOTADO' : 'AÑADIR AL CARRITO'}
             </button>
           </div>
           
           <div className="total-display">
-            Total a pagar: <span>${(cantidad * precioReal).toFixed(2)}</span>
+            Total a pagar: <span>${(estaAgotado ? 0 : cantidad * precioReal).toFixed(2)}</span>
           </div>
         </div>
       </div>

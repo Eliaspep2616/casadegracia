@@ -164,3 +164,40 @@
   .btn-add-cart { padding: 15px; }
   .banner-content { flex-direction: column; }
 }
+
+/* Retiro.css - Nuevos estilos para Agotado */
+
+.btn-add-cart.btn-sold-out {
+  background-color: #94a3b8; /* Color gris oscuro */
+  color: #f1f5f9;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.btn-add-cart.btn-sold-out:hover {
+  background-color: #94a3b8;
+  transform: none;
+}
+
+/* Etiqueta roja en la foto cuando está agotado */
+.etiqueta-agotado-img {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #e11d48;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 15px rgba(225, 29, 72, 0.4);
+  transform: rotate(5deg);
+  z-index: 10;
+}
+
+/* Necesitas asegurarte de que el contenedor de la imagen tenga position relative */
+.retiro-visual {
+  position: relative;
+}
