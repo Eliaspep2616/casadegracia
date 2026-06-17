@@ -1,0 +1,517 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap');
+
+.aula-page-container {
+  background-color: #f9f7f2;
+  min-height: 100vh;
+  padding: 40px 5%;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.aula-main-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* =========================================
+   CABECERA Y NAVEGACIÓN
+   ========================================= */
+.btn-volver {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #555;
+  font-family: inherit;
+  transition: color 0.3s ease;
+}
+
+.btn-volver:hover {
+  color: #1a1a1a;
+}
+
+.aula-header {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 40px;
+  border-radius: 30px;
+  margin-bottom: 30px;
+}
+
+.aula-docente-label {
+  margin: 0 0 10px 0;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  color: #aaa;
+  font-weight: 700;
+}
+
+.aula-materia-title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.aula-tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.btn-tab {
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.btn-tab.active {
+  background-color: #1a1a1a;
+  color: white;
+}
+
+.btn-tab.inactive {
+  background-color: #eaeaea;
+  color: #555;
+}
+
+.btn-tab.inactive:hover {
+  background-color: #ddd;
+}
+
+/* =========================================
+   ÁREA DE CONTENIDO (TARJETA)
+   ========================================= */
+.aula-content-card {
+  background-color: white;
+  padding: 40px;
+  border-radius: 30px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.aula-section-title {
+  margin-top: 0;
+  font-weight: 900;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #f1f1f1;
+  padding-bottom: 15px;
+}
+
+.task-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.task-icon-wrapper {
+  background-color: #f9f7f2;
+  padding: 15px;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-details {
+  width: 100%;
+}
+
+.task-title {
+  margin: 0 0 5px 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.task-description {
+  margin: 0 0 15px 0;
+  color: #777;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* =========================================
+   ESTADOS DE ENTREGA (YA ENVIADO)
+   ========================================= */
+.file-saved-box {
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 20px;
+  background-color: #fafafa;
+}
+
+.success-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #16a34a;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+.action-buttons-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.3s;
+}
+
+.btn-action:hover { opacity: 0.85; }
+.btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.btn-view { background-color: #1a1a1a; color: white; }
+.btn-delete { background-color: #fee2e2; color: #dc2626; }
+.btn-replace { background-color: #e5e7eb; color: #374151; }
+
+.confirm-replace-box {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #fef3c7;
+  border-radius: 8px;
+  border: 1px solid #fde68a;
+}
+
+.confirm-replace-text {
+  margin: 0 0 10px 0;
+  font-weight: 600;
+  color: #92400e;
+  font-size: 0.9rem;
+}
+
+.btn-confirm-replace {
+  background-color: #b45309;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-confirm-replace:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   ZONA DE SUBIDA (SIN ENVIAR)
+   ========================================= */
+.upload-initial-state {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.label-upload {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #eaeaea;
+  color: #1a1a1a;
+  padding: 12px 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.label-upload:hover {
+  background-color: #ddd;
+}
+
+.error-text {
+  color: #dc2626;
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.btn-submit-task {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #1a1a1a;
+  color: white;
+  padding: 12px 30px;
+  border-radius: 50px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.3s;
+}
+
+.btn-submit-task:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   RECURSOS MATERIAL DE ESTUDIO
+   ========================================= */
+.resource-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px 0;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+.resource-title {
+  margin: 0 0 5px 0;
+  font-weight: 700;
+}
+
+.resource-meta {
+  margin: 0;
+  color: #999;
+  font-size: 0.85rem;
+}
+
+/* UTILIDAD AUXILIAR */
+.loading-screen {
+  padding: 50px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  color: #555;
+  font-weight: 600;
+}
+
+/* =========================================
+   DISEÑO ESTILO UG CAMPUS (ESTUDIANTE)
+   ========================================= */
+.campus-ug-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.ug-unidad-card {
+  background-color: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 30px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.ug-unidad-header {
+  border-bottom: 2px solid #2563eb;
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.ug-unidad-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.ug-seccion {
+  margin-bottom: 30px;
+}
+
+.ug-seccion-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.ug-lista-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ug-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ug-item-actividad {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ug-link {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ug-link:hover {
+  text-decoration: underline;
+}
+
+.ug-fechas {
+  display: flex;
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 5px;
+}
+
+.ug-fechas span {
+  background-color: #f8fafc;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+/* =========================================
+   TOP NAV ESTILO MOODLE/UG
+   ========================================= */
+.ug-top-nav {
+  background-color: #0f4c81; /* Azul corporativo oscuro */
+  padding: 0 5%;
+  margin-bottom: 30px;
+}
+
+.ug-nav-links {
+  display: flex;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ug-nav-links button {
+  background: none;
+  border: none;
+  color: #a5c3e0;
+  padding: 15px 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  border-bottom: 4px solid transparent;
+  transition: all 0.2s;
+}
+
+.ug-nav-links button:hover {
+  color: white;
+}
+
+.ug-nav-links button.active {
+  color: white;
+  border-bottom: 4px solid white;
+}
+
+/* =========================================
+   REPORTE DE CALIFICACIONES ESTUDIANTE
+   ========================================= */
+.reporte-calificaciones-container {
+  background-color: white;
+  padding: 40px;
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  max-width: 1200px;
+}
+
+.reporte-usuario-header h3 {
+  font-size: 1.1rem;
+  color: #212529;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.usuario-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.avatar-circulo {
+  width: 45px;
+  height: 45px;
+  background-color: #e9ecef;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  color: #495057;
+  font-size: 1.1rem;
+}
+
+.usuario-badge-row h2 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #0f4c81;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.tabla-calificaciones-wrapper {
+  overflow-x: auto;
+}
+
+.tabla-calificaciones {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.tabla-calificaciones th {
+  padding: 15px;
+  border-bottom: 2px solid #dee2e6;
+  color: #212529;
+  font-weight: 700;
+}
+
+.tabla-calificaciones td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #dee2e6;
+  color: #495057;
+  vertical-align: middle;
+}
+
+.fila-categoria-principal td {
+  background-color: #f8f9fa;
+  color: #212529;
+  font-size: 0.95rem;
+}
+
+.fila-subcategoria td {
+  background-color: #ffffff;
+  padding-left: 20px !important;
+  color: #212529;
+}
+
+.fila-actividad td {
+  background-color: #ffffff;
+}
+
+.fila-total-curso td {
+  background-color: #f8f9fa;
+  font-size: 1rem;
+}

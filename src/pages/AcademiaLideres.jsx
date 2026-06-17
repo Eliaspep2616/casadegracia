@@ -1,63 +1,64 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // 👈 Importamos el navegador
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import { Check, BookOpen, Users, GraduationCap } from 'lucide-react'; 
+import { BookOpen, Users, GraduationCap, Lock, CreditCard } from 'lucide-react'; 
 import './AcademiaLideres.css';
 
 const AcademiaLideres = () => {
   const [loading, setLoading] = useState(false);
-  const [rol, setRol] = useState('estudiante'); 
-  const navigate = useNavigate(); // 👈 Activamos el navegador
+  const [cedula, setCedula] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const navigate = useNavigate();
 
-  // 🛡️ EL VIGILANTE: Detecta si ya tienes sesión (o si acabas de regresar de Google)
+  // Vigila si ya hay una sesión activa para no pedir login de nuevo
   useEffect(() => {
-    const revisarSiYaEstaLogueado = async () => {
-      // 1. Preguntamos si hay una sesión activa en este momento
+    const revisarSesion = async () => {
       const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session) {
-        // 2. Si hay sesión, buscamos tu rol oficial en la base de datos
-        const { data: perfil } = await supabase
-          .from('perfiles')
-          .select('rol')
-          .eq('id', session.user.id)
-          .single();
-
-        // 3. ¡Te lanzamos a tu destino como un cohete!
-        if (perfil && perfil.rol === 'profesor') {
-          navigate('/admin-academico');
-        } else {
-          navigate('/portal-estudiante');
-        }
-      }
+      if (session) enrutarPorRol(session.user.id);
     };
-
-    revisarSiYaEstaLogueado();
+    revisarSesion();
   }, [navigate]);
 
-  const handleGoogleLogin = async () => {
+  const enrutarPorRol = async (userId) => {
+    const { data: perfil } = await supabase
+      .from('perfiles')
+      .select('rol')
+      .eq('id', userId)
+      .single();
+
+    if (perfil?.rol === 'profesor' || perfil?.rol === 'admin') {
+      navigate('/admin-academico');
+    } else {
+      navigate('/portal-estudiante');
+    }
+  };
+
+  const handleIngreso = async (e) => {
+    e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        // 🚨 LA PIEZA CLAVE: Le decimos a Supabase a qué ruta exacta volver
-        redirectTo: `${window.location.origin}/Academia-lideres`, 
-        queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-        scopes: 'https://www.googleapis.com/auth/classroom.courses.readonly https://www.googleapis.com/auth/classroom.coursework.students.readonly'
-      }
+    setErrorMsg('');
+
+    // Transformamos la cédula en el correo ficticio que creamos en Supabase
+    const emailFicticio = `${cedula.trim()}@academia.local`;
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: emailFicticio,
+      password: password,
     });
-    if (error) console.error("Error al ingresar:", error.message);
-    setLoading(false);
+
+    if (error) {
+      setErrorMsg('Cédula o contraseña incorrecta. Intenta de nuevo.');
+      setLoading(false);
+    } else {
+      await enrutarPorRol(data.user.id);
+    }
   };
 
   return (
     <div className="academia-page-container">
       <div className="academia-main-wrapper">
         
-        {/* Título Gigante estilo "Hero Audaz" */}
         <div className="academia-header-section">
           <p className="academia-subtitle">CASA DE GRACIA</p>
           <h1 className="academia-audaz-title">ACADEMIA<br/>DE LÍDERES</h1>
@@ -65,7 +66,7 @@ const AcademiaLideres = () => {
 
         <div className="academia-content-grid">
           
-          {/* Columna Izquierda: Información */}
+          {/* Columna Izquierda */}
           <div className="academia-info-box">
             <p className="academia-description">
               Un espacio de formación integral diseñado para equipar, capacitar y desarrollar el potencial de quienes están llamados a servir y guiar con excelencia.
@@ -82,8 +83,8 @@ const AcademiaLideres = () => {
               <li>
                 <div className="icon-circle"><GraduationCap size={20} strokeWidth={2.5} /></div>
                 <div>
-                  <strong>Gestión Académica</strong>
-                  <p>Seguimiento de notas integrado con Google Classroom.</p>
+                  <strong>Campus Virtual</strong>
+                  <p>Gestión de tareas, clases y recursos en un solo lugar.</p>
                 </div>
               </li>
               <li>
@@ -96,53 +97,61 @@ const AcademiaLideres = () => {
             </ul>
           </div>
 
-          {/* Columna Derecha: Tarjeta de Login Moderna */}
+          {/* Columna Derecha: Nuevo Formulario de Credenciales */}
           <div className="academia-login-wrapper">
             <div className="academia-glass-card">
-              
-              {/* Selector de Rol Estilo "Pill" */}
-              <div className="modern-tabs">
-                <button 
-                  className={`m-tab ${rol === 'estudiante' ? 'active' : ''}`}
-                  onClick={() => setRol('estudiante')}
-                >
-                  Estudiante
-                </button>
-                <button 
-                  className={`m-tab ${rol === 'profesor' ? 'active' : ''}`}
-                  onClick={() => setRol('profesor')}
-                >
-                  Profesor
-                </button>
-              </div>
 
               <div className="login-texts">
-                <h3>{rol === 'estudiante' ? 'Portal Estudiantil' : 'Portal Docente'}</h3>
-                <p>
-                  {rol === 'estudiante' 
-                    ? 'Ingresa para revisar tu progreso, calificaciones y material de estudio.' 
-                    : 'Ingresa para gestionar tus clases, calificar y sincronizar con Classroom.'}
-                </p>
+                <h3>Acceso al Campus</h3>
+                <p>Ingresa tus credenciales institucionales.</p>
               </div>
 
-              <button
-                onClick={handleGoogleLogin}
-                disabled={loading}
-                className="btn-google-modern"
-              >
-                {loading ? (
-                  <span className="modern-spinner"></span>
-                ) : (
-                  <>
-                    <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" className="g-icon" />
-                    <span>Continuar como {rol === 'estudiante' ? 'Estudiante' : 'Docente'}</span>
-                  </>
-                )}
-              </button>
+              {errorMsg && (
+                <div style={{ color: '#dc2626', backgroundColor: '#fee2e2', padding: '10px', borderRadius: '8px', marginBottom: '15px', fontSize: '0.9rem', fontWeight: '600', textAlign: 'center' }}>
+                  {errorMsg}
+                </div>
+              )}
 
-              <p className="login-disclaimer">
-                Al ingresar, autorizas la sincronización de tus datos con Google Classroom.
-              </p>
+              <form onSubmit={handleIngreso} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                
+                <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#f5f5f5', borderRadius: '12px', padding: '0 15px', border: '1px solid #eaeaea' }}>
+                  <CreditCard size={20} color="#777" />
+                  <input 
+                    type="text" 
+                    placeholder="Número de Cédula" 
+                    value={cedula}
+                    onChange={(e) => setCedula(e.target.value)}
+                    required
+                    style={{ border: 'none', background: 'transparent', padding: '16px', width: '100%', outline: 'none', fontFamily: 'Montserrat', fontSize: '1rem', fontWeight: '500' }}
+                  />
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#f5f5f5', borderRadius: '12px', padding: '0 15px', border: '1px solid #eaeaea' }}>
+                  <Lock size={20} color="#777" />
+                  <input 
+                    type="password" 
+                    placeholder="Contraseña" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    style={{ border: 'none', background: 'transparent', padding: '16px', width: '100%', outline: 'none', fontFamily: 'Montserrat', fontSize: '1rem', fontWeight: '500' }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-google-modern"
+                  style={{ backgroundColor: '#1a1a1a', color: 'white', marginTop: '10px', border: 'none' }}
+                >
+                  {loading ? (
+                    <span className="modern-spinner" style={{ borderColor: '#333', borderTopColor: '#fff' }}></span>
+                  ) : (
+                    'Ingresar al Portal'
+                  )}
+                </button>
+              </form>
+
             </div>
           </div>
 

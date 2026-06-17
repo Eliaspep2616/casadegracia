@@ -1,0 +1,406 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap');
+
+.prof-panel-container {
+  background-color: #f1f1f1;
+  min-height: 100vh;
+  padding: 40px 5%;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.prof-panel-wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.btn-volver {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  margin-bottom: 30px;
+  color: #555;
+  font-family: inherit;
+  transition: color 0.3s ease;
+}
+
+.btn-volver:hover { color: #1a1a1a; }
+
+.prof-header-dark {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 40px;
+  border-radius: 30px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* =========================================
+   PESTAÑAS Y TABLA DE CALIFICACIONES
+   ========================================= */
+.panel-tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.btn-tab {
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.3s ease;
+}
+
+.btn-tab.active { background-color: #1a1a1a; color: white; }
+.btn-tab.inactive { background-color: #eaeaea; color: #555; }
+.btn-tab.inactive:hover { background-color: #ddd; }
+
+/* =========================================
+   SEMANAS Y TAREAS (PLANIFICACIÓN)
+   ========================================= */
+.week-card {
+  background-color: white;
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+}
+
+.week-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #f1f1f1;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.task-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  border-left: 4px solid #1a1a1a;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.task-list-item.borrador {
+  border-left-color: #999;
+  opacity: 0.7;
+}
+
+.badge-status {
+  padding: 4px 12px;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.badge-publicado { background-color: #dcfce7; color: #16a34a; }
+.badge-borrador { background-color: #e5e7eb; color: #4b5563; }
+
+/* =========================================
+   CENTRO DE CALIFICACIONES (GRADEBOOK)
+   ========================================= */
+.gradebook-card {
+  background-color: white;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+}
+
+.grade-table-wrapper {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.grade-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.grade-table th {
+  text-align: left;
+  padding: 15px;
+  background-color: #f9f9f9;
+  color: #555;
+  font-weight: 800;
+  border-bottom: 2px solid #eaeaea;
+}
+
+.grade-table td {
+  padding: 15px;
+  border-bottom: 1px solid #f1f1f1;
+  vertical-align: middle;
+}
+
+.grade-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.grade-input {
+  width: 70px;
+  padding: 8px 12px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-weight: 700;
+  font-family: inherit;
+  text-align: center;
+}
+
+.grade-input:focus {
+  border-color: #1a1a1a;
+  outline: none;
+}
+
+.btn-save-grade {
+  background-color: #1a1a1a;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-save-grade:hover { background-color: #333; }
+
+.btn-view-pdf {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #e0e7ff;
+  color: #4f46e5;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.8rem;
+  border: none;
+  cursor: pointer;
+}
+
+/* =========================================
+   MODAL DE NUEVA TAREA
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background-color: white;
+  padding: 40px;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 800;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.form-control {
+  padding: 12px 15px;
+  border: 2px solid #eaeaea;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus {
+  border-color: #1a1a1a;
+  outline: none;
+}
+
+.btn-primary {
+  background-color: #1a1a1a;
+  color: white;
+  padding: 14px 24px;
+  border: none;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  width: 100%;
+  transition: opacity 0.3s;
+}
+
+.btn-primary:hover { opacity: 0.85; }
+
+.btn-secondary {
+  background-color: transparent;
+  color: #777;
+  padding: 14px 24px;
+  border: 2px solid #eaeaea;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+  background-color: #f9f9f9;
+  color: #1a1a1a;
+  border-color: #ddd;
+}
+/* =========================================
+   DISEÑO ESTILO UG CAMPUS
+   ========================================= */
+.campus-ug-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.ug-unidad-card {
+  background-color: white;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 30px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.ug-unidad-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #2563eb; /* Línea azul característica académica */
+  padding-bottom: 15px;
+  margin-bottom: 25px;
+}
+
+.ug-unidad-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.ug-seccion {
+  margin-bottom: 30px;
+}
+
+.ug-seccion-title {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+}
+
+.ug-lista-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ug-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ug-item-actividad {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.ug-link {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ug-link:hover {
+  text-decoration: underline;
+}
+
+.ug-fechas {
+  display: flex;
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 5px;
+}
+
+.ug-fechas span {
+  background-color: #f8fafc;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+.ug-btn-añadir {
+  align-self: flex-start;
+  background: none;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 10px;
+}
+
+.ug-btn-añadir:hover {
+  background-color: #f8fafc;
+  border-color: #94a3b8;
+  color: #334155;
+}
+
+.ug-badge-oculto {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background-color: #fee2e2;
+  color: #ef4444;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}

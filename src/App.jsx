@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import DetalleTarea from './components/DetalleTarea';
 import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
@@ -11,13 +12,14 @@ import Liderazgo from './pages/Liderazgo';
 import './App.css';
 import Academialideres from './pages/AcademiaLideres'; 
 import Footer from './components/Footer';
-
+import AulaVirtual from './components/AulaVirtual';
+import ForoVirtual from './components/ForoVirtual';
 // 🔒 NUEVAS IMPORTACIONES DE SEGURIDAD Y DASHBOARDS
 import { supabase } from './supabaseClient'; // Verifica que la ruta de tu archivo supabaseClient sea esta
 import RutaProtegida from './components/RutaProtegida';
 import DashboardEstudiante from './pages/DashboardEstudiante';
 import DashboardProfesor from './pages/DashboardProfesor';
-
+import PanelClaseProfesor from './components/PanelClaseProfesor';
 const FooterCondicional = () => {
   const location = useLocation();
   if (location.pathname.startsWith('/admin')) {
@@ -96,10 +98,12 @@ function AppContent() {
       <div className="main-wrapper">
         <Routes>
           {/* RUTAS PÚBLICAS */}
+          <Route path="/tarea/:actividadId" element={<DetalleTarea />} />
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<PanelStaff />} />
           <Route path="/retiro" element={<RetiroLanding />} />
           <Route path="/inscripcion" element={<RetiroDeProvision onComprar={añadirAlCarrito} />} />
+         <Route path="/foro/:actividadId" element={<ForoVirtual />} />
           <Route 
             path="/carrito" 
             element={
@@ -109,10 +113,10 @@ function AppContent() {
                 alPagar={() => setModal({ abierto: true, qty: totalItemsCount, total: totalMontoCalculado })} 
               />
             } 
-          />
+          /><Route path="/admin-clase/:id" element={<PanelClaseProfesor />} />
           <Route path="/liderazgo" element={<Liderazgo />} />
           <Route path="/Academia-lideres" element={<Academialideres />} />
-
+<Route path="/clase/:id" element={<AulaVirtual />} />  {/* <-- Agrega esta línea */}
           {/* 🔒 RUTAS PROTEGIDAS (DASHBOARDS) */}
           <Route 
             path="/portal-estudiante" 
