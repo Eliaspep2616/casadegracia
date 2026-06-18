@@ -99,9 +99,17 @@ const DetalleTarea = () => {
         
         <table style={{ width: '100%', borderCollapse: 'collapse', border: '1px solid #dee2e6', fontSize: '0.95rem' }}>
           <tbody>
-            <tr>
-              <td style={{ padding: '15px', borderBottom: '1px solid #dee2e6', backgroundColor: '#f8f9fa', fontWeight: 'bold', width: '25%' }}>Estado de la entrega</td>
-              <td style={{ padding: '15px', borderBottom: '1px solid #dee2e6', backgroundColor: colorFondoEstado }}>{estadoEntrega}</td>
+          <tr>
+              <td style={{ padding: '15px', borderBottom: '1px solid #dee2e6', backgroundColor: '#f8f9fa', fontWeight: 'bold' }}>Comentarios de la entrega</td>
+              <td style={{ padding: '15px', borderBottom: '1px solid #dee2e6' }}>
+                {entrega?.comentario_profesor ? (
+                  <div style={{ backgroundColor: '#f1f5f9', padding: '10px', borderRadius: '6px', borderLeft: '3px solid #0f6cbd', fontStyle: 'italic', color: '#475569' }}>
+                    💬 {entrega.comentario_profesor}
+                  </div>
+                ) : (
+                  <span style={{ color: '#94a3b8', fontSize: '0.9rem' }}>Sin comentarios del profesor</span>
+                )}
+              </td>
             </tr>
             <tr>
               <td style={{ padding: '15px', borderBottom: '1px solid #dee2e6', backgroundColor: '#f8f9fa', fontWeight: 'bold' }}>Estado de la calificación</td>

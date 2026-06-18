@@ -20,6 +20,7 @@ import RutaProtegida from './components/RutaProtegida';
 import DashboardEstudiante from './pages/DashboardEstudiante';
 import DashboardProfesor from './pages/DashboardProfesor';
 import PanelClaseProfesor from './components/PanelClaseProfesor';
+import EditorExamen from './components/EditorExamen';
 const FooterCondicional = () => {
   const location = useLocation();
   if (location.pathname.startsWith('/admin')) {
@@ -99,6 +100,7 @@ function AppContent() {
         <Routes>
           {/* RUTAS PÚBLICAS */}
           <Route path="/tarea/:actividadId" element={<DetalleTarea />} />
+          <Route path="/editor-examen/:actividadId" element={<EditorExamen />} />
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<PanelStaff />} />
           <Route path="/retiro" element={<RetiroLanding />} />

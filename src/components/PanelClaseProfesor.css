@@ -41,9 +41,6 @@
   gap: 20px;
 }
 
-/* =========================================
-   PESTAÑAS Y TABLA DE CALIFICACIONES
-   ========================================= */
 .panel-tabs {
   display: flex;
   gap: 15px;
@@ -65,9 +62,6 @@
 .btn-tab.inactive { background-color: #eaeaea; color: #555; }
 .btn-tab.inactive:hover { background-color: #ddd; }
 
-/* =========================================
-   SEMANAS Y TAREAS (PLANIFICACIÓN)
-   ========================================= */
 .week-card {
   background-color: white;
   border-radius: 20px;
@@ -114,9 +108,6 @@
 .badge-publicado { background-color: #dcfce7; color: #16a34a; }
 .badge-borrador { background-color: #e5e7eb; color: #4b5563; }
 
-/* =========================================
-   CENTRO DE CALIFICACIONES (GRADEBOOK)
-   ========================================= */
 .gradebook-card {
   background-color: white;
   border-radius: 20px;
@@ -170,19 +161,6 @@
   outline: none;
 }
 
-.btn-save-grade {
-  background-color: #1a1a1a;
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  font-size: 0.8rem;
-}
-
-.btn-save-grade:hover { background-color: #333; }
-
 .btn-view-pdf {
   display: inline-flex;
   align-items: center;
@@ -198,9 +176,6 @@
   cursor: pointer;
 }
 
-/* =========================================
-   MODAL DE NUEVA TAREA
-   ========================================= */
 .modal-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -281,9 +256,7 @@
   color: #1a1a1a;
   border-color: #ddd;
 }
-/* =========================================
-   DISEÑO ESTILO UG CAMPUS
-   ========================================= */
+
 .campus-ug-layout {
   display: flex;
   flex-direction: column;
@@ -302,7 +275,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid #2563eb; /* Línea azul característica académica */
+  border-bottom: 2px solid #2563eb; 
   padding-bottom: 15px;
   margin-bottom: 25px;
 }
@@ -403,4 +376,297 @@
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 700;
+}
+
+/* =========================================
+   NUEVAS CLASES: REFRACTORIZACIÓN INLINE CSS
+   ========================================= */
+
+.loading-container {
+  padding: 50px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.panel-gestion-text {
+  margin: 0 0 10px 0;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  color: #aaa;
+  font-weight: 700;
+}
+
+.materia-title {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.modo-edicion-wrapper {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.modo-edicion-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.modo-edicion-checkbox {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-add-week {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: white;
+  color: #1a1a1a;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+}
+
+.empty-state-text {
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  color: #777;
+}
+
+.action-buttons-wrapper {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-icon-action {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.btn-icon-danger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #dc2626;
+}
+
+.item-flex-between {
+  justify-content: space-between;
+}
+
+.recurso-inner-flex, .actividad-inner-flex {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.actividad-inner-flex {
+  align-items: flex-start;
+}
+
+.actividad-icon-wrapper {
+  margin-top: 3px;
+}
+
+.armar-examen-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-armar-examen {
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.fecha-margin {
+  margin-left: 10px;
+}
+
+.badge-margin {
+  margin-top: 5px;
+}
+
+.calificando-header {
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.calificando-label {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+
+.calificando-select {
+  max-width: 400px;
+}
+
+.estudiante-cedula {
+  font-size: 0.8rem;
+  color: #777;
+}
+
+.estado-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.estado-calificado {
+  color: #16a34a;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.estado-pendiente {
+  color: #0284c7;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.estado-no-entregado {
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.estado-atrasado {
+  background-color: #ffe4e6;
+  color: #e11d48;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  width: fit-content;
+}
+
+.btn-ver-foro {
+  background-color: #f0fdf4 !important;
+  color: #16a34a !important;
+}
+
+.sin-archivo-text {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+.grade-edit-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 250px;
+}
+
+.btn-guardar-nota {
+  background-color: #16a34a;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-cerrar-nota {
+  background-color: #64748b;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.textarea-comentario {
+  width: 100%;
+  padding: 8px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+  border: 1px solid #cbd5e1;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.nota-display-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nota-display-inner {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.nota-valor {
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.nota-valor-has {
+  color: #1a1a1a;
+}
+
+.nota-valor-empty {
+  color: #94a3b8;
+}
+
+.btn-editar-nota {
+  background-color: #f8fafc;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.comentario-display {
+  font-size: 0.85rem;
+  color: #475569;
+  background-color: #f1f5f9;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-style: italic;
+  border-left: 3px solid #0f6cbd;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
 }
