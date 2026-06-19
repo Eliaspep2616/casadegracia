@@ -42,7 +42,7 @@ const PanelClaseProfesor = () => {
   const cargarDatos = async () => {
     setLoading(true);
     
-    const { data: matData } = await supabase.from('materias').select('id, nombre_materia, nivel_id').eq('id', id).single();
+    const { data: matData } = await supabase.from('materias').select('id, nombre_materia, nivel_id, fecha_cierre_notas').eq('id', id).single();
     if (matData) setMateria(matData);
 
     try {
@@ -76,6 +76,10 @@ const PanelClaseProfesor = () => {
     setComentariosTemporales({});
     setEditandoNotaId(null);
   }, [actividadSeleccionadaId]);
+
+  // LÓGICA DE CIERRE DE ACTAS
+  const fechaCierreActas = materia?.fecha_cierre_notas ? new Date(materia.fecha_cierre_notas) : null;
+  const notasBloqueadas = fechaCierreActas ? new Date() > fechaCierreActas : false;
 
   const handleEliminar = async (tabla, itemId) => {
     if (window.confirm('¿Estás seguro de que deseas eliminar esto? Esta acción no se puede deshacer.')) {
@@ -196,6 +200,14 @@ const PanelClaseProfesor = () => {
           <div>
             <p className="panel-gestion-text">PANEL DE GESTIÓN</p>
             <h1 className="materia-title">{materia?.nombre_materia}</h1>
+            {/* 👇 AVISO DE CIERRE DE ACTAS AÑADIDO 👇 */}
+            {fechaCierreActas && (
+              <p style={{ margin: '10px 0 0 0', fontSize: '0.9rem', color: notasBloqueadas ? '#fca5a5' : '#86efac', fontWeight: 'bold' }}>
+                {notasBloqueadas 
+                  ? `🔒 El ingreso de notas cerró el ${fechaCierreActas.toLocaleDateString()}`
+                  : `⏳ Tienes hasta el ${fechaCierreActas.toLocaleDateString()} para ingresar notas`}
+              </p>
+            )}
           </div>
           
           {pestañaActiva === 'planificacion' && (
@@ -443,15 +455,24 @@ const PanelClaseProfesor = () => {
                                   <span className={`nota-valor ${entrega?.calificacion != null ? 'nota-valor-has' : 'nota-valor-empty'}`}>
                                     {entrega?.calificacion != null ? `${entrega.calificacion} / 100` : '- / 100'}
                                   </span>
-                                  <button onClick={() => {
-                                    setNotasTemporales({...notasTemporales, [alumno.id]: entrega?.calificacion || ''});
-                                    if (!esForo) {
-                                      setComentariosTemporales({...comentariosTemporales, [alumno.id]: entrega?.comentario_profesor || ''});
-                                    }
-                                    setEditandoNotaId(alumno.id);
-                                  }} className="btn-editar-nota">
-                                    ✏️ {entrega?.calificacion != null ? 'Editar' : 'Calificar'}
-                                  </button>
+                                  
+                                  {/* 👇 CANDADO INTEGRADO 👇 */}
+                                  {notasBloqueadas ? (
+                                    <span style={{ backgroundColor: '#fee2e2', color: '#b91c1c', padding: '4px 8px', borderRadius: '4px', fontSize: '0.8rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                      🔒 Actas Cerradas
+                                    </span>
+                                  ) : (
+                                    <button onClick={() => {
+                                      setNotasTemporales({...notasTemporales, [alumno.id]: entrega?.calificacion || ''});
+                                      if (!esForo) {
+                                        setComentariosTemporales({...comentariosTemporales, [alumno.id]: entrega?.comentario_profesor || ''});
+                                      }
+                                      setEditandoNotaId(alumno.id);
+                                    }} className="btn-editar-nota">
+                                      ✏️ {entrega?.calificacion != null ? 'Editar' : 'Calificar'}
+                                    </button>
+                                  )}
+                                  
                                 </div>
                                 
                                 {!esForo && entrega?.comentario_profesor && (

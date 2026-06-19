@@ -31,7 +31,8 @@ const Navbar = ({ cantidadCarrito }) => {
         <div className={`nav-right ${menuAbierto ? 'active' : ''}`}>
           <ul className="nav-links">
             <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>INICIO</Link></li>
-            <li><Link to="/retiro" className={location.pathname === '/retiro' ? 'active' : ''}>RETIRO DE PROVISIÓN</Link></li>
+            <li><Link to="/CRECER" className={location.pathname === '/CRECER' ? 'active' : ''}>CRECER</Link></li>
+            <li><Link to="/Academia-lideres" className={location.pathname === '/Academia-lideres' ? 'active' : ''}>ACADEMIA DE LÍDERES</Link></li>
             
           </ul>
 
