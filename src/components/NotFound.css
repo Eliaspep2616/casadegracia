@@ -1,0 +1,85 @@
+.not-found-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f8f9fa; /* Ajusta este color al fondo de tu web, puede ser oscuro si tu web es oscura (#111) */
+  padding: 20px;
+  text-align: center;
+}
+
+.not-found-content {
+  max-width: 600px;
+  background: white; /* O un fondo translúcido si prefieres el estilo glassmorphism */
+  padding: 50px 30px;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 900;
+  color: #e5e7eb; /* Un gris sutil o el color primario de tu iglesia */
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -5px;
+}
+
+.error-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-top: -20px;
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.error-text {
+  font-size: 1.1rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.error-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Si ya tienes estos botones en tu Home.css, no hace falta que los repitas aquí, 
+   pero te los dejo ajustados por si acaso para la vista 404 */
+.error-buttons .btn-glass-white,
+.error-buttons .btn-glass-dark {
+  display: flex;
+  align-items: center;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.error-buttons .btn-glass-white {
+  background: #ffffff;
+  color: #1f2937;
+  border: 1px solid #e5e7eb;
+}
+
+.error-buttons .btn-glass-white:hover {
+  background: #f3f4f6;
+}
+
+.error-buttons .btn-glass-dark {
+  background: #111827;
+  color: #ffffff;
+}
+
+.error-buttons .btn-glass-dark:hover {
+  background: #374151;
+}

@@ -22,6 +22,7 @@ import DashboardProfesor from './pages/DashboardProfesor';
 import PanelClaseProfesor from './components/PanelClaseProfesor';
 import EditorExamen from './components/EditorExamen';
 import PanelDirector from './components/PanelDirector';
+import NotFound from './components/NotFound';
 const FooterCondicional = () => {
   const location = useLocation();
   if (location.pathname.startsWith('/admin')) {
@@ -108,6 +109,7 @@ function AppContent() {
           <Route path="/retiro" element={<RetiroLanding />} />
           <Route path="/inscripcion" element={<RetiroDeProvision onComprar={añadirAlCarrito} />} />
          <Route path="/foro/:actividadId" element={<ForoVirtual />} />
+         <Route path="*" element={<NotFound />} />
           <Route 
             path="/carrito" 
             element={
