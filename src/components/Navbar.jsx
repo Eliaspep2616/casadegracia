@@ -7,33 +7,65 @@ import logo from "../assets/Logo.webp";
 const Navbar = ({ cantidadCarrito }) => {
   const location = useLocation();
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   // Cerramos el menú automáticamente cuando cambia la ruta
   useEffect(() => {
     setMenuAbierto(false);
   }, [location]);
 
+  // Efecto visual de "glassmorphism" al hacer scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Bloquea el scroll del fondo cuando el menú móvil está abierto
+  useEffect(() => {
+    if (menuAbierto) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [menuAbierto]);
+
   const toggleMenu = () => setMenuAbierto(!menuAbierto);
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="navbar-container">
         <Link to="/" className="logo-container">
           <img src={logo} alt="Logo" className="logo-img" />
         </Link>
         
-        {/* Botón de hamburguesa con z-index alto */}
-        <div className="menu-icon" onClick={toggleMenu}>
+        {/* Botón de hamburguesa accesible y con z-index alto */}
+        <button 
+          className="menu-icon" 
+          onClick={toggleMenu}
+          aria-label={menuAbierto ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={menuAbierto}
+        >
           {menuAbierto ? <X size={28} /> : <Menu size={28} />}
-        </div>
+        </button>
 
-        {/* La clase "active" controla la visibilidad */}
+        {/* Capa oscura de fondo para versión móvil */}
+        <div 
+          className={`nav-overlay ${menuAbierto ? 'active' : ''}`} 
+          onClick={() => setMenuAbierto(false)}
+        ></div>
+
+        {/* La clase "active" controla la visibilidad en móviles */}
         <div className={`nav-right ${menuAbierto ? 'active' : ''}`}>
           <ul className="nav-links">
             <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>INICIO</Link></li>
             <li><Link to="/CRECER" className={location.pathname === '/CRECER' ? 'active' : ''}>CRECER</Link></li>
             <li><Link to="/Academia-lideres" className={location.pathname === '/Academia-lideres' ? 'active' : ''}>ACADEMIA DE LÍDERES</Link></li>
-            
           </ul>
 
           <Link to="/carrito" className="cart-icon-container">

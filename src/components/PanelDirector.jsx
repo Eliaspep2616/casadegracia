@@ -74,7 +74,7 @@ const PanelDirector = () => {
     // Cargar niveles (Grados/Cursos)
     const { data: nivData } = await supabase
       .from('niveles')
-      .select('id, nombre_nivel');
+      .select('id, nombre');
     if (nivData) setNiveles(nivData);
 
     setLoading(false);
@@ -270,7 +270,7 @@ const PanelDirector = () => {
                   <select required value={formMateria.nivel_id} onChange={e => setFormMateria({...formMateria, nivel_id: e.target.value})} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', boxSizing: 'border-box' }}>
                     <option value="">Seleccionar...</option>
                     {niveles.map(niv => (
-                      <option key={niv.id} value={niv.id}>{niv.nombre_nivel}</option>
+                      <option key={niv.id} value={niv.id}>{niv.nombre}</option>
                     ))}
                   </select>
                 </div>

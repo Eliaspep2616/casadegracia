@@ -1,4 +1,5 @@
-c.navbar {
+/* --- BASE NAVBAR --- */
+.navbar {
   background: white;
   border-bottom: 1px solid #e2e8f0;
   position: sticky;
@@ -7,6 +8,15 @@ c.navbar {
   height: 70px;
   display: flex;
   align-items: center;
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Efecto al hacer scroll */
+.navbar.scrolled {
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 .navbar-container {
@@ -19,6 +29,14 @@ c.navbar {
   padding: 0 5%;
 }
 
+/* --- LOGO --- */
+.logo-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  z-index: 1002; /* Para que quede sobre el overlay oscuro si es necesario */
+}
+
 .logo-text {
   font-size: 1.2rem;
   font-weight: 900;
@@ -27,6 +45,19 @@ c.navbar {
   text-decoration: none;
 }
 
+.logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.logo-img:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* --- ENLACES Y NAVEGACIÓN --- */
 .nav-right {
   display: flex;
   align-items: center;
@@ -45,16 +76,24 @@ c.navbar {
   font-weight: 700;
   font-size: 0.85rem;
   text-transform: uppercase;
+  transition: color 0.3s ease;
 }
 
+.nav-links a:hover,
 .nav-links a.active {
   color: #004a99;
 }
 
+/* --- CARRITO --- */
 .cart-icon-container {
   position: relative;
   display: flex;
   align-items: center;
+  transition: transform 0.3s ease;
+}
+
+.cart-icon-container:hover {
+  transform: translateY(-2px);
 }
 
 .cart-badge {
@@ -69,46 +108,64 @@ c.navbar {
   border: 2px solid white;
 }
 
+/* Capa de fondo oscura (Solo visible en móvil) */
+.nav-overlay {
+  display: none;
+}
+
 /* --- RESPONSIVE / MÓVIL --- */
 .menu-icon {
   display: none;
-  z-index: 1001; /* Siempre por encima del menú desplegado */
+  background: none;
+  border: none;
+  color: #000;
+  z-index: 1003; /* Siempre por encima del menú desplegado y el overlay */
   cursor: pointer;
-}
-.logo-container {
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-
-.logo-img {
-  height: 40px;
-  width: auto;
-  object-fit: contain;
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.logo-img:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
+  padding: 5px;
 }
 
 @media (max-width: 968px) {
+  .logo-img {
+    height: 35px;
+  }
+
   .menu-icon {
     display: flex;
   }
 
-  .nav-right {
-    position: fixed; /* Ocupa toda la pantalla */
+  /* Fondo oscuro al abrir menú */
+  .nav-overlay {
+    display: block;
+    position: fixed;
     top: 70px;
     left: 0;
     width: 100%;
+    height: calc(100vh - 70px);
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+  }
+
+  .nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-right {
+    position: fixed; /* Ocupa toda la pantalla lateral */
+    top: 70px;
+    right: 0; /* Cambiado a right para que cuadre con el transform */
+    width: 280px; /* Ancho fijo para el menú lateral en lugar del 100% */
     height: calc(100vh - 70px);
     background: white;
     flex-direction: column;
     justify-content: flex-start;
     padding-top: 50px;
     gap: 40px;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.05);
+    z-index: 1001;
     
     /* Animación: se desliza desde la derecha */
     transform: translateX(100%); 
@@ -124,15 +181,14 @@ c.navbar {
     flex-direction: column;
     align-items: center;
     gap: 30px;
+    width: 100%;
   }
 
   .nav-links a {
     font-size: 1.1rem;
-  }
-}
-@media (max-width: 968px) {
-  .logo-img {
-    height: 35px;
+    display: block;
+    width: 100%;
+    text-align: center;
   }
 }
 
@@ -140,5 +196,9 @@ c.navbar {
 @media (max-width: 480px) {
   .logo-img {
     height: 30px;
+  }
+  
+  .nav-right {
+    width: 100%; /* En móviles muy pequeños, el menú ocupa todo el ancho */
   }
 }

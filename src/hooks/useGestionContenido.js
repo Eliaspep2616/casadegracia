@@ -23,11 +23,7 @@ export const useGestionContenido = () => {
 const obtenerEstructuraMateria = async (materiaId) => {
     const { data, error } = await supabase
       .from('unidades')
-      .select(`
-        id, titulo, orden,
-        recursos(id, titulo, url, tipo),
-        actividades(id, titulo, tipo, apertura, cierre, visible, descripcion, permite_atrasos) 
-      `)
+      .select('*, recursos(*), actividades(id, titulo, tipo, descripcion, apertura, cierre, visible, permite_atrasos, categoria_id)')
       .eq('materia_id', materiaId)
       .order('orden', { ascending: true });
 

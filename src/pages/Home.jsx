@@ -7,14 +7,7 @@ const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const eventos = [
-    { 
-      id: 1, 
-      titulo: "RETIRO DE PROVISIÓN", 
-      tag: "GROW",
-      desc: "Una experiencia de inmersión espiritual en el corazón de Guayaquil.",
-      img: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/banner_grow.png", 
-      link: "/retiro" 
-    },
+  
     { 
       id: 2, 
       titulo: "KNOCK OUT", 
@@ -27,7 +20,7 @@ const Home = () => {
       id: 3, 
       titulo: "Extra"+"\n ordinarias",
       tag: "",
-      desc: "sábado 16 DE MAYO 7PM",
+      desc: "",
       img: "https://lzvolnnndwpyxyoyldea.supabase.co/storage/v1/object/public/assets/Extraordinarias.webp", 
       link: "https://www.instagram.com/extraordinariascdg/" 
     }
@@ -62,7 +55,7 @@ const Home = () => {
               >
                 DÓNDE ESTAMOS UBICADOS <MapPin size={18} />
               </a>
-              <Link to="/retiro" className="btn-glass-dark">PRÓXIMO EVENTO</Link>
+             { /*Link to="/retiro" className="btn-glass-dark">PRÓXIMO EVENTO</Link>*/};
             </div>
           </div>
         </div>
@@ -170,8 +163,8 @@ const Home = () => {
       />
       <div className="ministry-content">
         <h3>Gracia Youth</h3>
-        <p>Sábado 09 mayo 6:30 PM 
- | <br />13 junio</p>
+        <p>
+ | <br /></p>
       </div>
     </div>
 

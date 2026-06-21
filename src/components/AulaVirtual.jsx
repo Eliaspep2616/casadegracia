@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import { ArrowLeft, FileText, CheckSquare, MessageCircle, Eye, UploadCloud, Loader, CheckCircle, RefreshCw, Award } from 'lucide-react';
+import { ArrowLeft, FileText, CheckSquare, MessageCircle } from 'lucide-react';
 import './AulaVirtual.css';
 
 const AulaVirtual = () => {
@@ -10,13 +10,14 @@ const AulaVirtual = () => {
   
   const [loading, setLoading] = useState(true);
   const [usuarioActual, setUsuarioActual] = useState(null);
-  const [perfilAlumno, setPerfilAlumno] = useState(null); // Para mostrar su nombre en el reporte
+  const [perfilAlumno, setPerfilAlumno] = useState(null); 
   
-  const [pestañaActiva, setPestañaActiva] = useState('curso'); // 'curso' o 'calificaciones'
+  const [pestañaActiva, setPestañaActiva] = useState('curso'); 
   
   const [materia, setMateria] = useState(null);
   const [unidades, setUnidades] = useState([]);
   const [entregas, setEntregas] = useState([]);
+  const [categorias, setCategorias] = useState([]); 
 
   useEffect(() => {
     const inicializarAula = async () => {
@@ -26,18 +27,18 @@ const AulaVirtual = () => {
       const user = session.user;
       setUsuarioActual(user);
 
-      // Traer nombre del alumno
       const { data: perfilData } = await supabase.from('perfiles').select('nombre_completo').eq('id', user.id).single();
       if (perfilData) setPerfilAlumno(perfilData);
 
-      // Cargar detalles de la materia
       const { data: materiaData } = await supabase.from('materias').select('id, nombre_materia, profesor:perfiles(nombre_completo)').eq('id', id).single();
       if (materiaData) setMateria(materiaData);
 
-      // Cargar estructura
+      const { data: catData } = await supabase.from('categorias_notas').select('*').eq('materia_id', id);
+      if (catData) setCategorias(catData);
+
       const { data: unidadesData } = await supabase
         .from('unidades')
-        .select(`id, titulo, orden, recursos(id, titulo, url, tipo), actividades(id, titulo, tipo, apertura, cierre, visible)`)
+        .select(`id, titulo, orden, recursos(id, titulo, url, tipo), actividades(id, titulo, tipo, apertura, cierre, visible, categoria_id)`)
         .eq('materia_id', id)
         .order('orden', { ascending: true });
 
@@ -45,7 +46,6 @@ const AulaVirtual = () => {
         const unidadesFiltradas = unidadesData.map(u => ({ ...u, actividades: u.actividades.filter(a => a.visible === true) }));
         setUnidades(unidadesFiltradas);
 
-        // Cargar entregas del alumno
         const actividadesIds = unidadesFiltradas.flatMap(u => u.actividades).map(a => a.id);
         if (actividadesIds.length > 0) {
           const { data: entregasData } = await supabase.from('entregas_tareas').select('*').eq('estudiante_id', user.id).in('tarea_id', actividadesIds);
@@ -65,31 +65,53 @@ const AulaVirtual = () => {
     return <FileText size={18} />;
   };
 
-  // Función para obtener las iniciales del estudiante (Ej: Juan Perez -> JP)
   const getIniciales = (nombre) => {
     if (!nombre) return 'US';
     return nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
   };
 
+  // ==========================================
+  // MOTOR MATEMÁTICO
+  // ==========================================
+  const todasLasActividades = unidades.flatMap(u => u.actividades).filter(a => a.tipo === 'tarea' || a.tipo === 'foro');
+  let notaFinalCalculada = 0;
+
+  todasLasActividades.forEach(act => {
+    const entrega = entregas.find(e => e.tarea_id === act.id);
+    if (entrega && entrega.calificacion != null) {
+      const cat = categorias.find(c => c.id === act.categoria_id);
+      if (cat) {
+        const actsCat = todasLasActividades.filter(a => a.categoria_id === cat.id);
+        const peso = Number(cat.porcentaje) / actsCat.length;
+        notaFinalCalculada += (Number(entrega.calificacion) / 100) * peso;
+      }
+    }
+  });
+
   if (loading) return <div className="loading-screen">Cargando Campus Virtual...</div>;
 
   return (
     <div className="aula-page-container">
-      {/* BARRA DE NAVEGACIÓN SUPERIOR ESTILO UG */}
-      <div className="ug-top-nav">
-        <div className="ug-nav-links">
-          <button className={pestañaActiva === 'curso' ? 'active' : ''} onClick={() => setPestañaActiva('curso')}>Curso</button>
-          <button className={pestañaActiva === 'calificaciones' ? 'active' : ''} onClick={() => setPestañaActiva('calificaciones')}>Calificaciones</button>
-        </div>
-      </div>
-
       <div className="aula-main-wrapper">
-        <button onClick={() => navigate('/portal-estudiante')} className="btn-volver">
+        
+        {/* BOTÓN VOLVER ARREGLADO */}
+        <button onClick={() => navigate('/dashboard')} className="btn-volver">
           <ArrowLeft size={20} /> VOLVER AL DASHBOARD
         </button>
 
         <div className="aula-header">
+          <p className="aula-docente-label">DOCENTE: {materia?.profesor?.nombre_completo?.toUpperCase()}</p>
           <h1 className="aula-materia-title">{materia?.nombre_materia}</h1>
+        </div>
+
+        {/* PESTAÑAS LIMPIAS (TU CSS ORIGINAL) */}
+        <div className="aula-tabs">
+          <button className={`btn-tab ${pestañaActiva === 'curso' ? 'active' : 'inactive'}`} onClick={() => setPestañaActiva('curso')}>
+            Contenido del Curso
+          </button>
+          <button className={`btn-tab ${pestañaActiva === 'calificaciones' ? 'active' : 'inactive'}`} onClick={() => setPestañaActiva('calificaciones')}>
+            Calificaciones
+          </button>
         </div>
 
         {/* ================= VISTA: CURSO ================= */}
@@ -164,23 +186,32 @@ const AulaVirtual = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {/* Fila del nombre de la materia */}
                   <tr className="fila-categoria-principal">
                     <td colSpan="7"><strong>⌄ {materia?.nombre_materia?.toUpperCase()}</strong></td>
                   </tr>
 
-                  {/* Iterar sobre unidades y actividades */}
-                  {unidades.map(unidad => {
-                    if (unidad.actividades.length === 0) return null;
+                  {/* AHORA AGRUPAMOS POR CATEGORÍA (Bolsas de notas) */}
+                  {categorias.map(cat => {
+                    const actsCat = todasLasActividades.filter(a => a.categoria_id === cat.id);
+                    if (actsCat.length === 0) return null;
+
+                    const pesoPorTarea = Number(cat.porcentaje) / actsCat.length;
+
                     return (
-                      <React.Fragment key={unidad.id}>
+                      <React.Fragment key={cat.id}>
+                        {/* Título de la bolsa (Ej: ACTIVIDADES EN CLASE) */}
                         <tr className="fila-subcategoria">
-                          <td colSpan="7"><strong>⌄ {unidad.titulo.toUpperCase()}</strong></td>
+                          <td colSpan="7">
+                            <strong style={{ color: '#0f4c81' }}>⌄ {cat.nombre.toUpperCase()} (Vale {cat.porcentaje}%)</strong>
+                          </td>
                         </tr>
-                        {unidad.actividades.map(act => {
+                        
+                        {/* Tareas que pertenecen a esta bolsa */}
+                        {actsCat.map(act => {
                           const entrega = entregas.find(e => e.tarea_id === act.id);
-                          const nota = entrega?.calificacion;
-                          const tieneNota = nota !== null && nota !== undefined;
+                          const nota = entrega?.calificacion != null ? Number(entrega.calificacion) : null;
+                          const tieneNota = nota !== null;
+                          const aporteFinal = tieneNota ? (nota / 100) * pesoPorTarea : 0;
 
                           return (
                             <tr key={act.id} className="fila-actividad">
@@ -190,12 +221,12 @@ const AulaVirtual = () => {
                                   <span style={{ color: '#0f6cbd', fontWeight: '600' }}>{act.titulo}</span>
                                 </div>
                               </td>
-                              <td>-</td>
-                              <td>{tieneNota ? <strong style={{ color: '#212529' }}>{nota},00</strong> : '-'}</td>
+                              <td>{pesoPorTarea > 0 ? `${pesoPorTarea.toFixed(2)} %` : '-'}</td>
+                              <td>{tieneNota ? <strong style={{ color: '#212529' }}>{nota.toFixed(2)}</strong> : '-'}</td>
                               <td>0–100</td>
-                              <td>{tieneNota ? `${nota},00 %` : '-'}</td>
-                              <td>{tieneNota ? 'Calificado' : ''}</td>
-                              <td>-</td>
+                              <td>{tieneNota ? `${nota.toFixed(2)} %` : '-'}</td>
+                              <td style={{ fontSize: '0.85rem' }}>{entrega?.comentario_profesor || (tieneNota ? 'Calificado' : '')}</td>
+                              <td>{tieneNota && pesoPorTarea > 0 ? <strong style={{ color: '#0f4c81' }}>{aporteFinal.toFixed(2)} %</strong> : '-'}</td>
                             </tr>
                           );
                         })}
@@ -207,11 +238,11 @@ const AulaVirtual = () => {
                   <tr className="fila-total-curso">
                     <td><strong>Total del curso</strong></td>
                     <td>-</td>
-                    <td><strong>-</strong></td>
+                    <td><strong style={{ color: '#0f4c81' }}>{notaFinalCalculada > 0 ? notaFinalCalculada.toFixed(2) : '-'}</strong></td>
                     <td>0–100</td>
                     <td>-</td>
                     <td></td>
-                    <td>-</td>
+                    <td><strong style={{ color: '#0f4c81' }}>{notaFinalCalculada > 0 ? `${notaFinalCalculada.toFixed(2)} %` : '-'}</strong></td>
                   </tr>
                 </tbody>
               </table>

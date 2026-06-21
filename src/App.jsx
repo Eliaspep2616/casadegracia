@@ -9,6 +9,7 @@ import FormularioRegistro from './components/FormularioRegistro';
 import PanelStaff from './components/PanelStaff';
 import RetiroLanding from './pages/RetiroLanding';
 import Liderazgo from './pages/Liderazgo';
+import Voluntario from './pages/Voluntario';
 import './App.css';
 import Academialideres from './pages/AcademiaLideres'; 
 import Footer from './components/Footer';
@@ -101,6 +102,7 @@ function AppContent() {
       <div className="main-wrapper">
         <Routes>
           {/* RUTAS PÚBLICAS */}
+          <Route path="/Voluntario" element={<Voluntario />} />
           <Route path="/director" element={<PanelDirector />} />
           <Route path="/tarea/:actividadId" element={<DetalleTarea />} />
           <Route path="/editor-examen/:actividadId" element={<EditorExamen />} />

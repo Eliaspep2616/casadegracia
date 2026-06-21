@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import { BookOpen, CheckCircle, Clock, ArrowRight, LogOut } from 'lucide-react';
+import { BookOpen, CheckCircle, Clock, ArrowRight, LogOut, Award } from 'lucide-react';
 import './DashboardEstudiante.css';
 
 const DashboardEstudiante = () => {
@@ -10,23 +10,21 @@ const DashboardEstudiante = () => {
   const [estudiante, setEstudiante] = useState({ nombre: "CARGANDO..." });
   const [modulos, setModulos] = useState([]);
   
-  // Métricas estáticas por ahora (se calcularán después con las tareas reales)
-  const metricas = { promedio: "0/100", progreso: "0%" };
+  // NUEVO: Métricas ahora son un estado dinámico
+  const [metricas, setMetricas] = useState({ promedio: "0.00/100", progreso: "0%" });
 
   useEffect(() => {
     const cargarDatos = async () => {
       try {
-        // 1. Obtener la sesión del usuario que acaba de loguearse
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError || !session) {
-          navigate('/Academia-lideres');
+          navigate('/login');
           return;
         }
         
         const userId = session.user.id;
 
-        // 2. Buscar su nombre real en la tabla "perfiles"
         const { data: perfil } = await supabase
           .from('perfiles')
           .select('nombre_completo')
@@ -34,40 +32,121 @@ const DashboardEstudiante = () => {
           .single();
 
         if (perfil && perfil.nombre_completo) {
-          // Extraemos solo el primer nombre (ej. "Mateo" de "Mateo Vera")
           const primerNombre = perfil.nombre_completo.split(' ')[0];
           setEstudiante({ nombre: primerNombre.toUpperCase() });
         }
 
-        // 3. Buscar en qué Nivel está matriculado este alumno
         const { data: matricula } = await supabase
           .from('matriculas')
           .select('nivel_id')
           .eq('estudiante_id', userId)
           .single();
 
-        // 4. Si está matriculado, traer las materias de ese nivel
         if (matricula) {
           const { data: materiasData } = await supabase
             .from('materias')
-            .select(`
-              id,
-              nombre_materia,
-              profesor:perfiles(nombre_completo)
-            `)
+            .select('id, nombre_materia, profesor:perfiles(nombre_completo)')
             .eq('nivel_id', matricula.nivel_id);
 
-          if (materiasData) {
-            // Formateamos los datos para que el diseño visual siga siendo el mismo
-            const modulosListos = materiasData.map((materia, index) => ({
-              id: materia.id,
-              titulo: materia.nombre_materia,
-              profesor: materia.profesor ? `Ps. ${materia.profesor.nombre_completo}` : "Profesor por asignar",
-              estado: "En curso",
-              tareasPendientes: 0,
-              // Intercalamos el color de las tarjetas automáticamente
-              estiloTema: index % 2 === 0 ? "modulo-dark" : "modulo-light" 
-            }));
+          if (materiasData && materiasData.length > 0) {
+            const materiaIds = materiasData.map(m => m.id);
+
+            // 1. Descargamos la estructura académica completa de todas sus materias
+            const { data: unidadesData } = await supabase
+              .from('unidades')
+              .select('materia_id, actividades(id, categoria_id, tipo)')
+              .in('materia_id', materiaIds);
+
+            // 2. Descargamos las "Bolsas de Notas" (Categorías) de estas materias
+            const { data: categoriasData } = await supabase
+              .from('categorias_notas')
+              .select('*')
+              .in('materia_id', materiaIds);
+
+            // 3. Descargamos todas las entregas/notas exclusivas de este alumno
+            const { data: entregasData } = await supabase
+              .from('entregas_tareas')
+              .select('tarea_id, calificacion')
+              .eq('estudiante_id', userId);
+
+            let sumaPromediosGlobal = 0;
+            let modulosConCalificacion = 0;
+            let totalTareasGlobal = 0;
+            let tareasCompletadasGlobal = 0;
+
+            // 4. EL MOTOR MATEMÁTICO: Evaluamos materia por materia
+            const modulosListos = materiasData.map((materia, index) => {
+              const catMateria = categoriasData?.filter(c => c.materia_id === materia.id) || [];
+              const unidMateria = unidadesData?.filter(u => u.materia_id === materia.id) || [];
+              
+              let notaFinalModulo = 0;
+              let moduloTieneNotas = false;
+              let tareasModulo = 0;
+              let completadasModulo = 0;
+
+              // Identificar todas las actividades calificables (tareas y foros)
+              const todasLasActividades = unidMateria.flatMap(u => u.actividades).filter(a => a.tipo === 'tarea' || a.tipo === 'foro');
+              tareasModulo = todasLasActividades.length;
+              totalTareasGlobal += tareasModulo;
+
+              // Recorremos las bolsas de evaluación (ej: 30% Deberes, 70% Examen)
+              catMateria.forEach(cat => {
+                const actividadesCat = todasLasActividades.filter(a => a.categoria_id == cat.id);
+                if (actividadesCat.length === 0) return;
+
+                let sumaNotasCat = 0;
+                let tareasCalificadas = 0;
+
+                actividadesCat.forEach(act => {
+                  const entrega = entregasData?.find(e => e.tarea_id === act.id);
+                  if (entrega) {
+                    completadasModulo++;
+                    tareasCompletadasGlobal++; // Sumamos para la barra de progreso general
+                    if (entrega.calificacion != null) {
+                      sumaNotasCat += Number(entrega.calificacion);
+                      tareasCalificadas++;
+                      moduloTieneNotas = true;
+                    }
+                  }
+                });
+
+                // Sacar promedio de la bolsa y multiplicarlo por su peso
+                if (tareasCalificadas > 0) {
+                  const promedioCat = sumaNotasCat / tareasCalificadas;
+                  const aporteAlFinal = promedioCat * (Number(cat.porcentaje) / 100);
+                  notaFinalModulo += aporteAlFinal;
+                }
+              });
+
+              if (moduloTieneNotas) {
+                sumaPromediosGlobal += notaFinalModulo;
+                modulosConCalificacion++;
+              }
+
+              return {
+                id: materia.id,
+                titulo: materia.nombre_materia,
+                profesor: materia.profesor ? `Ps. ${materia.profesor.nombre_completo}` : "Profesor por asignar",
+                estado: "En curso",
+                tareasPendientes: tareasModulo - completadasModulo,
+                calificacionModulo: moduloTieneNotas ? notaFinalModulo.toFixed(2) : "-",
+                estiloTema: index % 2 === 0 ? "modulo-dark" : "modulo-light" 
+              };
+            });
+
+            // 5. Calculamos el Promedio General y el Progreso Académico Global
+            const promedioGeneralFinal = modulosConCalificacion > 0 
+              ? (sumaPromediosGlobal / modulosConCalificacion).toFixed(2) 
+              : "0.00";
+            
+            const progresoPorcentaje = totalTareasGlobal > 0 
+              ? Math.round((tareasCompletadasGlobal / totalTareasGlobal) * 100) 
+              : 0;
+
+            setMetricas({ 
+              promedio: `${promedioGeneralFinal}/100`, 
+              progreso: `${progresoPorcentaje}%` 
+            });
             
             setModulos(modulosListos);
           }
@@ -84,7 +163,7 @@ const DashboardEstudiante = () => {
 
   const handleCerrarSesion = async () => {
     await supabase.auth.signOut();
-    navigate('/Academia-lideres');
+    navigate('/login');
   };
 
   if (loading) {
@@ -101,7 +180,7 @@ const DashboardEstudiante = () => {
         
         <header className="dash-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '20px' }}>
           <div>
-            <p className="dash-subtitle">COHORTE 2026</p>
+            <p className="dash-subtitle">CAMPUS VIRTUAL</p>
             <h1 className="dash-title">HOLA,<br/>{estudiante.nombre}</h1>
           </div>
 
@@ -124,7 +203,7 @@ const DashboardEstudiante = () => {
 
         <section className="dash-metrics-grid">
           <div className="metric-card bg-crema">
-            <div className="metric-icon"><CheckCircle size={24} strokeWidth={2.5} /></div>
+            <div className="metric-icon"><Award size={24} strokeWidth={2.5} /></div>
             <div>
               <p className="metric-label">PROMEDIO GENERAL</p>
               <h2 className="metric-value">{metricas.promedio}</h2>
@@ -132,7 +211,7 @@ const DashboardEstudiante = () => {
           </div>
           
           <div className="metric-card bg-blanco">
-            <div className="metric-icon"><Clock size={24} strokeWidth={2.5} /></div>
+            <div className="metric-icon"><CheckCircle size={24} strokeWidth={2.5} /></div>
             <div>
               <p className="metric-label">PROGRESO ACADÉMICO</p>
               <h2 className="metric-value">{metricas.progreso}</h2>
@@ -155,6 +234,11 @@ const DashboardEstudiante = () => {
                     <span className="module-tag">{mod.estado}</span>
                     <h4 className="module-title">{mod.titulo}</h4>
                     <p className="module-teacher">{mod.profesor}</p>
+                    
+                    {/* NUEVO: Muestra la nota individual de la materia */}
+                    <div style={{ marginTop: '15px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', fontWeight: 'bold', opacity: 0.8 }}>
+                      <Award size={16} /> Nota actual: {mod.calificacionModulo} / 100
+                    </div>
                   </div>
                   
                   <div className="module-footer">
@@ -166,12 +250,12 @@ const DashboardEstudiante = () => {
                           : `${mod.tareasPendientes} tareas pendientes`}
                       </span>
                     </div>
-                   <button 
-  className="btn-entrar-clase"
-  onClick={() => navigate(`/clase/${mod.id}`)}
->
-  IR A CLASE <ArrowRight size={18} />
-</button>
+                    <button 
+                      className="btn-entrar-clase"
+                      onClick={() => navigate(`/clase/${mod.id}`)}
+                    >
+                      IR A CLASE <ArrowRight size={18} />
+                    </button>
                   </div>
                 </div>
               ))

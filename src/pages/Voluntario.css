@@ -1,0 +1,213 @@
+/* Heredamos estilos base de la estructura principal */
+.voluntario-container {
+  width: 100%;
+  padding-bottom: 40px;
+}
+
+/* HERO PERSONALIZADO PARA VOLUNTARIOS */
+.hero-voluntario-bg {
+  /* Reemplaza esta URL con una foto real de tu equipo de voluntarios sirviendo/sonriendo */
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1593113565694-c74149e9177a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-subtitle {
+  color: white;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  margin-bottom: 30px;
+  max-width: 500px;
+  text-align: center;
+}
+
+/* SECCIÓN DE VISIÓN */
+.vision-section {
+  padding: 80px 20px;
+  display: flex;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.vision-content {
+  max-width: 800px;
+  text-align: center;
+}
+
+.vision-text {
+  font-size: 1.2rem;
+  color: #4b5563;
+  line-height: 1.8;
+  margin-top: 20px;
+}
+
+/* SECCIÓN DE ÁREAS (GRID) */
+.areas-section {
+  padding: 60px 20px;
+  background-color: #f9fafb;
+}
+
+.text-center {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.areas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.area-card {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.area-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.area-icon {
+  background-color: #f3f4f6;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  color: #111827;
+}
+
+.area-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 15px;
+}
+
+.area-desc {
+  color: #6b7280;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* SECCIÓN FORMULARIO */
+.join-section {
+  padding: 80px 20px;
+  background-color: #111827; /* Fondo oscuro para resaltar */
+  color: white;
+}
+
+.join-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.join-info h2 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.join-info p {
+  color: #9ca3af;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.steps-list {
+  list-style: none;
+  padding: 0;
+}
+
+.steps-list li {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  color: #e5e7eb;
+}
+
+.join-form-container {
+  background: white;
+  padding: 40px;
+  border-radius: 24px;
+  color: #1f2937;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-size: 1rem;
+  background-color: #f9fafb;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #111827;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 16px;
+  background-color: #111827;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #374151;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .join-wrapper {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .vision-text {
+    font-size: 1.05rem;
+  }
+  
+  .join-info h2 {
+    font-size: 2rem;
+  }
+}
