@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../config/supabaseClient';
 import { ArrowLeft, Plus, Edit2, Trash2, Link as LinkIcon, FileText, CheckSquare, MessageCircle, EyeOff, Settings, Percent } from 'lucide-react';
-import { useGestionContenido } from '../hooks/useGestionContenido';
+import { useGestionContenido } from '../../hooks/useGestionContenido';
 import './PanelClaseProfesor.css';
 
-const PanelClaseProfesor = () => {
+const PanelClaseProfesor = ({ rolUsuarioGlobal }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   
@@ -14,13 +14,13 @@ const PanelClaseProfesor = () => {
   const [loading, setLoading] = useState(true);
   const [pestañaActiva, setPestañaActiva] = useState('planificacion');
   const [modoEdicion, setModoEdicion] = useState(false);
+  const [rolUsuario, setRolUsuario] = useState(null); // NUEVO: Estado para el rol
   
   const [materia, setMateria] = useState(null);
   const [unidades, setUnidades] = useState([]);
   const [alumnos, setAlumnos] = useState([]);
   const [entregas, setEntregas] = useState([]);
   
-  // NUEVO: Estados para Categorías (El 30/30/40)
   const [categorias, setCategorias] = useState([]);
   const [modalCategoria, setModalCategoria] = useState(false);
   const [formCategoria, setFormCategoria] = useState({ nombre: '', porcentaje: '' });
@@ -39,7 +39,6 @@ const PanelClaseProfesor = () => {
   const [modalRecurso, setModalRecurso] = useState(false);
   const [formRecurso, setFormRecurso] = useState({ titulo: '', url: '', tipo: 'link' });
 
-  // ACTUALIZADO: formActividad ahora incluye categoria_id
   const [modalActividad, setModalActividad] = useState(false);
   const [formActividad, setFormActividad] = useState({ 
     titulo: '', descripcion: '', tipo: 'tarea', apertura: '', cierre: '', visible: true, permite_atrasos: true, categoria_id: '' 
@@ -47,11 +46,28 @@ const PanelClaseProfesor = () => {
 
   const cargarDatos = async () => {
     setLoading(true);
+
+    // NUEVO: Verificar sesión y rol del usuario
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) {
+      const { data: perfilUsuario } = await supabase
+        .from('perfiles')
+        .select('rol')
+        .eq('id', session.user.id)
+        .single();
+
+      if (perfilUsuario) {
+        setRolUsuario(perfilUsuario.rol);
+        // Habilitamos el modo edición por defecto automáticamente si es director
+        if (perfilUsuario.rol === 'director' || perfilUsuario.rol === 'admin') {
+          setModoEdicion(true);
+        }
+      }
+    }
     
     const { data: matData } = await supabase.from('materias').select('id, nombre_materia, nivel_id, fecha_cierre_notas').eq('id', id).single();
     if (matData) setMateria(matData);
 
-    // NUEVO: Cargar las categorías de esta materia
     const { data: catData } = await supabase.from('categorias_notas').select('*').eq('materia_id', id);
     if (catData) setCategorias(catData);
 
@@ -87,15 +103,17 @@ const PanelClaseProfesor = () => {
     setEditandoNotaId(null);
   }, [actividadSeleccionadaId]);
 
+  // NUEVO: Variables de privilegios
+  const esDirector = rolUsuarioGlobal === 'director' || rolUsuarioGlobal === 'admin' || rolUsuario === 'director' || rolUsuario === 'admin';
   const fechaCierreActas = materia?.fecha_cierre_notas ? new Date(materia.fecha_cierre_notas) : null;
-  const notasBloqueadas = fechaCierreActas ? new Date() > fechaCierreActas : false;
-// --- CEREBRO MATEMÁTICO: PROMEDIO PONDERADO ---
+  // Si es director, las notas NUNCA están bloqueadas
+  const notasBloqueadas = !esDirector && (fechaCierreActas ? new Date() > fechaCierreActas : false);
+
   const calcularPromedioAcumulado = (alumnoId) => {
     if (categorias.length === 0) return "0.00";
 
     let notaFinal = 0;
 
-    // 1. Recorremos cada bolsa (ej: Deberes 30%, Examen 40%)
     categorias.forEach(cat => {
       const actividadesCat = unidades.flatMap(u => u.actividades).filter(a => a.categoria_id == cat.id);
       if (actividadesCat.length === 0) return; 
@@ -103,7 +121,6 @@ const PanelClaseProfesor = () => {
       let sumaNotasCat = 0;
       let tareasCalificadas = 0;
 
-      // 2. Buscamos las notas del alumno en esta bolsa específica
       actividadesCat.forEach(act => {
         const entrega = entregas.find(e => e.estudiante_id === alumnoId && e.tarea_id === act.id);
         if (entrega && entrega.calificacion != null) {
@@ -112,7 +129,6 @@ const PanelClaseProfesor = () => {
         }
       });
 
-      // 3. Calculamos el promedio de la bolsa y lo multiplicamos por su peso
       if (tareasCalificadas > 0) {
         const promedioCat = sumaNotasCat / tareasCalificadas;
         const aporteAlFinal = promedioCat * (Number(cat.porcentaje) / 100);
@@ -122,7 +138,7 @@ const PanelClaseProfesor = () => {
 
     return notaFinal.toFixed(2);
   };
-  // NUEVO: Matemáticas para el límite del 100%
+
   const sumaPorcentajes = categorias.reduce((acc, cat) => acc + Number(cat.porcentaje), 0);
 
   const handleGuardarCategoria = async (e) => {
@@ -275,8 +291,8 @@ const PanelClaseProfesor = () => {
     <div className="prof-panel-container">
       <div className="prof-panel-wrapper">
         
-        <button onClick={() => navigate('/admin-academico')} className="btn-volver">
-          <ArrowLeft size={20} /> VOLVER AL DASHBOARD DOCENTE
+        <button onClick={() => navigate(esDirector ? '/panel-director' : '/admin-academico')} className="btn-volver">
+          <ArrowLeft size={20} /> {esDirector ? 'VOLVER AL PANEL DIRECTOR' : 'VOLVER AL DASHBOARD DOCENTE'}
         </button>
 
         <div className="prof-header-dark">
@@ -288,24 +304,48 @@ const PanelClaseProfesor = () => {
                 {notasBloqueadas 
                   ? `🔒 El ingreso de notas cerró el ${fechaCierreActas.toLocaleDateString()}`
                   : `⏳ Tienes hasta el ${fechaCierreActas.toLocaleDateString()} para ingresar notas`}
+                {esDirector && " (Acceso total: Modo Director)"}
               </p>
             )}
           </div>
           
-          {pestañaActiva === 'planificacion' && (
-            <div className="modo-edicion-wrapper">
-              <label className="modo-edicion-label">
-                <input type="checkbox" checked={modoEdicion} onChange={() => setModoEdicion(!modoEdicion)} className="modo-edicion-checkbox"/>
-                MODO EDICIÓN
-              </label>
-              
-              {modoEdicion && (
-                <button onClick={() => { setEditandoId(null); setModalUnidad(true); }} className="btn-add-week">
-                  <Plus size={18} /> AÑADIR SEMANA
-                </button>
-              )}
-            </div>
-          )}
+          <div style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap' }}>
+            {/* NUEVO: Botón exclusivo para el Director */}
+            {esDirector && (
+              <button 
+                onClick={() => navigate('/panel-director')}
+                style={{ 
+                  backgroundColor: '#3b82f6', 
+                  color: 'white', 
+                  padding: '10px 20px', 
+                  borderRadius: '50px', 
+                  fontWeight: 'bold', 
+                  border: 'none', 
+                  cursor: 'pointer', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '8px' 
+                }}
+              >
+                <Settings size={18} /> EDITAR MÓDULO (DIRECTOR)
+              </button>
+            )}
+
+            {pestañaActiva === 'planificacion' && (
+              <div className="modo-edicion-wrapper">
+                <label className="modo-edicion-label">
+                  <input type="checkbox" checked={modoEdicion} onChange={() => setModoEdicion(!modoEdicion)} className="modo-edicion-checkbox"/>
+                  MODO EDICIÓN
+                </label>
+                
+                {modoEdicion && (
+                  <button onClick={() => { setEditandoId(null); setModalUnidad(true); }} className="btn-add-week">
+                    <Plus size={18} /> AÑADIR SEMANA
+                  </button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="panel-tabs">
@@ -370,7 +410,7 @@ const PanelClaseProfesor = () => {
           </div>
         )}
 
-        {/* --- PESTAÑA: PLANIFICACIÓN (SIN CAMBIOS ESTRUCTURALES) --- */}
+        {/* --- PESTAÑA: PLANIFICACIÓN --- */}
         {pestañaActiva === 'planificacion' && (
           <div className="campus-ug-layout">
             {unidades.length === 0 ? (
@@ -459,8 +499,7 @@ const PanelClaseProfesor = () => {
           </div>
         )}
 
-        {/* --- PESTAÑA: CALIFICACIONES (GRADEBOOK ACTUAL) --- */}
- {/* --- PESTAÑA: CALIFICACIONES (GRADEBOOK ACTUALIZADO) --- */}
+        {/* --- PESTAÑA: CALIFICACIONES (GRADEBOOK ACTUALIZADO) --- */}
         {pestañaActiva === 'calificaciones' && (
           <div className="gradebook-card">
             
@@ -557,7 +596,6 @@ const PanelClaseProfesor = () => {
                               </div>
                             )}
                           </td>
-                          {/* 👇 LA NUEVA COLUMNA CON EL PROMEDIO CALCULADO MÁGICAMENTE 👇 */}
                           <td style={{ backgroundColor: '#f8fafc', borderLeft: '2px solid #e2e8f0', textAlign: 'center', verticalAlign: 'middle' }}>
                             <div style={{ display: 'inline-block', backgroundColor: '#0f172a', color: '#38bdf8', padding: '8px 15px', borderRadius: '8px', fontSize: '1.1rem', fontWeight: '900', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
                               {calcularPromedioAcumulado(alumno.id)}
@@ -602,7 +640,7 @@ const PanelClaseProfesor = () => {
         <div className="modal-overlay"><div className="modal-content"><h2>{editandoId ? 'Editar' : 'Añadir'} Recurso</h2><form onSubmit={handleGuardarRecurso}><div className="form-group"><label>Título</label><input required className="form-control" value={formRecurso.titulo} onChange={e => setFormRecurso({...formRecurso, titulo: e.target.value})} /></div><div className="form-group"><label>URL</label><input required className="form-control" value={formRecurso.url} onChange={e => setFormRecurso({...formRecurso, url: e.target.value})} /></div><div className="form-group"><label>Tipo</label><select className="form-control" value={formRecurso.tipo} onChange={e => setFormRecurso({...formRecurso, tipo: e.target.value})}><option value="link">Enlace Web</option><option value="pdf">Documento PDF</option><option value="video">Video</option></select></div><div className="modal-actions"><button type="button" className="btn-secondary" onClick={cerrarModales}>Cancelar</button><button type="submit" className="btn-primary">Guardar</button></div></form></div></div>
       )}
 
-      {/* Modal Actividad (Actualizado con Categorías) */}
+      {/* Modal Actividad */}
       {modalActividad && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -615,7 +653,6 @@ const PanelClaseProfesor = () => {
                 <textarea rows="3" className="form-control" value={formActividad.descripcion} onChange={e => setFormActividad({...formActividad, descripcion: e.target.value})} />
               </div>
               
-              {/* NUEVO: Selector de Categoría (La bolsa de notas) */}
               <div className="form-group">
                 <label>¿A qué bolsa de calificación pertenece?</label>
                 <select required className="form-control" value={formActividad.categoria_id} onChange={e => setFormActividad({...formActividad, categoria_id: e.target.value})} style={{border: '2px solid #0284c7', backgroundColor: '#f0f9ff'}}>

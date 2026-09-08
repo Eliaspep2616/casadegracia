@@ -1,9 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
-import { supabase } from '../supabaseClient';
-
+import { supabase } from '../../config/supabaseClient.js';
 import './StaffStyles.css';
-
 const ScannerStaff = () => {
   const [asistente, setAsistente] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);

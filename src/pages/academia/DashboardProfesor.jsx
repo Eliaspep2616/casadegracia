@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../config/supabaseClient';
 import { Users, FileText, RefreshCw, ArrowRight, LogOut, BookOpen } from 'lucide-react';
 import './DashboardProfesor.css';
 

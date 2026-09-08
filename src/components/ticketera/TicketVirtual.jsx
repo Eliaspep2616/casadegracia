@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../config/supabaseClient';
 
 const PantallaConfirmacion = ({ ultimoRegistro, onRegistrarOtro, eventoId }) => {
   const [stock, setStock] = useState(null);

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../config/supabaseClient';
 import { ArrowLeft, PlusCircle, CheckCircle } from 'lucide-react';
 import './EditorExamen.css'; 
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from "../../config/supabaseClient.js";
 
 const FormularioTaquilla = ({ onExito }) => {
   const [cargando, setCargando] = useState(false);

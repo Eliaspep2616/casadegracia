@@ -1,42 +1,52 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import DetalleTarea from './components/DetalleTarea';
 import { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import RetiroDeProvision from './components/RetiroDeProvision';
-import CarritoPage from './pages/CarritoPage';
-import FormularioRegistro from './components/FormularioRegistro';
-import PanelStaff from './components/PanelStaff';
-import RetiroLanding from './pages/RetiroLanding';
-import Liderazgo from './pages/Liderazgo';
-import Voluntario from './pages/Voluntario';
+import { supabase } from './config/supabaseClient.js';
 import './App.css';
-import Academialideres from './pages/AcademiaLideres'; 
-import Footer from './components/Footer';
-import AulaVirtual from './components/AulaVirtual';
-import ForoVirtual from './components/ForoVirtual';
-// 🔒 NUEVAS IMPORTACIONES DE SEGURIDAD Y DASHBOARDS
-import { supabase } from './supabaseClient'; // Verifica que la ruta de tu archivo supabaseClient sea esta
-import RutaProtegida from './components/RutaProtegida';
-import DashboardEstudiante from './pages/DashboardEstudiante';
-import DashboardProfesor from './pages/DashboardProfesor';
-import PanelClaseProfesor from './components/PanelClaseProfesor';
-import EditorExamen from './components/EditorExamen';
-import PanelDirector from './components/PanelDirector';
-import NotFound from './components/NotFound';
+
+// 1. Componentes Base (Layout)
+import Navbar from './components/layout/Navbar.jsx';
+import Footer from './components/layout/Footer.jsx';
+import RutaProtegida from './components/layout/RutaProtegida.jsx';
+
+// 2. Páginas Públicas y Web
+import Home from './pages/web/Home.jsx';
+import RetiroLanding from './pages/web/RetiroLanding.jsx';
+import RetiroDeProvision from './pages/web/RetiroDeProvision.jsx';
+import Liderazgo from './pages/web/Liderazgo.jsx';
+import Voluntario from './pages/web/Voluntario.jsx';
+
+// 3. Páginas Raíz
+import CarritoPage from './pages/CarritoPage.jsx';
+import NotFound from './pages/NotFound.jsx';
+
+// 4. Páginas de Academia y Admin
+import AcademiaLideres from './pages/academia/AcademiaLideres.jsx';
+import DashboardEstudiante from './pages/academia/DashboardEstudiante.jsx';
+import DashboardProfesor from './pages/academia/DashboardProfesor.jsx';
+import PanelDirector from './pages/admin/PanelDirector.jsx';
+import PanelClaseProfesor from './pages/admin/PanelClaseProfesor.jsx';
+import PanelStaff from './pages/admin/PanelStaff.jsx';
+
+// 5. Componentes de Academia
+import AulaVirtual from './components/academia/AulaVirtual.jsx';
+import DetalleTarea from './components/academia/DetalleTarea.jsx';
+import EditorExamen from './components/academia/EditorExamen.jsx';
+import ForoVirtual from './components/academia/ForoVirtual.jsx';
+
+// 6. Componentes de Ticketera
+import FormularioRegistro from './components/ticketera/FormularioRegistro.jsx';
+
 const FooterCondicional = () => {
   const location = useLocation();
-  if (location.pathname.startsWith('/admin')) {
+  if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/panel-director')) {
     return null;
   }
   return <Footer />;
 };
 
 function AppContent() {
-  // --- ESTADOS ORIGINALES DEL CARRITO ---
   const [carrito, setCarrito] = useState([]);
   const [modal, setModal] = useState({ abierto: false, qty: 0, total: 0 });
-  const [precioEvento, setPrecioEvento] = useState(25); 
   
   const location = useLocation();
 
@@ -53,18 +63,15 @@ function AppContent() {
     );
   };
 
-  // --- 🛡️ ESTADOS DE SEGURIDAD DE SUPABASE ---
   const [estaAutenticado, setEstaAutenticado] = useState(false);
   const [rolUsuario, setRolUsuario] = useState(null);
   const [cargandoAuth, setCargandoAuth] = useState(true);
 
-  // Efecto para escuchar cuando el usuario inicia o cierra sesión
   useEffect(() => {
     const manejarSesion = async (session) => {
       if (session) {
         setEstaAutenticado(true);
-        // Preguntamos a la base de datos qué rol tiene
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('perfiles')
           .select('rol')
           .eq('id', session.user.id)
@@ -73,21 +80,19 @@ function AppContent() {
         if (data) {
           setRolUsuario(data.rol);
         } else {
-          setRolUsuario('estudiante'); // Rol por defecto por si acaso
+          setRolUsuario('estudiante'); 
         }
       } else {
         setEstaAutenticado(false);
         setRolUsuario(null);
       }
-      setCargandoAuth(false); // Quitamos la pantalla de carga
+      setCargandoAuth(false); 
     };
 
-    // Revisar la sesión actual al cargar la página
     supabase.auth.getSession().then(({ data: { session } }) => {
       manejarSesion(session);
     });
 
-    // Quedarse escuchando cambios (cuando vuelve de Google)
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       manejarSesion(session);
     });
@@ -95,23 +100,22 @@ function AppContent() {
     return () => subscription.unsubscribe();
   }, []);
 
+  const mostrarNavbar = !location.pathname.startsWith('/admin') && !location.pathname.startsWith('/panel-director');
+
   return (
     <>
-      {!location.pathname.startsWith('/admin') && <Navbar cantidadCarrito={carrito.length} />}
+      {mostrarNavbar && <Navbar cantidadCarrito={carrito.length} />}
 
       <div className="main-wrapper">
         <Routes>
           {/* RUTAS PÚBLICAS */}
-          <Route path="/Voluntario" element={<Voluntario />} />
-          <Route path="/director" element={<PanelDirector />} />
-          <Route path="/tarea/:actividadId" element={<DetalleTarea />} />
-          <Route path="/editor-examen/:actividadId" element={<EditorExamen />} />
           <Route path="/" element={<Home />} />
-          <Route path="/admin" element={<PanelStaff />} />
+          <Route path="/Voluntario" element={<Voluntario />} />
+          <Route path="/liderazgo" element={<Liderazgo />} />
           <Route path="/retiro" element={<RetiroLanding />} />
           <Route path="/inscripcion" element={<RetiroDeProvision onComprar={añadirAlCarrito} />} />
-         <Route path="/foro/:actividadId" element={<ForoVirtual />} />
-         <Route path="*" element={<NotFound />} />
+          <Route path="/Academia-lideres" element={<AcademiaLideres />} />
+          
           <Route 
             path="/carrito" 
             element={
@@ -121,20 +125,29 @@ function AppContent() {
                 alPagar={() => setModal({ abierto: true, qty: totalItemsCount, total: totalMontoCalculado })} 
               />
             } 
-          /><Route path="/admin-clase/:id" element={<PanelClaseProfesor />} />
-          <Route path="/liderazgo" element={<Liderazgo />} />
-          <Route path="/Academia-lideres" element={<Academialideres />} />
-<Route path="/clase/:id" element={<AulaVirtual />} />  {/* <-- Agrega esta línea */}
-          {/* 🔒 RUTAS PROTEGIDAS (DASHBOARDS) */}
+          />
+
+          {/* RUTAS DE ACADEMIA */}
+          <Route path="/tarea/:actividadId" element={<DetalleTarea />} />
+          <Route path="/editor-examen/:actividadId" element={<EditorExamen />} />
+          <Route path="/foro/:actividadId" element={<ForoVirtual />} />
+          <Route path="/clase/:id" element={<AulaVirtual />} />  
+          <Route path="/admin-clase/:id" element={<PanelClaseProfesor rolUsuarioGlobal={rolUsuario} />} />
+
+          {/* 🔒 RUTAS PROTEGIDAS (DASHBOARDS ACADÉMICOS) */}
+          <Route 
+            path="/panel-director" 
+            element={
+              <RutaProtegida usuarioAutenticado={estaAutenticado} rolRequerido="director" rolUsuario={rolUsuario} cargando={cargandoAuth}>
+                <PanelDirector />
+              </RutaProtegida>
+            } 
+          />
+
           <Route 
             path="/portal-estudiante" 
             element={
-              <RutaProtegida 
-                usuarioAutenticado={estaAutenticado} 
-                rolRequerido="estudiante" 
-                rolUsuario={rolUsuario}
-                cargando={cargandoAuth}
-              >
+              <RutaProtegida usuarioAutenticado={estaAutenticado} rolRequerido="estudiante" rolUsuario={rolUsuario} cargando={cargandoAuth}>
                 <DashboardEstudiante />
               </RutaProtegida>
             } 
@@ -143,16 +156,18 @@ function AppContent() {
           <Route 
             path="/admin-academico" 
             element={
-              <RutaProtegida 
-                usuarioAutenticado={estaAutenticado} 
-                rolRequerido="profesor" 
-                rolUsuario={rolUsuario}
-                cargando={cargandoAuth}
-              >
+              <RutaProtegida usuarioAutenticado={estaAutenticado} rolRequerido="profesor" rolUsuario={rolUsuario} cargando={cargandoAuth}>
                 <DashboardProfesor />
               </RutaProtegida>
             } 
           />
+
+          {/* 🛠️ RUTAS DEL STAFF */}
+          <Route path="/staff" element={<PanelStaff />} />
+          <Route path="/staff/tickets" element={<PanelStaff />} />
+
+          {/* RUTA 404 */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 

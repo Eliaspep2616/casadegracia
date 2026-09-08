@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../config/supabaseClient';
 import { Turnstile } from '@marsidev/react-turnstile';
 import './Formulario.css'; 
 

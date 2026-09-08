@@ -2,8 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import './Navbar.css';
-import logo from "../assets/Logo.webp";
-
+import logo from "../../assets/Logo.webp";
 const Navbar = ({ cantidadCarrito }) => {
   const location = useLocation();
   const [menuAbierto, setMenuAbierto] = useState(false);

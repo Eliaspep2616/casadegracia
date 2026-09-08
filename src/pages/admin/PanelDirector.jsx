@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
-import { Plus, Users, Calendar, Settings, FileSpreadsheet, Upload, AlertCircle } from 'lucide-react';
+import { supabase } from '../../config/supabaseClient';
+// Cambia la línea de importación por esta:
+import { Plus, Users, Calendar, Settings, FileSpreadsheet, Upload, AlertCircle, ExternalLink, X, LogOut } from 'lucide-react';
 import './PanelDirector.css';
 
 const PanelDirector = () => {
@@ -11,7 +12,7 @@ const PanelDirector = () => {
   // Datos de la base
   const [materias, setMaterias] = useState([]);
   const [profesores, setProfesores] = useState([]);
-  const [niveles, setNiveles] = useState([]); // <-- NUEVO: Para cargar los grados/cursos
+  const [niveles, setNiveles] = useState([]); 
   
   // Estados Modales
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -19,10 +20,13 @@ const PanelDirector = () => {
   const [formMateria, setFormMateria] = useState({
     nombre_materia: '',
     profesor_id: '',
-    nivel_id: '', // <-- NUEVO: Nivel asignado
+    nivel_id: '', 
     fecha_cierre_notas: ''
   });
-
+const handleCerrarSesion = async () => {
+    await supabase.auth.signOut();
+    navigate('/'); // Te envía al home cuando cierras sesión
+  };
   // Estados para Subida de Alumnos
   const [modalAlumnosAbierto, setModalAlumnosAbierto] = useState(false);
   const [materiaActual, setMateriaActual] = useState(null);
@@ -32,7 +36,6 @@ const PanelDirector = () => {
   const verificarSeguridadYCargarDatos = async () => {
     setLoading(true);
 
-    // 1. BARRERA DE SEGURIDAD: Verificar sesión y rol
     const { data: { session } } = await supabase.auth.getSession();
     
     if (!session) {
@@ -46,15 +49,12 @@ const PanelDirector = () => {
       .eq('id', session.user.id)
       .single();
 
-    // Si no es director (o admin), lo pateamos de la pantalla
     if (perfilUsuario?.rol !== 'director' && perfilUsuario?.rol !== 'admin') {
       alert("🔒 Acceso Denegado: Esta área es solo para la Administración Central.");
       navigate('/');
       return;
     }
 
-    // 2. CARGAR DATOS SI PASÓ LA SEGURIDAD
-    // Cargar materias
     const { data: matData } = await supabase
       .from('materias')
       .select(`
@@ -64,14 +64,12 @@ const PanelDirector = () => {
       .order('nombre_materia', { ascending: true });
     if (matData) setMaterias(matData);
 
-    // Cargar profesores
     const { data: profData } = await supabase
       .from('perfiles')
       .select('id, nombre_completo')
       .eq('rol', 'profesor');
     if (profData) setProfesores(profData);
 
-    // Cargar niveles (Grados/Cursos)
     const { data: nivData } = await supabase
       .from('niveles')
       .select('id, nombre');
@@ -95,7 +93,7 @@ const PanelDirector = () => {
     const datosGuardar = {
       nombre_materia: formMateria.nombre_materia,
       profesor_id: formMateria.profesor_id || null,
-      nivel_id: formMateria.nivel_id, // <-- AHORA ES DINÁMICO, NO QUEMADO
+      nivel_id: formMateria.nivel_id, 
       fecha_cierre_notas: formMateria.fecha_cierre_notas || null,
     };
 
@@ -109,7 +107,6 @@ const PanelDirector = () => {
       errorDB = error;
     }
 
-    // SI HAY ERROR EN LA BASE DE DATOS, NOS AVISA
     if (errorDB) {
       console.error(errorDB);
       alert(`Error al guardar: ${errorDB.message}`);
@@ -120,7 +117,6 @@ const PanelDirector = () => {
     verificarSeguridadYCargarDatos();
   };
 
-  // --- LÓGICA DE SUBIDA MASIVA DE ALUMNOS ---
   const abrirModalAlumnos = (materia) => {
     setMateriaActual(materia);
     setModalAlumnosAbierto(true);
@@ -204,9 +200,22 @@ const PanelDirector = () => {
             <p style={{ margin: '0 0 5px 0', fontSize: '0.9rem', color: '#94a3b8', letterSpacing: '2px', fontWeight: '700' }}>ADMINISTRACIÓN CENTRAL</p>
             <h1 style={{ margin: 0, fontSize: '2.5rem', fontWeight: '900' }}>Gestión de Módulos</h1>
           </div>
-          <button onClick={() => setModalAbierto(true)} className="btn-crear-modulo">
-            <Plus size={20} /> CREAR NUEVO MÓDULO
-          </button>
+          
+          <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
+            <button onClick={() => setModalAbierto(true)} className="btn-crear-modulo">
+              <Plus size={20} /> CREAR NUEVO MÓDULO
+            </button>
+            
+            {/* 👇 NUEVO BOTÓN DE CERRAR SESIÓN 👇 */}
+            <button 
+              onClick={handleCerrarSesion} 
+              style={{ backgroundColor: '#ef4444', color: 'white', border: 'none', padding: '12px 24px', borderRadius: '12px', fontWeight: '700', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', transition: 'background-color 0.2s' }}
+              onMouseOver={(e) => e.target.style.backgroundColor = '#dc2626'}
+              onMouseOut={(e) => e.target.style.backgroundColor = '#ef4444'}
+            >
+              <LogOut size={20} /> SALIR
+            </button>
+          </div>
         </div>
 
         <div className="director-grid">
@@ -229,6 +238,10 @@ const PanelDirector = () => {
               </div>
 
               <div className="modulo-actions">
+                <button onClick={() => navigate(`/admin-clase/${materia.id}`)} className="btn-outline-action" style={{ color: '#0f6cbd', borderColor: '#bae6fd', backgroundColor: '#f0f9ff' }}>
+                  <ExternalLink size={16} /> Supervisar
+                </button>
+
                 <button onClick={() => {
                   setEditandoId(materia.id);
                   setFormMateria({
@@ -254,20 +267,35 @@ const PanelDirector = () => {
 
       {/* MODAL CONFIGURACIÓN MÓDULO */}
       {modalAbierto && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <div style={{ backgroundColor: 'white', padding: '40px', borderRadius: '20px', width: '90%', maxWidth: '500px' }}>
-            <h2 style={{ marginTop: 0, color: '#1e293b' }}>{editandoId ? 'Configurar Módulo' : 'Crear Nuevo Módulo'}</h2>
+        <div className="director-modal-overlay">
+          <div className="director-modal-content">
             
-            <form onSubmit={handleGuardarMateria}>
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#475569' }}>Nombre de la Clase</label>
-                <input required type="text" value={formMateria.nombre_materia} onChange={e => setFormMateria({...formMateria, nombre_materia: e.target.value})} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', boxSizing: 'border-box' }} placeholder="Ej: Programación Avanzada" />
+            <button onClick={cerrarModal} className="btn-cerrar-modal" title="Cerrar">
+              <X size={20} strokeWidth={3} />
+            </button>
+
+            <h2 className="director-modal-title" style={{ marginBottom: '25px' }}>
+              {editandoId ? 'Configurar Módulo' : 'Crear Nuevo Módulo'}
+            </h2>
+            
+            <form onSubmit={handleGuardarMateria} className="modal-form-wrapper">
+              
+              <div className="modal-form-group">
+                <label className="modal-label">Nombre de la Clase</label>
+                <input 
+                  required 
+                  type="text" 
+                  value={formMateria.nombre_materia} 
+                  onChange={e => setFormMateria({...formMateria, nombre_materia: e.target.value})} 
+                  className="modal-input" 
+                  placeholder="Ej: Programación Avanzada" 
+                />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px', marginBottom: '20px' }}>
+              <div className="modal-grid-2col">
                 <div>
-                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#475569' }}>Nivel / Grado</label>
-                  <select required value={formMateria.nivel_id} onChange={e => setFormMateria({...formMateria, nivel_id: e.target.value})} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', boxSizing: 'border-box' }}>
+                  <label className="modal-label">Nivel / Grado</label>
+                  <select required value={formMateria.nivel_id} onChange={e => setFormMateria({...formMateria, nivel_id: e.target.value})} className="modal-input">
                     <option value="">Seleccionar...</option>
                     {niveles.map(niv => (
                       <option key={niv.id} value={niv.id}>{niv.nombre}</option>
@@ -276,8 +304,8 @@ const PanelDirector = () => {
                 </div>
 
                 <div>
-                  <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#475569' }}>Asignar Profesor</label>
-                  <select value={formMateria.profesor_id} onChange={e => setFormMateria({...formMateria, profesor_id: e.target.value})} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', boxSizing: 'border-box' }}>
+                  <label className="modal-label">Asignar Profesor</label>
+                  <select value={formMateria.profesor_id} onChange={e => setFormMateria({...formMateria, profesor_id: e.target.value})} className="modal-input">
                     <option value="">Ninguno</option>
                     {profesores.map(prof => (
                       <option key={prof.id} value={prof.id}>{prof.nombre_completo}</option>
@@ -286,33 +314,48 @@ const PanelDirector = () => {
                 </div>
               </div>
 
-              <div style={{ marginBottom: '30px' }}>
-                <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#475569' }}>Cierre de Actas (Límite para notas)</label>
-                <input type="datetime-local" value={formMateria.fecha_cierre_notas} onChange={e => setFormMateria({...formMateria, fecha_cierre_notas: e.target.value})} style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', boxSizing: 'border-box' }} />
-                <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Después de esta fecha, el profesor no podrá modificar calificaciones.</span>
+              <div className="modal-form-group" style={{ marginBottom: '30px' }}>
+                <label className="modal-label">Cierre de Actas (Límite para notas)</label>
+                <input 
+                  type="datetime-local" 
+                  value={formMateria.fecha_cierre_notas} 
+                  onChange={e => setFormMateria({...formMateria, fecha_cierre_notas: e.target.value})} 
+                  className="modal-input" 
+                />
+                <span className="modal-help-text">Después de esta fecha, el profesor no podrá modificar calificaciones.</span>
               </div>
 
-              <div style={{ display: 'flex', gap: '15px' }}>
-                <button type="button" onClick={cerrarModal} style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', backgroundColor: 'transparent', cursor: 'pointer', fontWeight: 'bold' }}>Cancelar</button>
-                <button type="submit" style={{ flex: 1, padding: '12px', borderRadius: '8px', border: 'none', backgroundColor: '#0f172a', color: 'white', cursor: 'pointer', fontWeight: 'bold' }}>Guardar Módulo</button>
+              <div className="modal-actions-flex">
+                <button type="button" onClick={cerrarModal} className="btn-modal-cancel">Cancelar</button>
+                <button type="submit" className="btn-modal-submit">Guardar Módulo</button>
               </div>
+              
             </form>
           </div>
         </div>
       )}
 
-      {/* MODAL SUBIR ALUMNOS (Sin cambios) */}
+      {/* MODAL SUBIR ALUMNOS */}
       {modalAlumnosAbierto && (
-        <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <div style={{ backgroundColor: 'white', padding: '40px', borderRadius: '20px', width: '90%', maxWidth: '500px', textAlign: 'center' }}>
-            <h2 style={{ marginTop: 0, color: '#1e293b' }}>Subir Alumnos a {materiaActual?.nombre_materia}</h2>
+        <div className="director-modal-overlay">
+          <div className="director-modal-content">
             
-            <div style={{ backgroundColor: '#f1f5f9', padding: '20px', borderRadius: '12px', marginBottom: '25px', textAlign: 'left' }}>
-              <p style={{ margin: '0 0 10px 0', fontWeight: 'bold', color: '#0f172a', display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <button 
+              onClick={() => setModalAlumnosAbierto(false)} 
+              className="btn-cerrar-modal"
+              title="Cerrar"
+            >
+              <X size={20} strokeWidth={3} />
+            </button>
+
+            <h2 className="director-modal-title">Subir Alumnos a {materiaActual?.nombre_materia}</h2>
+            
+            <div className="info-box-csv">
+              <p className="info-box-title">
                 <AlertCircle size={18} color="#0284c7" /> Formato requerido (CSV)
               </p>
-              <p style={{ margin: 0, fontSize: '0.9rem', color: '#475569' }}>Crea un archivo de Excel, pon solo dos columnas separadas por coma y guárdalo como <strong>"CSV (delimitado por comas)"</strong>.</p>
-              <pre style={{ backgroundColor: '#e2e8f0', padding: '10px', borderRadius: '6px', fontSize: '0.85rem', marginTop: '10px' }}>
+              <p className="info-box-text">Crea un archivo de Excel, pon solo dos columnas separadas por coma y guárdalo como <strong>"CSV (delimitado por comas)"</strong>.</p>
+              <pre className="pre-csv-format">
                 Cedula,Nombre Completo<br/>
                 0912345678,Juan Perez<br/>
                 0987654321,Maria Gomez
@@ -320,20 +363,20 @@ const PanelDirector = () => {
             </div>
 
             {subiendo ? (
-              <div style={{ padding: '30px 0' }}>
-                <div style={{ fontSize: '2rem', animation: 'spin 1s linear infinite', marginBottom: '15px' }}>⏳</div>
-                <p style={{ fontWeight: 'bold', color: '#0284c7' }}>{progreso}</p>
+              <div className="loading-csv-container">
+                <div className="spinner-csv">⏳</div>
+                <p className="progress-text-csv">{progreso}</p>
               </div>
             ) : (
               <div>
-                <label style={{ display: 'inline-block', backgroundColor: '#16a34a', color: 'white', padding: '15px 30px', borderRadius: '12px', fontWeight: 'bold', cursor: 'pointer', marginBottom: '20px' }}>
+                <label className="btn-upload-csv">
                   <Upload size={18} style={{ marginRight: '8px', verticalAlign: 'middle' }} />
                   Seleccionar Archivo CSV
                   <input type="file" accept=".csv" onChange={procesarCSV} style={{ display: 'none' }} />
                 </label>
                 
                 <div>
-                  <button onClick={() => setModalAlumnosAbierto(false)} style={{ padding: '10px 20px', border: 'none', background: 'none', color: '#64748b', cursor: 'pointer', fontWeight: 'bold' }}>Cancelar</button>
+                  <button onClick={() => setModalAlumnosAbierto(false)} className="btn-cancel-modal">Cancelar</button>
                 </div>
               </div>
             )}
