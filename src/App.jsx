@@ -2,12 +2,14 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useState, useEffect } from 'react';
 import { supabase } from './config/supabaseClient.js';
 import './App.css';
-
+import GestionHome from './pages/admin/GestionHome.jsx';
+import LayoutStaff from './components/layout/LayoutStaff.jsx';
+import FormularioTaquilla from './components/ticketera/FormularioTaquilla.jsx';
 // 1. Componentes Base (Layout)
 import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
 import RutaProtegida from './components/layout/RutaProtegida.jsx';
-
+import GestionEventos from './pages/admin/GestionEventos.jsx';
 // 2. Páginas Públicas y Web
 import Home from './pages/web/Home.jsx';
 import RetiroLanding from './pages/web/RetiroLanding.jsx';
@@ -75,7 +77,7 @@ function AppContent() {
           .from('perfiles')
           .select('rol')
           .eq('id', session.user.id)
-          .single();
+          .maybeSingle();
 
         if (data) {
           setRolUsuario(data.rol);
@@ -163,8 +165,14 @@ function AppContent() {
           />
 
           {/* 🛠️ RUTAS DEL STAFF */}
-          <Route path="/staff" element={<PanelStaff />} />
-          <Route path="/staff/tickets" element={<PanelStaff />} />
+          {/* 🛠️ RUTAS ANIDADAS DEL STAFF CON MENÚ LATERAL (LAYOUT) */}
+<Route element={<LayoutStaff />}>     
+  <Route path="/staff" element={<PanelStaff />} /> {/* Escáner */}
+  <Route path="/staff/tickets" element={<FormularioTaquilla />} /> {/* Taquilla */}
+  <Route path="/staff/eventos" element={<GestionEventos />} /> {/* CMS de Eventos */}
+  <Route path="/staff/home" element={<GestionHome />} />
+</Route>
+
 
           {/* RUTA 404 */}
           <Route path="*" element={<NotFound />} />
