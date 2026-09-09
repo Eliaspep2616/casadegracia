@@ -22,7 +22,7 @@ const AcademiaLideres = () => {
           .from('perfiles')
           .select('rol')
           .eq('id', session.user.id)
-          .single();
+          .maybeSingle();
 
         if (perfil?.rol === 'director' || perfil?.rol === 'admin') {
           navigate('/panel-director');
@@ -47,15 +47,15 @@ const AcademiaLideres = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  // FUNCIÓN PARA INICIAR SESIÓN CON CÉDULA/CORREO Y CONTRASEÑA
-const handleLoginSubmit = async (e) => {
+  // FUNCIÓN PARA INICIAR SESIÓN CON CÉDULA Y CONTRASEÑA
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
     setLoadingLogin(true);
     setErrorMsg('');
 
-    // Limpiamos la cédula por si tiene espacios y le armamos su correo fantasma interno
+    // Limpiamos la cédula y armamos el correo SIN espacios al final
     const cedulaLimpia = identificacion.trim();
-    const correoInterno = `${cedulaLimpia}@academia.local `; // (O usa @academia.local según prefieras)
+    const correoInterno = `${cedulaLimpia}@academia.local`; 
 
     const { error } = await supabase.auth.signInWithPassword({
       email: correoInterno,
@@ -67,6 +67,7 @@ const handleLoginSubmit = async (e) => {
       setLoadingLogin(false);
     }
   };
+
   if (cargando) return <div className="academia-page-container" style={{ alignItems: 'center' }}><div className="modern-spinner"></div></div>;
 
   return (
@@ -109,11 +110,10 @@ const handleLoginSubmit = async (e) => {
             </ul>
           </div>
 
-          {/* COLUMNA DERECHA: TARJETA DE LOGIN CON USUARIO Y CONTRASEÑA */}
+          {/* COLUMNA DERECHA: TARJETA DE LOGIN */}
           <div>
             <div className="academia-glass-card">
               <div className="modern-tabs">
-           
               </div>
 
               <div className="login-texts">

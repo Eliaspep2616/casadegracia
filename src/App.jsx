@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useState, useEffect } from 'react';
 import { supabase } from './config/supabaseClient.js';
 import './App.css';
+import Crecer from './pages/web/Crecer.jsx';
 import GestionHome from './pages/admin/GestionHome.jsx';
 import LayoutStaff from './components/layout/LayoutStaff.jsx';
 import FormularioTaquilla from './components/ticketera/FormularioTaquilla.jsx';
@@ -113,6 +114,7 @@ function AppContent() {
           {/* RUTAS PÚBLICAS */}
           <Route path="/" element={<Home />} />
           <Route path="/Voluntario" element={<Voluntario />} />
+          <Route path="/crecer" element={<Crecer />} />
           <Route path="/liderazgo" element={<Liderazgo />} />
           <Route path="/retiro" element={<RetiroLanding />} />
           <Route path="/inscripcion" element={<RetiroDeProvision onComprar={añadirAlCarrito} />} />
