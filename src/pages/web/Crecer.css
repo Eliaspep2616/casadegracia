@@ -1,0 +1,227 @@
+/* =========================================
+   ESTILOS GENERALES
+   ========================================= */
+.crecer-page {
+  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* =========================================
+   HERO SECTION (Foto de fondo)
+   ========================================= */
+.crecer-hero-section {
+  position: relative;
+  height: 90vh;
+  min-height: 600px;
+  /* Puedes cambiar esta URL por una foto real de tu iglesia */
+  background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.crecer-hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.7); /* Capa oscura para que resalte el logo */
+  z-index: 1;
+}
+
+.crecer-hero-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.crecer-hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 8px;
+  margin-top: 30px;
+}
+
+/* =========================================
+   LOGO BARRAS VERTICALES
+   ========================================= */
+.logo-barras {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 80px;
+}
+
+.barra {
+  width: 8px;
+  border-radius: 2px;
+}
+
+.bg-black { background-color: #171717; }
+.bg-white { background-color: #ffffff; }
+
+.b-corta { height: 35px; }
+
+.barra-compuesta {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  height: 100%;
+}
+
+.b-media { height: 45px; }
+.b-top { height: 15px; }
+
+.b-larga { height: 65px; }
+.b-top-larga { height: 25px; }
+
+
+/* =========================================
+   SECCIONES DE PASOS (SPLIT SCREEN)
+   ========================================= */
+.paso-section {
+  display: flex;
+  min-height: 70vh;
+  width: 100%;
+  color: white;
+}
+
+/* Colores extraídos de las imágenes */
+.bg-paso-1 { background-color: #A3D179; } /* Verde pastel */
+.bg-paso-2 { background-color: #FCB59A; } /* Durazno pastel */
+.bg-paso-3 { background-color: #6C92A6; } /* Azul pastel */
+.bg-paso-4 { background-color: #E6C875; } /* Mostaza/Amarillo pastel (para el paso 4) */
+
+.paso-izq {
+  flex: 0 0 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.paso-brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 6px;
+  margin-top: 25px;
+  margin-bottom: 10px;
+}
+
+.paso-numero {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.paso-der {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 60px 10% 60px 5%;
+}
+
+.paso-titulo {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 20px 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.paso-desc {
+  font-size: 1.25rem;
+  line-height: 1.6;
+  margin-bottom: 40px;
+  max-width: 600px;
+  opacity: 0.95;
+}
+
+.paso-btn {
+  background-color: white;
+  color: #171717;
+  padding: 15px 35px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.paso-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+}
+
+/* =========================================
+   LLAMADO A LA ACCIÓN (CTA)
+   ========================================= */
+.crecer-cta {
+  background: #f8fafc;
+  padding: 80px 20px;
+  text-align: center;
+  color: #1e293b;
+}
+
+.cta-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.cta-content h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 15px;
+}
+
+.cta-content p {
+  color: #475569;
+  font-size: 1.1rem;
+  margin-bottom: 35px;
+}
+
+.btn-whatsapp {
+  display: inline-block;
+  background: #25d366;
+  color: white;
+  padding: 16px 40px;
+  border-radius: 50px;
+  font-weight: 800;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: transform 0.2s;
+}
+
+.btn-whatsapp:hover {
+  transform: scale(1.05);
+}
+
+/* =========================================
+   RESPONSIVE MÓVIL
+   ========================================= */
+@media (max-width: 968px) {
+  .paso-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .paso-izq {
+    padding: 60px 20px 30px 20px;
+  }
+
+  .paso-der {
+    align-items: center;
+    padding: 10px 30px 60px 30px;
+  }
+  
+  .paso-titulo {
+    font-size: 2rem;
+  }
+} 

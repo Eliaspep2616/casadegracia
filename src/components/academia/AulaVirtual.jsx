@@ -95,7 +95,7 @@ const AulaVirtual = () => {
       <div className="aula-main-wrapper">
         
         {/* BOTÓN VOLVER ARREGLADO */}
-        <button onClick={() => navigate('/dashboard')} className="btn-volver">
+        <button onClick={() => navigate('/portal-estudiante')} className="btn-volver">
           <ArrowLeft size={20} /> VOLVER AL DASHBOARD
         </button>
 

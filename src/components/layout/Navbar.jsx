@@ -63,16 +63,17 @@ const Navbar = ({ cantidadCarrito }) => {
         <div className={`nav-right ${menuAbierto ? 'active' : ''}`}>
           <ul className="nav-links">
             <li><Link to="/" className={location.pathname === '/' ? 'active' : ''}>INICIO</Link></li>
-            <li><Link to="/CRECER" className={location.pathname === '/CRECER' ? 'active' : ''}>CRECER</Link></li>
+           { /*<li><Link to="/CRECER" className={location.pathname === '/CRECER' ? 'active' : ''}>CRECER</Link></li>*/}
+            <li><Link to="/bautismo" className={location.pathname === '/bautismo' ? 'active' : ''}>Bautismo</Link></li>
             <li><Link to="/Academia-lideres" className={location.pathname === '/Academia-lideres' ? 'active' : ''}>ACADEMIA DE LÍDERES</Link></li>
           </ul>
 
-          <Link to="/carrito" className="cart-icon-container">
+          {/*<Link to="/carrito" className="cart-icon-container">
             <ShoppingCart size={24} color="#0f172a" />
             {cantidadCarrito > 0 && (
               <span className="cart-badge">{cantidadCarrito}</span>
             )}
-          </Link>
+          </Link>*/}
         </div>
       </div>
     </nav>
