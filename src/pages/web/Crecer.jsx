@@ -1,78 +1,86 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight, BookOpen, Users, Compass, HeartHandshake } from 'lucide-react';
+import React from 'react';
 import './Crecer.css';
+
+// Componente para el logo de las barras (idéntico a las imágenes)
+const LogoBarras = () => (
+  <div className="logo-barras">
+    <div className="barra b-corta bg-black"></div>
+    <div className="barra-compuesta">
+      <div className="barra b-top bg-white"></div>
+      <div className="barra b-media bg-black"></div>
+    </div>
+    <div className="barra-compuesta">
+      <div className="barra b-top-larga bg-white"></div>
+      <div className="barra b-larga bg-black"></div>
+    </div>
+  </div>
+);
 
 const Crecer = () => {
   const pasosCrecimiento = [
     { 
       id: 1, 
-      numero: "01",
+      numero: "Paso 1",
       titulo: "Conoce a Dios", 
       desc: "Todo comienza aquí. Nuestras reuniones dominicales y retiros son el ambiente perfecto para experimentar Su presencia y escuchar Su palabra.", 
-      icon: <BookOpen size={36} />, 
-      link: "/retiro", 
-      btnText: "Próximo Retiro" 
+      colorClass: "bg-paso-1" // Verde pastel
     },
     { 
       id: 2, 
-      numero: "02",
+      numero: "Paso 2",
       titulo: "Encuentra Libertad", 
       desc: "Fuimos diseñados para vivir en comunidad. Únete a un Grupo Pequeño para compartir la vida, hacer amigos y crecer juntos.", 
-      icon: <Users size={36} />, 
-      link: "/grupos", 
-      btnText: "Buscar un Grupo" 
+      colorClass: "bg-paso-2" // Durazno pastel
     },
     { 
       id: 3, 
-      numero: "03",
+      numero: "Paso 3",
       titulo: "Descubre tu Propósito", 
       desc: "Nuestra Academia de Líderes está diseñada para ayudarte a descubrir tus dones, tu diseño original y el llamado de Dios para tu vida.", 
-      icon: <Compass size={36} />, 
-      link: "/Academia-lideres", 
-      btnText: "Ver Academia" 
+      colorClass: "bg-paso-3" // Azul pastel
     },
     { 
       id: 4, 
-      numero: "04",
+      numero: "Paso 4",
       titulo: "Haz la Diferencia", 
       desc: "Usa tus talentos para servir a otros. Únete a nuestro equipo de voluntarios y sé parte de lo que Dios está construyendo en la casa.", 
-      icon: <HeartHandshake size={36} />, 
-      link: "/Voluntario", 
-      btnText: "Ser Voluntario" 
+      colorClass: "bg-paso-4" // Mostaza/Amarillo pastel
     }
   ];
 
   return (
-    <div className="crecer-container">
+    <div className="crecer-page">
+      
       {/* 🚀 HERO SECTION */}
-      <section className="crecer-hero">
+      <section className="crecer-hero-section">
+        <div className="crecer-hero-overlay"></div>
         <div className="crecer-hero-content">
-          <span className="crecer-tag">TU SIGUIENTE PASO</span>
-          <h1 className="crecer-title">CRECER</h1>
-          <p className="crecer-subtitle">
-            Dios tiene un propósito increíble para tu vida. Nuestra ruta de crecimiento está diseñada para ayudarte a descubrirlo y vivirlo al máximo.
-          </p>
+          <LogoBarras />
+          <h1 className="crecer-hero-title">C R E C E R</h1>
         </div>
       </section>
 
-      {/* 🛣️ RUTA DE CRECIMIENTO (PASOS) */}
-      <section className="pasos-section">
-        <div className="pasos-grid">
-          {pasosCrecimiento.map((paso) => (
-            <div key={paso.id} className="paso-card">
-              <div className="paso-numero">{paso.numero}</div>
-              <div className="paso-icon-wrapper">
-                {paso.icon}
-              </div>
-              <h3 className="paso-titulo">{paso.titulo}</h3>
-              <p className="paso-desc">{paso.desc}</p>
-              <Link to={paso.link} className="paso-btn">
-                {paso.btnText} <ArrowRight size={16} />
-              </Link>
+      {/* 🛣️ SECCIONES DE PASOS (SPLIT SCREEN) */}
+      <div className="pasos-container">
+        {pasosCrecimiento.map((paso) => (
+          <section key={paso.id} className={`paso-section ${paso.colorClass}`}>
+            
+            {/* Lado Izquierdo: Logo y Número */}
+            <div className="paso-izq">
+              <LogoBarras />
+              <h2 className="paso-brand">C R E C E R</h2>
+              <h3 className="paso-numero">{paso.numero}</h3>
             </div>
-          ))}
-        </div>
-      </section>
+
+            {/* Lado Derecho: Contenido e Información */}
+            <div className="paso-der">
+              <h4 className="paso-titulo">{paso.titulo}</h4>
+              <p className="paso-desc">{paso.desc}</p>
+            </div>
+
+          </section>
+        ))}
+      </div>
 
       {/* 🤝 SECCIÓN EXTRA / INVITACIÓN */}
       <section className="crecer-cta">
@@ -84,6 +92,7 @@ const Crecer = () => {
           </a>
         </div>
       </section>
+      
     </div>
   );
 };

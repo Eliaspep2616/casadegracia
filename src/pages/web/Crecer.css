@@ -1,160 +1,173 @@
 /* =========================================
-   CONTENEDOR PRINCIPAL
+   ESTILOS GENERALES
    ========================================= */
-.crecer-container {
-  font-family: 'Montserrat', sans-serif;
-  background-color: #f8fafc;
-  color: #1a1a1a;
+.crecer-page {
+  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 /* =========================================
-   HERO SECTION (Elegante y limpio)
+   HERO SECTION (Foto de fondo)
    ========================================= */
-.crecer-hero {
-  background-color: #111;
-  color: white;
-  padding: 120px 20px 80px 20px;
-  text-align: center;
+.crecer-hero-section {
+  position: relative;
+  height: 90vh;
+  min-height: 600px;
+  /* Puedes cambiar esta URL por una foto real de tu iglesia */
+  background: url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.crecer-hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(15, 23, 42, 0.7); /* Capa oscura para que resalte el logo */
+  z-index: 1;
 }
 
 .crecer-hero-content {
-  max-width: 800px;
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
 }
 
-.crecer-tag {
-  display: inline-block;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 4px;
-  color: #eeff00;
-  margin-bottom: 20px;
-  background: rgba(255,255,255,0.1);
-  padding: 5px 15px;
-  border-radius: 50px;
-}
-
-.crecer-title {
-  font-size: clamp(4rem, 8vw, 6rem);
-  font-weight: 900;
-  margin: 0 0 20px 0;
-  line-height: 1;
-  letter-spacing: -2px;
-}
-
-.crecer-subtitle {
-  font-size: 1.2rem;
-  color: #94a3b8;
-  line-height: 1.6;
-  max-width: 600px;
-  margin: 0 auto;
+.crecer-hero-title {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: 8px;
+  margin-top: 30px;
 }
 
 /* =========================================
-   GRID DE LOS 4 PASOS
+   LOGO BARRAS VERTICALES
    ========================================= */
-.pasos-section {
-  padding: 80px 5%;
-  max-width: 1200px;
-  margin: -40px auto 0 auto; /* Sube un poco sobre el área negra */
-  position: relative;
-  z-index: 10;
+.logo-barras {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 80px;
 }
 
-.pasos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 30px;
+.barra {
+  width: 8px;
+  border-radius: 2px;
 }
 
-/* TARJETAS DE PASOS */
-.paso-card {
-  background: white;
-  border-radius: 20px;
-  padding: 40px 30px;
-  position: relative;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden;
+.bg-black { background-color: #171717; }
+.bg-white { background-color: #ffffff; }
+
+.b-corta { height: 35px; }
+
+.barra-compuesta {
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  height: 100%;
 }
 
-.paso-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 25px 45px rgba(0,0,0,0.1);
+.b-media { height: 45px; }
+.b-top { height: 15px; }
+
+.b-larga { height: 65px; }
+.b-top-larga { height: 25px; }
+
+
+/* =========================================
+   SECCIONES DE PASOS (SPLIT SCREEN)
+   ========================================= */
+.paso-section {
+  display: flex;
+  min-height: 70vh;
+  width: 100%;
+  color: white;
+}
+
+/* Colores extraídos de las imágenes */
+.bg-paso-1 { background-color: #A3D179; } /* Verde pastel */
+.bg-paso-2 { background-color: #FCB59A; } /* Durazno pastel */
+.bg-paso-3 { background-color: #6C92A6; } /* Azul pastel */
+.bg-paso-4 { background-color: #E6C875; } /* Mostaza/Amarillo pastel (para el paso 4) */
+
+.paso-izq {
+  flex: 0 0 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.paso-brand {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 6px;
+  margin-top: 25px;
+  margin-bottom: 10px;
 }
 
 .paso-numero {
-  position: absolute;
-  top: -10px;
-  right: -10px;
-  font-size: 6rem;
-  font-weight: 900;
-  color: #f1f5f9;
-  z-index: 1;
-  line-height: 1;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0;
+  opacity: 0.9;
 }
 
-.paso-icon-wrapper {
-  position: relative;
-  z-index: 2;
-  background: #1e293b;
-  color: white;
-  width: 70px;
-  height: 70px;
-  border-radius: 16px;
+.paso-der {
+  flex: 1;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: center;
-  margin-bottom: 25px;
+  align-items: flex-start;
+  padding: 60px 10% 60px 5%;
 }
 
 .paso-titulo {
-  position: relative;
-  z-index: 2;
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   font-weight: 800;
-  margin: 0 0 15px 0;
-  line-height: 1.2;
+  margin: 0 0 20px 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .paso-desc {
-  position: relative;
-  z-index: 2;
-  color: #64748b;
+  font-size: 1.25rem;
   line-height: 1.6;
-  flex-grow: 1; /* Empuja el botón hacia abajo */
-  margin-bottom: 25px;
+  margin-bottom: 40px;
+  max-width: 600px;
+  opacity: 0.95;
 }
 
 .paso-btn {
-  position: relative;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+  background-color: white;
+  color: #171717;
+  padding: 15px 35px;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: #2563eb;
   text-decoration: none;
-  font-size: 0.95rem;
-  transition: color 0.3s;
+  border-radius: 8px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
 .paso-btn:hover {
-  color: #1e40af;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.15);
 }
 
 /* =========================================
    LLAMADO A LA ACCIÓN (CTA)
    ========================================= */
 .crecer-cta {
-  background: #e2e8f0;
+  background: #f8fafc;
   padding: 80px 20px;
   text-align: center;
+  color: #1e293b;
 }
 
 .cta-content {
@@ -163,27 +176,26 @@
 }
 
 .cta-content h2 {
-  font-size: 2.5rem;
-  font-weight: 900;
+  font-size: 2.2rem;
+  font-weight: 800;
   margin-bottom: 15px;
-  letter-spacing: -1px;
 }
 
 .cta-content p {
   color: #475569;
   font-size: 1.1rem;
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
 
 .btn-whatsapp {
   display: inline-block;
   background: #25d366;
   color: white;
-  padding: 15px 35px;
+  padding: 16px 40px;
   border-radius: 50px;
   font-weight: 800;
   text-decoration: none;
-  font-size: 1rem;
+  font-size: 1.1rem;
   transition: transform 0.2s;
 }
 
@@ -191,8 +203,25 @@
   transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
-  .crecer-title { font-size: 3.5rem; }
-  .pasos-section { margin-top: -20px; }
-  .paso-card { padding: 30px 20px; }
-}
+/* =========================================
+   RESPONSIVE MÓVIL
+   ========================================= */
+@media (max-width: 968px) {
+  .paso-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .paso-izq {
+    padding: 60px 20px 30px 20px;
+  }
+
+  .paso-der {
+    align-items: center;
+    padding: 10px 30px 60px 30px;
+  }
+  
+  .paso-titulo {
+    font-size: 2rem;
+  }
+} 

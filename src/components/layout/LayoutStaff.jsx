@@ -73,7 +73,7 @@ const LayoutStaff = () => {
     return (
       <div style={{ display:'flex', justifyContent:'center', alignItems:'center', height:'100vh', background:'#f1f5f9' }}>
         <form onSubmit={manejarLogin} style={{ background:'white', padding:'40px', borderRadius:'15px', boxShadow:'0 10px 25px rgba(0,0,0,0.1)', width:'100%', maxWidth:'350px' }}>
-          <h2 style={{ textAlign:'center', color:'#1e293b', marginBottom:'20px' }}>Acceso al Staff 🔐</h2>
+          <h2 style={{ textAlign:'center', color:'#1e293b', marginBottom:'20px' }}>Acceso al Staff </h2>
           <input 
             type="email" placeholder="Correo del Staff" required 
             style={{ width:'100%', padding:'12px', marginBottom:'15px', borderRadius:'8px', border:'1px solid #cbd5e1', boxSizing:'border-box' }}
@@ -102,14 +102,14 @@ const LayoutStaff = () => {
         <h2 style={{ color: 'white', textAlign: 'center', marginBottom: '30px' }}>🎫 Casa de Gracia</h2>
         
         <nav style={{ flexGrow: 1 }}>
-          <Link to="/staff" style={linkStyle('/staff')}>
-            📷 Escáner QR
-          </Link>
-          <Link to="/staff/tickets" style={linkStyle('/staff/tickets')}>
-            🎟️ Taquilla
-          </Link>
+         {/*   <Link to="/staff" style={linkStyle('/staff')}>
+            Escáner QR
+          </Link>*/}
+          {/*<Link to="/staff/tickets" style={linkStyle('/staff/tickets')}>
+             Taquilla 
+          </Link>*/}
           <Link to="/staff/home" style={linkStyle('/staff/home')}>
-            🏠 Editar Home
+             Editar Home
           </Link>
         </nav>
 

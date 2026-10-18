@@ -6,17 +6,20 @@ import Crecer from './pages/web/Crecer.jsx';
 import GestionHome from './pages/admin/GestionHome.jsx';
 import LayoutStaff from './components/layout/LayoutStaff.jsx';
 import FormularioTaquilla from './components/ticketera/FormularioTaquilla.jsx';
+
 // 1. Componentes Base (Layout)
 import Navbar from './components/layout/Navbar.jsx';
 import Footer from './components/layout/Footer.jsx';
 import RutaProtegida from './components/layout/RutaProtegida.jsx';
 import GestionEventos from './pages/admin/GestionEventos.jsx';
+
 // 2. Páginas Públicas y Web
 import Home from './pages/web/Home.jsx';
 import RetiroLanding from './pages/web/RetiroLanding.jsx';
 import RetiroDeProvision from './pages/web/RetiroDeProvision.jsx';
 import Liderazgo from './pages/web/Liderazgo.jsx';
 import Voluntario from './pages/web/Voluntario.jsx';
+import FormularioBautismo from './pages/web/FormularioBautismo.jsx'; // <-- NUEVA IMPORTACIÓN
 
 // 3. Páginas Raíz
 import CarritoPage from './pages/CarritoPage.jsx';
@@ -27,7 +30,7 @@ import AcademiaLideres from './pages/academia/AcademiaLideres.jsx';
 import DashboardEstudiante from './pages/academia/DashboardEstudiante.jsx';
 import DashboardProfesor from './pages/academia/DashboardProfesor.jsx';
 import PanelDirector from './pages/admin/PanelDirector.jsx';
-import PanelClaseProfesor from './pages/admin/PanelClaseProfesor.jsx';
+import PanelClaseProfesor from "./pages/admin/PanelClaseProfesor.jsx";
 import PanelStaff from './pages/admin/PanelStaff.jsx';
 
 // 5. Componentes de Academia
@@ -120,6 +123,9 @@ function AppContent() {
           <Route path="/inscripcion" element={<RetiroDeProvision onComprar={añadirAlCarrito} />} />
           <Route path="/Academia-lideres" element={<AcademiaLideres />} />
           
+          {/* <-- NUEVA RUTA PARA BAUTISMO --> */}
+          <Route path="/bautismo" element={<FormularioBautismo />} />
+          
           <Route 
             path="/carrito" 
             element={
@@ -167,14 +173,12 @@ function AppContent() {
           />
 
           {/* 🛠️ RUTAS DEL STAFF */}
-          {/* 🛠️ RUTAS ANIDADAS DEL STAFF CON MENÚ LATERAL (LAYOUT) */}
-<Route element={<LayoutStaff />}>     
-  <Route path="/staff" element={<PanelStaff />} /> {/* Escáner */}
-  <Route path="/staff/tickets" element={<FormularioTaquilla />} /> {/* Taquilla */}
-  <Route path="/staff/eventos" element={<GestionEventos />} /> {/* CMS de Eventos */}
-  <Route path="/staff/home" element={<GestionHome />} />
-</Route>
-
+          <Route element={<LayoutStaff />}>     
+            <Route path="/staff" element={<PanelStaff />} /> 
+            <Route path="/staff/tickets" element={<FormularioTaquilla />} /> 
+            <Route path="/staff/eventos" element={<GestionEventos />} /> 
+            <Route path="/staff/home" element={<GestionHome />} />
+          </Route>
 
           {/* RUTA 404 */}
           <Route path="*" element={<NotFound />} />
